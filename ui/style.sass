@@ -2,6 +2,12 @@
   border: 1px solid black
   letter-spacing: 2px
 
+$txt_black: rgb(60, 60, 60)
+$bg_white: rgb(242, 242, 242)
+
+$bg_black: rgb(26, 26, 26)
+$txt_white: rgb(190, 190, 190)
+
 html, body
   margin: 0px
   padding: 0px
@@ -9,6 +15,7 @@ html, body
   width: 100%
   height: 100%
   position: relative
+  color: $txt_black
 
 .nav_wrap
   top: 0px
@@ -17,6 +24,7 @@ html, body
   position: fixed
   color: black
   border-bottom: 1px solid black
+  background-color: $bg_white
   z-index: 3
   justify-content: space-between
   .right_nav
@@ -32,7 +40,17 @@ html, body
   
 
 .content_wrap
-  margin-top: 10%
-  
+  margin-top: 5%
+  // margin-left: 50%
+  // transform: translateX(-50%)
+  display: flex
+  position: relative
+  justify-content: space-between
+  .owner_info_wrap
+    width: 20%
+  .player_wrap
+    width: 45% 
+  .playlist_wrap
+    width: 35% 
   
   
