@@ -28,6 +28,9 @@ function deleteSongFromPlaylist() {
 function addSongToPlaylist() {
     playlist_status_wrap.style.display = "block";
 
+    let des_input = document.querySelector('.des_input');
+    des_input.value = "";
+
     let song_info = document.createElement('div');
     song_info.className = "song_info";
 
@@ -126,6 +129,7 @@ function appendSearchResults(singleSongInfos, rootNode) {
 function getSearchResults() {
     const search_input = document.querySelector('.search_input');
     let searchQuery = search_input.value;
+    search_input.value = "";
     console.log(searchQuery);
     socket.emit('getSearchResults', searchQuery);
 
