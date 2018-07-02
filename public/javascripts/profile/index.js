@@ -1,6 +1,7 @@
 console.log('profile');
 
-let userId = "horseman"
+let userId = "horseman";
+let nowPlaying = 0;
 
 socket.emit('getOwnerInfo', userId);
 
@@ -127,13 +128,57 @@ function onYouTubePlayerAPIReady() {
     player = new YT.Player('video_placeholder', {
         width: '700',
         height: '400',
-        videoId: final_url
+        videoId: final_url,
+        events: {
+            onStateChange: onPlayerStateChange
+        }
     });
+}
+
+function onPlayerStateChange(event) {
+    if (event.data === 0) {
+        if (nowPlaying + 1 < ownerInfo.playlistInfo.songList.length) {
+            renderNextPlayer(nowPlaying)
+        }
+    }
+}
+
+function renderNextPlayer() {
+    let playlistInfo = ownerInfo.playlistInfo;
+    nowPlaying += 1
+    index = nowPlaying;
+
+    generatePlayer(playlistInfo.songList[index].url);
+
+    const song_stats = document.querySelector('.song_stats');
+    let song_stats_html = `
+    <div class="like_btn">♥</div>
+    <div class="like_number">${playlistInfo.songList[index].like}</div>`
+    song_stats.innerHTML = song_stats_html;
+
+    const song_des = document.querySelector('.song_des');
+    let song_des_html = `
+    <div class="song_date">${playlistInfo.date}</div>
+    <div class="song_text">${playlistInfo.songList[index].des}</div>`
+    song_des.innerHTML = song_des_html;
+
+    const comment_wrap = document.querySelector('.comment_wrap');
+    let comment_wrap_html = "";
+    for (let i = 0; i < playlistInfo.songList[index].comments.length; i++) {
+        comment_wrap_html += `
+        <div class="comment_info">
+            <img class="comment_avatar" src="${playlistInfo.songList[index].comments[i].avatar}" alt="gg">
+            <div class="comment_name">${playlistInfo.songList[index].comments[i].userName}</div>
+            <div class="comment_content">${playlistInfo.songList[index].comments[i].content}</div>
+        </div>`;
+    }
+    comment_wrap.innerHTML = comment_wrap_html;
 }
 
 function renderPlayer() {
     let playlistInfo = this.ownerInfo.playlistInfo;
     let index = this.index;
+    nowPlaying = index;
 
     generatePlayer(playlistInfo.songList[index].url);
 
