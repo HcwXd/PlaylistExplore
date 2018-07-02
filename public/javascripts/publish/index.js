@@ -11,6 +11,20 @@ search_result_wrap.style.display = "none";
 add_des_wrap.style.display = "none";
 playlist_status_wrap.style.display = "none";
 
+var songList = [];
+
+function publish() {
+    socket.emit('publishNewPlaylist', songList);
+}
+
+function deleteSongFromPlaylist() {
+    let deleteUrlIndex = songList.filter(function (el) {
+        return el.url == this.url;
+    });
+    songList.splice(deleteUrlIndex, 1);
+    this.parentNode.parentNode.removeChild(this.parentNode);
+}
+
 function addSongToPlaylist() {
     playlist_status_wrap.style.display = "block";
 
@@ -27,7 +41,10 @@ function addSongToPlaylist() {
 
     let song_edit = document.createElement('div');
     song_edit.className = "song_edit";
-    song_edit.innerHTML = "X"
+    song_edit.innerHTML = "X";
+    song_edit.url = this.url;
+
+    song_edit.addEventListener('click', deleteSongFromPlaylist);
 
     song_info.songName = this.songName;
     song_info.cover = this.cover;
@@ -40,8 +57,18 @@ function addSongToPlaylist() {
     let song_list = document.querySelector('.song_list');
     song_list.appendChild(song_info);
 
+    let singleSongInfo = {
+        url: this.url,
+        songName: this.songName,
+        cover: this.cover,
+        des: this.des,
+        like: 0,
+        comments: [],
+    };
+    songList.push(singleSongInfo);
     add_des_wrap.style.display = "none";
-
+    let publish_btn = document.querySelector('.publish_btn');
+    publish_btn.addEventListener('click', publish)
 }
 
 
