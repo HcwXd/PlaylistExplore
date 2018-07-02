@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Publish Playlist - Playlist Explore</title>
+  <link rel="stylesheet" href="/stylesheets/publish/style.css">
+  <link rel="stylesheet" href="/stylesheets/components/style.css">
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    var socket = io();
+  </script>
+</head>
+
+<body>
+  <%- include('components/nav') %>
+
+
+    <div class="content_wrap">
+      <div class="search_area_wrap">
+        <div class="search_area">
+          <input class="search_input" placeholder="Input song's name or Url">
+          <div class="search_btn">Search</div>
+        </div>
+      </div>
+      <div class="publishing_wrap">
+        <div class="search_result_wrap">
+          <div class="pick_des">請選擇你要加入的歌曲</div>
+          <!-- <div class="song_info">
+            <img class="song_cover" src="https://www.billboard.com/files/styles/900_wide/public/media/Green-Day-American-Idiot-album-covers-billboard-1000x1000.jpg">
+            <div class="song_name">大象體操ElephantGym _ 中途Midway【Official Music Video】</div>
+          </div>
+          <div class="song_info">
+            <img class="song_cover" src="https://www.billboard.com/files/styles/900_wide/public/media/Green-Day-American-Idiot-album-covers-billboard-1000x1000.jpg">
+            <div class="song_name">大象體操ElephantGym _ 中途Midway【Official Music Video】</div>
+          </div>
+          <div class="song_info">
+            <img class="song_cover" src="https://www.billboard.com/files/styles/900_wide/public/media/Green-Day-American-Idiot-album-covers-billboard-1000x1000.jpg">
+            <div class="song_name">大象體操ElephantGym _ 中途Midway【Official Music Video】</div>
+          </div>
+          <div class="song_info">
+            <img class="song_cover" src="https://www.billboard.com/files/styles/900_wide/public/media/Green-Day-American-Idiot-album-covers-billboard-1000x1000.jpg">
+            <div class="song_name">大象體操ElephantGym _ 中途Midway【Official Music Video】</div>
+          </div>
+          <div class="song_info">
+            <img class="song_cover" src="https://www.billboard.com/files/styles/900_wide/public/media/Green-Day-American-Idiot-album-covers-billboard-1000x1000.jpg">
+            <div class="song_name">大象體操ElephantGym _ 中途Midway【Official Music Video】</div>
+          </div> -->
+        </div>
+        <div class="add_des_wrap">
+          <textarea rows="20" cols="20" class="des_input" placeholder="Write something about the song"></textarea>
+          <div class="add_btn">Add</div>
+        </div>
+        <div class="playlist_status_wrap">
+          <div class="hidden_block">
+            <div class="pick_des">目前的播放清單</div>
+            <div class="song_list">
+              <!-- <div class="song_info">
+              <img class="song_cover" src="https://www.billboard.com/files/styles/900_wide/public/media/Green-Day-American-Idiot-album-covers-billboard-1000x1000.jpg">
+              <div class="song_name">大象體操ElephantGym _ 中途Midway【Official Music Video】</div>
+              <div class="song_edit">X</div>
+            </div>
+            <div class="song_info">
+              <img class="song_cover" src="https://www.billboard.com/files/styles/900_wide/public/media/Green-Day-American-Idiot-album-covers-billboard-1000x1000.jpg">
+              <div class="song_name">大象體操ElephantGym _ 中途Midway【Official Music Video】</div>
+              <div class="song_edit">X</div>
+            </div>
+            <div class="song_info">
+              <img class="song_cover" src="https://www.billboard.com/files/styles/900_wide/public/media/Green-Day-American-Idiot-album-covers-billboard-1000x1000.jpg">
+              <div class="song_name">大象體操ElephantGym _ 中途Midway【Official Music Video】</div>
+              <div class="song_edit">X</div>
+            </div> -->
+            </div>
+            <a href="/profile">
+              <div class="publish_btn">Publish</div>
+            </a>
+          </div>
+        </div>
+
+
+      </div>
+
+    </div>
+
+
+
+
+    <script src="/javascripts/publish/index.js"></script>
+
+
+
+
+</body>
+
+</html>

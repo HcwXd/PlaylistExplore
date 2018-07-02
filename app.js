@@ -10,6 +10,19 @@ var loginRouter = require('./routes/login');
 
 var app = express();
 
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
+
+
+
+server.listen(3000);
+
+
+
+
+
+
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
