@@ -118,24 +118,26 @@ function renderPlayer() {
     youtube_player.innerHTML = playerHtml;
 
     const song_stats = document.querySelector('.song_stats');
-    let song_stats_html = `<div class="like_btn">♥</div>
+    let song_stats_html = `
+    <div class="like_btn">♥</div>
     <div class="like_number">${playlistInfo.songList[index].like}</div>`
     song_stats.innerHTML = song_stats_html;
 
     const song_des = document.querySelector('.song_des');
-    let song_des_html = `<div class="song_date">${playlistInfo.date}</div>
+    let song_des_html = `
+    <div class="song_date">${playlistInfo.date}</div>
     <div class="song_text">${playlistInfo.songList[index].des}</div>`
     song_des.innerHTML = song_des_html;
 
     const comment_wrap = document.querySelector('.comment_wrap');
     let comment_wrap_html = "";
     for (let i = 0; i < playlistInfo.songList[index].comments.length; i++) {
-        comment_wrap_html += `<div class="comment_info">
-        <img class="comment_avatar" src="${playlistInfo.songList[index].comments[i].avatar}"
-          alt="gg">
-        <div class="comment_name">${playlistInfo.songList[index].comments[i].userName}</div>
-        <div class="comment_content">${playlistInfo.songList[index].comments[i].content}</div>
-      </div>`;
+        comment_wrap_html += `
+        <div class="comment_info">
+            <img class="comment_avatar" src="${playlistInfo.songList[index].comments[i].avatar}" alt="gg">
+            <div class="comment_name">${playlistInfo.songList[index].comments[i].userName}</div>
+            <div class="comment_content">${playlistInfo.songList[index].comments[i].content}</div>
+        </div>`;
     }
     comment_wrap.innerHTML = comment_wrap_html;
 }
@@ -147,31 +149,34 @@ function renderNewPlayer(ownerInfo, index) {
     youtube_player.innerHTML = playerHtml;
 
     const song_stats = document.querySelector('.song_stats');
-    let song_stats_html = `<div class="like_btn">♥</div>
+    let song_stats_html = `
+    <div class="like_btn">♥</div>
     <div class="like_number">${ownerInfo.playlistInfo.songList[index].like}</div>`
     song_stats.innerHTML = song_stats_html;
 
     const song_des = document.querySelector('.song_des');
-    let song_des_html = `<div class="song_date">${ownerInfo.playlistInfo.date}</div>
+    let song_des_html = `
+    <div class="song_date">${ownerInfo.playlistInfo.date}</div>
     <div class="song_text">${ownerInfo.playlistInfo.songList[index].des}</div>`
     song_des.innerHTML = song_des_html;
 
     const comment_wrap = document.querySelector('.comment_wrap');
     let comment_wrap_html = "";
     for (let i = 0; i < ownerInfo.playlistInfo.songList[index].comments.length; i++) {
-        comment_wrap_html += `<div class="comment_info">
-        <img class="comment_avatar" src="${ownerInfo.playlistInfo.songList[index].comments[i].avatar}"
-          alt="gg">
-        <div class="comment_name">${ownerInfo.playlistInfo.songList[index].comments[i].userName}</div>
-        <div class="comment_content">${ownerInfo.playlistInfo.songList[index].comments[i].content}</div>
-      </div>`;
+        comment_wrap_html += `
+        <div class="comment_info">
+            <img class="comment_avatar" src="${ownerInfo.playlistInfo.songList[index].comments[i].avatar}" alt="gg">
+            <div class="comment_name">${ownerInfo.playlistInfo.songList[index].comments[i].userName}</div>
+            <div class="comment_content">${ownerInfo.playlistInfo.songList[index].comments[i].content}</div>
+        </div>`;
     }
     comment_wrap.innerHTML = comment_wrap_html;
 }
 
 function renderOwnerInfo(ownerInfo) {
     const owner_info_wrap = document.querySelector('.owner_info_wrap');
-    let owner_info_wrap_html = `<img class="owner_avatar" src="${ownerInfo.avatar}" alt="gg">
+    let owner_info_wrap_html = `
+        <img class="owner_avatar" src="${ownerInfo.avatar}" alt="gg">
         <div class="owner_name">${ownerInfo.userName}</div>
         <div class="owner_bio">${ownerInfo.bio}</div>`
     owner_info_wrap.innerHTML = owner_info_wrap_html;
@@ -179,7 +184,8 @@ function renderOwnerInfo(ownerInfo) {
     renderNewPlayer(ownerInfo, 0);
 
     const playlist_info = document.querySelector('.playlist_info');
-    let playlist_info_html = `<div class="playlist_name">${ownerInfo.playlistInfo.name}</div>
+    let playlist_info_html = `
+    <div class="playlist_name">${ownerInfo.playlistInfo.name}</div>
     <div class="playlist_des">${ownerInfo.playlistInfo.des}</div>`
     playlist_info.innerHTML = playlist_info_html;
 
@@ -187,7 +193,8 @@ function renderOwnerInfo(ownerInfo) {
     for (let i = 0; i < ownerInfo.playlistInfo.songList.length; i++) {
         let song_info = document.createElement('div');
         song_info.className = "song_info";
-        song_info.innerHTML = `<div class="song_name">${ownerInfo.playlistInfo.songList[i].songName}</div>
+        song_info.innerHTML = `
+        <div class="song_name">${ownerInfo.playlistInfo.songList[i].songName}</div>
         <div class="song_like">♥ ${ownerInfo.playlistInfo.songList[i].like}</div>`;
 
         song_info.index = i;
