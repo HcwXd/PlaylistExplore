@@ -39,6 +39,9 @@ function addSongToPlaylist() {
 
     let song_list = document.querySelector('.song_list');
     song_list.appendChild(song_info);
+
+    add_des_wrap.style.display = "none";
+
 }
 
 
@@ -64,6 +67,7 @@ function addDesToSongs() {
 }
 
 function appendSearchResults(singleSongInfos, rootNode) {
+    rootNode.innerHTML = '<div class="pick_des">請選擇你要加入的歌曲</div>';
 
     for (let i = 0; i < singleSongInfos.length; i++) {
         singleSongInfo = singleSongInfos[i];
