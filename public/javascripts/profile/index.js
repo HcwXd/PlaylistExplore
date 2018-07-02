@@ -14,7 +14,7 @@ const ownerInfo = {
             songName: "既視感 - 不規則鐘擺",
             cover: "https://www.billboard.com/files/styles/900_wide/public/media/Green-Day-American-Idiot-album-covers-billboard-1000x1000.jpg",
             des: "這是一首不規則的歌",
-            like: 100,
+            like: 81,
             comments: [{
                     userName: 'Penguin',
                     avatar: 'https://www.ienglishstatus.com/wp-content/uploads/2018/04/Anonymous-Whatsapp-profile-picture.jpg',
@@ -31,7 +31,7 @@ const ownerInfo = {
             songName: "既視感 - 不規則鐘擺",
             cover: "https://www.billboard.com/files/styles/900_wide/public/media/Green-Day-American-Idiot-album-covers-billboard-1000x1000.jpg",
             des: "這是一首不規則的歌",
-            like: 100,
+            like: 81,
             comments: [{
                     userName: 'Penguin',
                     avatar: 'https://www.ienglishstatus.com/wp-content/uploads/2018/04/Anonymous-Whatsapp-profile-picture.jpg',
@@ -48,7 +48,7 @@ const ownerInfo = {
             songName: "既視感 - 不規則鐘擺",
             cover: "https://www.billboard.com/files/styles/900_wide/public/media/Green-Day-American-Idiot-album-covers-billboard-1000x1000.jpg",
             des: "這是一首不規則的歌",
-            like: 100,
+            like: 81,
             comments: [{
                     userName: 'Penguin',
                     avatar: 'https://www.ienglishstatus.com/wp-content/uploads/2018/04/Anonymous-Whatsapp-profile-picture.jpg',
@@ -65,7 +65,7 @@ const ownerInfo = {
             songName: "既視感 - 不規則鐘擺",
             cover: "https://www.billboard.com/files/styles/900_wide/public/media/Green-Day-American-Idiot-album-covers-billboard-1000x1000.jpg",
             des: "這是一首不規則的歌",
-            like: 100,
+            like: 81,
             comments: [{
                     userName: 'Penguin',
                     avatar: 'https://www.ienglishstatus.com/wp-content/uploads/2018/04/Anonymous-Whatsapp-profile-picture.jpg',
@@ -82,7 +82,7 @@ const ownerInfo = {
             songName: "既視感 - 不規則鐘擺",
             cover: "https://www.billboard.com/files/styles/900_wide/public/media/Green-Day-American-Idiot-album-covers-billboard-1000x1000.jpg",
             des: "這是一首不規則的歌",
-            like: 100,
+            like: 81,
             comments: [{
                     userName: 'Penguin',
                     avatar: 'https://www.ienglishstatus.com/wp-content/uploads/2018/04/Anonymous-Whatsapp-profile-picture.jpg',
@@ -143,7 +143,20 @@ function renderOwnerInfo(ownerInfo) {
     }
     comment_wrap.innerHTML = comment_wrap_html;
 
+    const playlist_info = document.querySelector('.playlist_info');
+    let playlist_info_html = `<div class="playlist_name">${ownerInfo.playlistInfo.name}</div>
+    <div class="playlist_des">${ownerInfo.playlistInfo.des}</div>`
+    playlist_info.innerHTML = playlist_info_html;
 
+    const song_list = document.querySelector('.song_list');
+    let song_list_html = "";
+    for (let i = 0; i < ownerInfo.playlistInfo.songList.length; i++) {
+        song_list_html += `<div class="song_info">
+        <div class="song_name">${ownerInfo.playlistInfo.songList[i].songName}</div>
+        <div class="song_like">♥ ${ownerInfo.playlistInfo.songList[i].like}</div>
+      </div>`
+    }
+    song_list.innerHTML = song_list_html;
 }
 
 renderOwnerInfo(ownerInfo);
