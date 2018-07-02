@@ -85,8 +85,6 @@ html, body {
         border-top: 0px solid #bebebe;
         padding: 5px 0px;
         align-items: center; }
-        .content_wrap .publishing_wrap .search_result_wrap .song_info:active {
-          border: 1px solid yellow; }
         .content_wrap .publishing_wrap .search_result_wrap .song_info .song_name {
           display: inline-block;
           width: 85%;
@@ -153,8 +151,6 @@ html, body {
         border-top: 0px solid #bebebe;
         padding: 5px 0px;
         align-items: center; }
-        .content_wrap .publishing_wrap .playlist_status_wrap .song_info:active {
-          border: 1px solid yellow; }
         .content_wrap .publishing_wrap .playlist_status_wrap .song_info .song_name {
           display: inline-block;
           width: 85%;

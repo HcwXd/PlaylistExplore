@@ -11,6 +11,57 @@ search_result_wrap.style.display = "none";
 add_des_wrap.style.display = "none";
 playlist_status_wrap.style.display = "none";
 
+function addSongToPlaylist() {
+    playlist_status_wrap.style.display = "block";
+
+    let song_info = document.createElement('div');
+    song_info.className = "song_info";
+
+    let song_cover = document.createElement('img');
+    song_cover.className = "song_cover";
+    song_cover.src = this.cover;
+
+    let song_name = document.createElement('div');
+    song_name.className = "song_name";
+    song_name.innerHTML = this.songName;
+
+    let song_edit = document.createElement('div');
+    song_edit.className = "song_edit";
+    song_edit.innerHTML = "X"
+
+    song_info.songName = this.songName;
+    song_info.cover = this.cover;
+    song_info.url = this.url;
+
+    song_info.appendChild(song_cover);
+    song_info.appendChild(song_name);
+    song_info.appendChild(song_edit);
+
+    let song_list = document.querySelector('.song_list');
+    song_list.appendChild(song_info);
+}
+
+
+function addDesToSongs() {
+    let song_info_collection = document.querySelectorAll('.song_info');
+    song_info_collection.forEach(song_info => {
+        song_info.style.boxShadow = "0 0"
+    })
+
+    this.style.boxShadow = "0px 0px 0px 2px yellow inset"
+    add_des_wrap.style.display = "flex";
+
+    let des_input = document.querySelector('.des_input');
+    let add_btn = document.querySelector('.add_btn');
+
+    add_btn.des = des_input.value;
+    add_btn.url = this.url;
+    add_btn.cover = this.cover;
+    add_btn.songName = this.songName;
+
+    add_btn.addEventListener('click', addSongToPlaylist);
+
+}
 
 function appendSearchResults(singleSongInfos, rootNode) {
 
@@ -19,9 +70,7 @@ function appendSearchResults(singleSongInfos, rootNode) {
 
         let song_info = document.createElement('div');
         song_info.className = "song_info"
-        song_info.setAttribute("data-url", singleSongInfo.url);
-
-        // song_info.dataset = singleSongInfo.url;
+        // song_info.setAttribute("data-url", singleSongInfo.url);
 
         let song_cover = document.createElement('img');
         song_cover.className = "song_cover"
@@ -30,6 +79,12 @@ function appendSearchResults(singleSongInfos, rootNode) {
         let song_name = document.createElement('div');
         song_name.className = "song_name"
         song_name.innerHTML = singleSongInfo.songName;
+
+        song_info.songName = singleSongInfo.songName;
+        song_info.cover = singleSongInfo.cover;
+        song_info.url = singleSongInfo.url;
+
+        song_info.addEventListener('click', addDesToSongs);
 
         song_info.appendChild(song_cover);
         song_info.appendChild(song_name);
