@@ -103,27 +103,27 @@ const ownerInfo = {
 };
 
 function urlToPlayer(url) {
-    var sp_url = url.split('?v=');
-    var em_url = sp_url[sp_url.length - 1];
-    var final_url = em_url.split('&')[0];
+    let final_url = urlToId(url)
     var playerHtml = `<iframe width="700" height="400" src="https://www.youtube.com/embed/${final_url}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
     return playerHtml;
 }
 
-function generatePlayer(url) {
+function urlToId(url) {
     let sp_url = url.split('?v=');
     let em_url = sp_url[sp_url.length - 1];
     let final_url = em_url.split('&')[0];
-    player.loadVideoById(final_url)
+    return final_url;
+}
 
+function generatePlayer(url) {
+    let final_url = urlToId(url)
+    player.loadVideoById(final_url)
 }
 
 var player;
 
 function onYouTubePlayerAPIReady() {
-    var sp_url = ownerInfo.playlistInfo.songList[0].url.split('?v=');
-    var em_url = sp_url[sp_url.length - 1];
-    var final_url = em_url.split('&')[0];
+    var final_url = urlToId(ownerInfo.playlistInfo.songList[0].url)
     player = new YT.Player('video_placeholder', {
         width: '700',
         height: '400',
@@ -134,9 +134,6 @@ function onYouTubePlayerAPIReady() {
 function renderPlayer() {
     let playlistInfo = this.ownerInfo.playlistInfo;
     let index = this.index;
-    const youtube_player = document.querySelector('.youtube_player');
-    // let playerHtml = urlToPlayer(playlistInfo.songList[index].url);
-    // youtube_player.innerHTML = playerHtml;
 
     generatePlayer(playlistInfo.songList[index].url);
 
@@ -166,15 +163,6 @@ function renderPlayer() {
 }
 
 function renderNewPlayer(ownerInfo, index) {
-
-    const youtube_player = document.querySelector('.youtube_player');
-
-    // let player = 
-    // generatePlayer(ownerInfo.playlistInfo.songList[index].url);
-    // player.onPlayerReady();
-    // let playerHtml = urlToPlayer(ownerInfo.playlistInfo.songList[index].url);
-    // youtube_player.innerHTML = playerHtml;
-
     const song_stats = document.querySelector('.song_stats');
     let song_stats_html = `
     <div class="like_btn">♥</div>
