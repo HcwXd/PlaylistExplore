@@ -11,7 +11,7 @@ function getAvatarURL(facebookId) {
 passport.use(new Strategy({
         clientID: config.CLIENT_ID,
         clientSecret: config.CLIENT_SECRET,
-        callbackURL: 'http://localhost:3000/login/facebook/return'
+        callbackURL: config.callbackURL
     },
     function(accessToken, refreshToken, profile, cb) {
         console.log(profile);

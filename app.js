@@ -7,21 +7,14 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var loginRouter = require('./routes/login');
+var getSingleSongInfoArray = require('./routes/songSearch');
 
 var app = express();
 
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
 
-
-
 server.listen(3000);
-
-
-
-
-
-
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
