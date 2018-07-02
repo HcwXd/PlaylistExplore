@@ -4,6 +4,7 @@ let userId = "horseman"
 
 socket.emit('getOwnerInfo', userId);
 
+
 const ownerInfo = {
     userName: "HorseMin",
     avatar: "http://junkee.com/wp-content/uploads/2017/09/Bojack-Horseman-2.jpg",
@@ -44,11 +45,11 @@ const ownerInfo = {
                 }
             ],
         }, {
-            url: "https://www.youtube.com/watch?v=_PmHj0EP6I8",
-            songName: "既視感 - 不規則鐘擺",
+            url: "https://www.youtube.com/watch?v=m1ple6Y_C_A",
+            songName: "Soft Lipa 蛋堡-回到過去",
             cover: "https://www.billboard.com/files/styles/900_wide/public/media/Green-Day-American-Idiot-album-covers-billboard-1000x1000.jpg",
             des: "這是一首不規則的歌",
-            like: 81,
+            like: 71,
             comments: [{
                     userName: 'Penguin',
                     avatar: 'https://www.ienglishstatus.com/wp-content/uploads/2018/04/Anonymous-Whatsapp-profile-picture.jpg',
@@ -105,17 +106,39 @@ function urlToPlayer(url) {
     var sp_url = url.split('?v=');
     var em_url = sp_url[sp_url.length - 1];
     var final_url = em_url.split('&')[0];
-    console.log(final_url);
     var playerHtml = `<iframe width="700" height="400" src="https://www.youtube.com/embed/${final_url}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
     return playerHtml;
+}
+
+function generatePlayer(url) {
+    let sp_url = url.split('?v=');
+    let em_url = sp_url[sp_url.length - 1];
+    let final_url = em_url.split('&')[0];
+    player.loadVideoById(final_url)
+
+}
+
+var player;
+
+function onYouTubePlayerAPIReady() {
+    var sp_url = ownerInfo.playlistInfo.songList[0].url.split('?v=');
+    var em_url = sp_url[sp_url.length - 1];
+    var final_url = em_url.split('&')[0];
+    player = new YT.Player('video_placeholder', {
+        width: '700',
+        height: '400',
+        videoId: final_url
+    });
 }
 
 function renderPlayer() {
     let playlistInfo = this.ownerInfo.playlistInfo;
     let index = this.index;
     const youtube_player = document.querySelector('.youtube_player');
-    let playerHtml = urlToPlayer(playlistInfo.songList[index].url);
-    youtube_player.innerHTML = playerHtml;
+    // let playerHtml = urlToPlayer(playlistInfo.songList[index].url);
+    // youtube_player.innerHTML = playerHtml;
+
+    generatePlayer(playlistInfo.songList[index].url);
 
     const song_stats = document.querySelector('.song_stats');
     let song_stats_html = `
@@ -145,8 +168,12 @@ function renderPlayer() {
 function renderNewPlayer(ownerInfo, index) {
 
     const youtube_player = document.querySelector('.youtube_player');
-    let playerHtml = urlToPlayer(ownerInfo.playlistInfo.songList[index].url);
-    youtube_player.innerHTML = playerHtml;
+
+    // let player = 
+    // generatePlayer(ownerInfo.playlistInfo.songList[index].url);
+    // player.onPlayerReady();
+    // let playerHtml = urlToPlayer(ownerInfo.playlistInfo.songList[index].url);
+    // youtube_player.innerHTML = playerHtml;
 
     const song_stats = document.querySelector('.song_stats');
     let song_stats_html = `
