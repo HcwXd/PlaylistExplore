@@ -47,20 +47,59 @@ html, body {
     .content_wrap .posts_wrap .post {
       background-color: #282828;
       margin-bottom: 15px;
-      padding: 15px 30px; }
-      .content_wrap .posts_wrap .post .owner_info {
+      padding: 15px 30px;
+      position: relative; }
+      .content_wrap .posts_wrap .post .song_list {
+        position: absolute;
+        top: 0%;
+        left: 100%;
+        background-color: #282828;
+        width: 50%;
+        transform: rotate(90deg);
+        transform-origin: 0 0;
+        z-index: -1;
+        opacity: 0;
+        transition-duration: 1s; }
+        .content_wrap .posts_wrap .post .song_list .song_list_des {
+          padding: 15px;
+          padding-bottom: 5px;
+          border-bottom: 1px solid #bebebe;
+          margin-bottom: 12px; }
+        .content_wrap .posts_wrap .post .song_list .song_info {
+          display: flex;
+          justify-content: space-between;
+          border-bottom: 1px solid #bebebe;
+          margin-bottom: 12px; }
+          .content_wrap .posts_wrap .post .song_list .song_info .song_name {
+            display: inline-block;
+            white-space: nowrap;
+            overflow: hidden;
+            padding-left: 15px;
+            padding-right: 15px;
+            height: 48px; }
+      .content_wrap .posts_wrap .post .header {
         display: flex;
-        align-items: center;
-        margin-bottom: 15px; }
-        .content_wrap .posts_wrap .post .owner_info .owner_avatar {
-          width: 50px;
-          height: 50px;
-          border-radius: 100%; }
-        .content_wrap .posts_wrap .post .owner_info .owner_name {
-          padding-left: 15px; }
+        justify-content: space-between; }
+        .content_wrap .posts_wrap .post .header .owner_info {
+          display: flex;
+          align-items: center;
+          margin-bottom: 15px; }
+          .content_wrap .posts_wrap .post .header .owner_info .owner_avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 100%; }
+          .content_wrap .posts_wrap .post .header .owner_info .owner_name {
+            padding-left: 15px; }
+        .content_wrap .posts_wrap .post .header .more_info {
+          display: flex;
+          line-height: 50px;
+          font-size: 30px;
+          cursor: pointer; }
       .content_wrap .posts_wrap .post .playlist_cover {
-        widows: 563px;
-        height: 300px;
+        margin-left: 50%;
+        transform: translateX(-50%);
+        width: 100%;
+        height: 56.25%;
         margin-bottom: 15px; }
       .content_wrap .posts_wrap .post .playlist_stats {
         display: flex;
