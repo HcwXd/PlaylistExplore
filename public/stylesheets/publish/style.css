@@ -22,6 +22,82 @@ html, body {
   position: relative;
   justify-content: space-between;
   height: 100%; }
+  .content_wrap .publish_wrap {
+    z-index: 10;
+    width: 300px;
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #0f0f0f;
+    color: #bebebe; }
+    .content_wrap .publish_wrap .container {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      border-radius: 5px; }
+      .content_wrap .publish_wrap .container .cancel {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        cursor: pointer; }
+      .content_wrap .publish_wrap .container .field {
+        padding: 15px;
+        width: 95%; }
+        .content_wrap .publish_wrap .container .field .playlist_input_row {
+          margin-top: 10px;
+          align-items: center;
+          text-decoration: none;
+          border: 2px solid #bebebe;
+          background-color: #282828;
+          color: #bebebe;
+          width: 90%;
+          height: 35px;
+          line-height: 35px;
+          font-size: 12px;
+          border-radius: 5px;
+          padding: 0px 15px; }
+          .content_wrap .publish_wrap .container .field .playlist_input_row:focus {
+            outline-color: #2c2d30;
+            outline-width: 0px;
+            box-shadow: none;
+            color: #bebebe; }
+        .content_wrap .publish_wrap .container .field .playlist_des_input {
+          margin-top: 15px;
+          align-items: center;
+          text-decoration: none;
+          border: 2px solid #bebebe;
+          background-color: #282828;
+          color: #bebebe;
+          width: 85%;
+          font-size: 18px;
+          line-height: 18px;
+          border-radius: 5px;
+          padding: 15px 15px; }
+          .content_wrap .publish_wrap .container .field .playlist_des_input:focus {
+            word-wrap: break-all;
+            outline-color: #2c2d30;
+            outline-width: 0px;
+            box-shadow: none;
+            color: #bebebe; }
+      .content_wrap .publish_wrap .container .real_publish_btn {
+        margin-top: 15px;
+        align-items: center;
+        text-align: center;
+        height: 45px;
+        border: 2px solid #bebebe;
+        line-height: 45px;
+        background-color: #282828;
+        color: #bebebe;
+        font-size: 12px;
+        font-weight: 500;
+        border-radius: 5px;
+        cursor: pointer;
+        padding: 0px 15px; }
+        .content_wrap .publish_wrap .container .real_publish_btn:hover {
+          opacity: 0.9; }
   .content_wrap .search_area_wrap {
     width: 100%;
     display: flex;

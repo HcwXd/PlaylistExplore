@@ -31,6 +31,84 @@ html, body
   position: relative
   justify-content: space-between
   height: 100%
+  .publish_wrap
+    z-index: 10
+    width: 300px
+    position: absolute
+    top: 45%
+    left: 50%
+    transform: translate(-50%, -50%)
+    background-color: $bg_deep_black
+    color: $txt_white
+    // border: 2px solid $txt_white
+    .container
+      position: relative
+      display: flex
+      flex-direction: column
+      align-items: center
+      padding: 20px
+      border-radius: 5px
+      .cancel
+        position: absolute
+        right: 10px
+        top: 10px
+        cursor: pointer
+      .field
+        padding: 15px
+        width: 95%
+        .playlist_input_row
+          margin-top: 10px
+          align-items: center
+          text-decoration: none
+          border: 2px solid $txt_white
+          background-color: $bg_grey
+          color: $txt_white
+          width: 90%
+          height: 35px
+          line-height: 35px
+          font-size: 12px
+          border-radius: 5px
+          padding: 0px 15px
+          &:focus
+            outline-color: rgb(44, 45, 48)
+            outline-width: 0px
+            box-shadow: none
+            color: $txt_white
+        .playlist_des_input
+          margin-top: 15px
+          align-items: center
+          text-decoration: none
+          border: 2px solid $txt_white
+          background-color: $bg_grey
+          color: $txt_white
+          width: 85%
+          font-size: 18px
+          line-height: 18px
+          border-radius: 5px
+          padding: 15px 15px
+          &:focus
+            word-wrap: break-all
+            outline-color: rgb(44, 45, 48)
+            outline-width: 0px
+            box-shadow: none
+            color: $txt_white
+      .real_publish_btn
+        margin-top: 15px
+        align-items: center
+        text-align: center
+        height: 45px
+        border: 2px solid $txt_white
+        line-height: 45px
+        background-color: $bg_grey
+        color: $txt_white
+        font-size: 12px
+        font-weight: 500
+        border-radius: 5px
+        cursor: pointer
+        padding: 0px 15px
+        &:hover
+          opacity: 0.9
+    
   .search_area_wrap
     width: 100%
     // border: 1px solid $txt_white

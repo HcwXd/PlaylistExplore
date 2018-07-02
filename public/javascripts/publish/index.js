@@ -14,7 +14,48 @@ playlist_status_wrap.style.display = "none";
 var songList = [];
 
 function publish() {
-    socket.emit('publishNewPlaylist', songList);
+    let date = new Date();
+    let YYYYMMDD = `${date.getFullYear()}/${date.getMonth()+1}/${date.getDay()+1}`;
+    let playlistInfo = {
+        name: document.querySelector('.playlist_input_row').value,
+        des: document.querySelector('.playlist_des_input').value,
+        date: YYYYMMDD,
+        songList: this.songList
+    };
+    console.log(playlistInfo);
+
+    socket.emit('publishNewPlaylist', playlistInfo);
+}
+
+function readyToPublish() {
+    let publish_wrap = document.createElement('div');
+    publish_wrap.className = "publish_wrap";
+    publish_wrap.innerHTML = `
+    <div class="container">
+        <div class="cancel">X</div>
+        <div class="field">
+            <label>Playlist Name</label>
+            <input class="playlist_input_row"  type="text">
+        </div>
+        <div class="field">
+            <label>Playlist Description</label>
+            <textarea rows="20" cols="20" class="playlist_des_input" placeholder="Write something about the playlist..."></textarea>
+        </div>
+        <a data="/profile">
+            <div class="real_publish_btn">Publish</div>
+        </a>
+    </div>
+  `;
+    let content_wrap = document.querySelector('.content_wrap');
+    content_wrap.appendChild(publish_wrap);
+    let cancel = document.querySelector('.cancel');
+    cancel.addEventListener('click', () => {
+        cancel.parentNode.parentNode.parentNode.removeChild(cancel.parentNode.parentNode);
+    })
+    let real_publish_btn = document.querySelector('.real_publish_btn');
+    real_publish_btn.songList = songList;
+
+    real_publish_btn.addEventListener('click', publish);
 }
 
 function deleteSongFromPlaylist() {
@@ -71,7 +112,7 @@ function addSongToPlaylist() {
     songList.push(singleSongInfo);
     add_des_wrap.style.display = "none";
     let publish_btn = document.querySelector('.publish_btn');
-    publish_btn.addEventListener('click', publish)
+    publish_btn.addEventListener('click', readyToPublish)
 }
 
 
