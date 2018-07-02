@@ -62,7 +62,7 @@ function deleteSongFromPlaylist() {
     let deleteUrlIndex = songList.filter(function (el) {
         return el.url == this.url;
     });
-    songListreadyToPublish.splice(deleteUrlIndex, 1);
+    songList.splice(deleteUrlIndex, 1);
     this.parentNode.parentNode.removeChild(this.parentNode);
 }
 
