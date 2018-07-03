@@ -45,7 +45,8 @@ async function getSingleURLInfo(URL){
 
 // a very simple example of searching for youtube videos
 async function getSingleSongInfoArray (URL) {
-    if(/^[https]/.test(URL)){
+    console.log(URL);
+    if(/^'https'/.test(URL)){
         console.log("simple url");
         return await getSingleURLInfo(URL);
     }
@@ -53,6 +54,7 @@ async function getSingleSongInfoArray (URL) {
         part: 'id,snippet',
         q: URL,
         maxResults: 5,
+        type: 'video'
     });
     let songInfoArray = [];
     res.data.items.map((element) => {
@@ -65,12 +67,11 @@ async function getSingleSongInfoArray (URL) {
             comments: []
         })
     })
+    console.log(songInfoArray);
     return songInfoArray;
 }
 
-module.exports = {
-    getSingleSongInfoArray: getSingleSongInfoArray
-}
+module.exports = getSingleSongInfoArray;
 /*
 
 async function test(){
