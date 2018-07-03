@@ -59,23 +59,67 @@ html, body
       background-color: $bg_grey
       margin-bottom: 15px
       padding: 15px 30px
-      .owner_info
+      position: relative
+      .song_list
+        position: absolute
+        top: 0%
+        left: 100%
+        background-color: $bg_grey
+        width: 50%
+        transform: rotate(90deg)
+        transform-origin: 0 0
+        z-index: -1
+        opacity: 0
+        transition-duration: 1s
+        .song_list_des
+          padding: 15px
+          padding-bottom: 5px
+          border-bottom: 1px solid $txt_white
+          margin-bottom: 12px
+        .song_info
+          display: flex
+          justify-content: space-between
+          border-bottom: 1px solid $txt_white
+          margin-bottom: 12px
+          .song_name
+            display: inline-block
+            white-space: nowrap
+            overflow: hidden
+            padding-left: 15px
+            padding-right: 15px
+            height: 48px
+      .header
         display: flex
-        align-items: center
-        margin-bottom: 15px
-        .owner_avatar
-          width: 50px
-          height: 50px
-          border-radius: 100%
-        .owner_name
-          padding-left: 15px
+        justify-content: space-between
+        .owner_info
+          display: flex
+          align-items: center
+          margin-bottom: 15px
+          .owner_avatar
+            width: 50px
+            height: 50px
+            border-radius: 100%
+          .owner_name
+            padding-left: 15px
+        .more_info
+          display: flex
+          // align-items: center
+          line-height: 50px
+          font-size: 30px
+          cursor: pointer
       .playlist_cover
-        widows: 563px
-        height: 300px
+        margin-left: 50%
+        transform: translateX(-50%)
+        width: 100%
+        height: 56.25%
         margin-bottom: 15px
       .playlist_stats
         display: flex
         justify-content: space-between
+        margin-bottom: 15px
+      .playlist_title
+        font-size: 18px
+        font-weight: 600
         margin-bottom: 15px
       .playlist_des
         margin-bottom: 15px

@@ -9,6 +9,10 @@
 
   <link rel="stylesheet" href="/stylesheets/login/style.css">
   <link rel="stylesheet" href="/stylesheets/components/style.css">
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    var socket = io();
+  </script>
 
 
 
@@ -29,11 +33,11 @@
 
       <div class="field">
         <label>Username</label>
-        <input class="input_row" placeholder="Username" type="text" name="name">
+        <input class="input_row username_input" placeholder="Username" type="text" name="name">
       </div>
       <div class="field">
         <label>Password</label>
-        <input class="input_row" placeholder="Password" type="password" name="password">
+        <input class="input_row password_input" placeholder="Password" type="password" name="password">
       </div>
       <div class="field">
         <div class="signup_btn">Sign In</div>
@@ -42,8 +46,9 @@
 
 
 
-
+    <script src="/javascripts/sha1.js"></script>
     <script src="/javascripts/login/index.js"></script>
+
 
 
 

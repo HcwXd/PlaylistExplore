@@ -7,6 +7,10 @@
 
   <link rel="stylesheet" href="/stylesheets/signup/style.css">
   <link rel="stylesheet" href="/stylesheets/components/style.css">
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    var socket = io();
+  </script>
 
 
 
@@ -27,19 +31,19 @@
 
       <div class="field">
         <label>Username</label>
-        <input class="input_row" placeholder="Username" type="text" name="name">
+        <input class="input_row username_input" placeholder="Username must longer than 1, shorter than 10" type="text" name="name">
       </div>
       <div class="field">
         <label>Password</label>
-        <input class="input_row" placeholder="Password" type="password" name="password">
+        <input class="input_row password_input" placeholder="Password must longer than 6" type="password" name="password">
       </div>
       <div class="field">
         <label>Confirm password</label>
-        <input class="input_row" placeholder="Confirm password" type="password" name="repassword">
+        <input class="input_row repassword_input" placeholder="Password must longer than 6" type="password" name="repassword">
       </div>
       <div class="field">
         <label>Avatar</label>
-        <input class="avatar" type="file" name="avatar">
+        <input class="avatar avatar_input" type="file" name="avatar">
       </div>
       <!-- <div class="field">
       <label>Bio</label>
@@ -52,8 +56,11 @@
 
 
 
-
+    <script src="/javascripts/sha1.js"></script>
     <script src="/javascripts/signup/index.js"></script>
+
+
+
 
 
 
