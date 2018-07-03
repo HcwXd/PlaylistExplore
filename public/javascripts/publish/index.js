@@ -36,7 +36,8 @@ function publish() {
         name: document.querySelector('.playlist_input_row').value,
         des: document.querySelector('.playlist_des_input').value,
         date: YYYYMMDD,
-        songList: this.songList
+        songList: this.songList,
+        listId: 1
     };
     console.log(playlistInfo);
 

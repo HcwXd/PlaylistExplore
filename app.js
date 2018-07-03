@@ -37,6 +37,11 @@ app.use(express.urlencoded({
 app.use(useSession);
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(function (req, res, next) {
+  res.locals.token = req.session.token;
+  next()
+})
+
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/login', loginRouter);
@@ -67,7 +72,9 @@ io.on('connect', async (socket) => {
     console.log(singleSongInfos);
     socket.emit('getSearchResults', singleSongInfos);
   });
-  socket.on('publishNewPlayList', (playListInfo) => {
+  socket.on('publishNewPlaylist', (playListInfo) => {
+    console.log(playListInfo);
+
     playListInfo['token'] = socket.handshake.session.token;
     songListTable.createPlayList(playListInfo);
   });
