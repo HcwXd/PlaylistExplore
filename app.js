@@ -49,11 +49,11 @@ app.use(function (err, req, res, next) {
 
 socketIO.on('connect', (socket) => {
     socket.on('getSearchResults', (URL) => {
-        let songInfoArray = await getSingleSongInfoArray(URL);
-        socket.emit('getSearchResults', songInfoArray);
+        let singleSongInfos = await getSingleSongInfoArray(URL);
+        socket.emit('getSearchResults', singleSongInfos);
     });
     socket.on('publishNewPlayList', (playListInfo) => {
-
+        
     })
 })
 
