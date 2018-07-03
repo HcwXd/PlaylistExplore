@@ -10,7 +10,6 @@ var loginRouter = require('./routes/login');
 var getSingleSongInfoArray = require('./routes/songSearch');
 
 var app = express();
-
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
 
@@ -48,8 +47,15 @@ app.use(function (err, req, res, next) {
   res.render('error');
 });
 
+socketIO.on('connect', (socket) => {
+    socket.on('getSearchResults', (URL) => {
+        let songInfoArray = await getSingleSongInfoArray(URL);
+        socket.emit('getSearchResults', songInfoArray);
+    });
+    socket.on('publishNewPlayList', (playListInfo) => {
 
-
+    })
+})
 
 
 
