@@ -228,6 +228,15 @@ function renderPlayer() {
 }
 
 function renderNewPlayer(ownerInfo, index) {
+
+    if (ownerInfo.playlistInfo.songList.length === 0) {
+        let comment_submit = document.querySelector('.comment_submit');
+        comment_submit.innerHTML = "目前還沒有任何播放清單";
+        comment_submit.style.justifyContent = "space-around";
+        comment_submit.style.fontSize = "24px";
+
+    }
+
     const song_stats = document.querySelector('.song_stats');
     let song_stats_html = `
     <div class="like_btn">♥</div>
