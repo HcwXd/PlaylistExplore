@@ -70,10 +70,10 @@ io.on('connect', async (socket) => {
     playListInfo['token'] = socket.handshake.session.token;
     songListTable.createPlayList(playListInfo);
   })
-  socket.on('getUserInfo', async (socket) => {
+  socket.on('getUserInfo', async () => {
       console.log(socket.handshake.session.token);
-      let userInfo = userTable.getUserInfo(socket.handshake.session.token);
-      socket.emit('getOwnerInfo', userInfo);
+      let userInfo = await userTable.getUserInfo(socket.handshake.session.token);
+      socket.emit('getUserInfo', userInfo);
   })
 })
 

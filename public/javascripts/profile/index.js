@@ -1,7 +1,7 @@
 console.log('profile');
 
 socket.emit('getUserInfo');
-// socket.on('getUserInfo', userInfo);
+socket.on('getUserInfo', userInfo);
 
 let userId = "horseman";
 let nowPlaying = 0;

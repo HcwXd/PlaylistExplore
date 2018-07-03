@@ -26,7 +26,7 @@ router.get('/facebook/return',
         }
         console.log(req.session.token);
         req.session.token = userInfo.token;
-        res.redirect('/');
+        res.redirect('/profile');
     }
 );
 
