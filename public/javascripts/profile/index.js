@@ -1,10 +1,12 @@
 console.log('profile');
-
+let userInfo;
 socket.emit('getUserInfo');
-// socket.on('getUserInfo', userInfo);
+socket.on('getUserInfo', (info) => {
+    userInfo = info;
+});
 
 let userId = "horseman";
-let nowPlaying = 0;
+let nowPlayingIndex = 0;
 
 socket.emit('getOwnerInfo', userId);
 
@@ -147,16 +149,16 @@ function onYouTubePlayerAPIReady() {
 
 function onPlayerStateChange(event) {
     if (event.data === 0) {
-        if (nowPlaying + 1 < ownerInfo.playlistInfo.songList.length) {
-            renderNextPlayer(nowPlaying)
+        if (nowPlayingIndex + 1 < ownerInfo.playlistInfo.songList.length) {
+            renderNextPlayer(nowPlayingIndex)
         }
     }
 }
 
 function renderNextPlayer() {
     let playlistInfo = ownerInfo.playlistInfo;
-    nowPlaying += 1
-    index = nowPlaying;
+    nowPlayingIndex += 1
+    index = nowPlayingIndex;
 
     generatePlayer(playlistInfo.songList[index].url);
 
@@ -190,7 +192,7 @@ function renderNextPlayer() {
 function renderPlayer() {
     let playlistInfo = this.ownerInfo.playlistInfo;
     let index = this.index;
-    nowPlaying = index;
+    nowPlayingIndex = index;
 
     generatePlayer(playlistInfo.songList[index].url);
 
