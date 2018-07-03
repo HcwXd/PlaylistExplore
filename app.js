@@ -49,13 +49,13 @@ app.use(function (err, req, res, next) {
 });
 
 io.on('connect', async (socket) => {
-    socket.on('getSearchResults', async (URL) => {
-        let singleSongInfos = await getSingleSongInfoArray(URL);
-        socket.emit('getSearchResults', singleSongInfos);
-    });
-    socket.on('publishNewPlayList', (playListInfo) => {
-        songListTable.createPlayList(playListInfo);
-    })
+  socket.on('getSearchResults', async (URL) => {
+    let singleSongInfos = await getSingleSongInfoArray(URL);
+    socket.emit('getSearchResults', singleSongInfos);
+  });
+  socket.on('publishNewPlayList', (playListInfo) => {
+    songListTable.createPlayList(playListInfo);
+  })
 })
 
 

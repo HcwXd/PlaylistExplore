@@ -22,7 +22,7 @@
 
     <div class="content_wrap">
       <div class="field">
-        <a href="localhost:3000/login/facebook/">
+        <a>
           <div class="fb_signup_btn">Sign Up with Facebook</div>
         </a>
 
@@ -49,9 +49,9 @@
         <input class="avatar avatar_input" type="file" name="avatar">
       </div>
       <!-- <div class="field">
-      <label>Bio</label>
-      <textarea name="bio" rows="5"></textarea>
-    </div> -->
+        <label>Bio</label>
+        <textarea name="bio" rows="5"></textarea>
+      </div> -->
       <div class="field">
         <div class="signup_btn">Sign Up</div>
       </div>
@@ -61,6 +61,32 @@
 
     <script src="/javascripts/sha1.js"></script>
     <script src="/javascripts/signup/index.js"></script>
+    <script>
+      window.fbAsyncInit = function () {
+        FB.init({
+          appId: '404379326715324',
+          autoLogAppEvents: true,
+          xfbml: true,
+          version: 'v2.12'
+        });
+      };
+      (function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {
+          return;
+        }
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "https://connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'facebook-jssdk'));
+
+      function checkLoginState() {
+        FB.getLoginStatus(function (response) {
+          statusChangeCallback(response);
+        });
+      }
+    </script>
 
 
 

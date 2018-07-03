@@ -17,7 +17,7 @@ router.get('/facebook/return',
     passport.authenticate('facebook', {
         failureRedirect: '/login'
     }),
-    function(req, res) {
+    function (req, res) {
         let userInfo = {
             userName: req.user._json.name,
             token: req.user._json.id,
@@ -25,7 +25,9 @@ router.get('/facebook/return',
             bio: ''
         }
         console.log(userInfo);
-        res.status(200).json({userInfo});
+        res.status(200).json({
+            userInfo
+        });
         //res.redirect('/');
     }
 );

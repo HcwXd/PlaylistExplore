@@ -44,4 +44,19 @@ function signUp() {
     socket.emit("userSignUp", user);
 }
 
+function fbSignUp() {
+    fetch('/login/facebook/')
+        .then((res) => {
+            console.log(res);
+        })
+        .then((out) => {
+            console.log('Checkout this JSON! ', out);
+        })
+        .catch(err => {
+            throw err
+        });
+    console.log("a");
+}
+
 signup_btn.addEventListener('click', signUp)
+fb_signup_btn.addEventListener('click', fbSignUp)
