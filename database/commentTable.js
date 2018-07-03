@@ -23,7 +23,7 @@ function applyQuery(query){
 }
 
 function createComment(commentInfo){
-    let sql = "INSERT INTO song SET ?";
+    let sql = "INSERT INTO comment SET ?";
     let insertObject = {
         listOwnerToken: commentInfo.listOwnerToken,
         listId: commentInfo.listId,
@@ -36,20 +36,20 @@ function createComment(commentInfo){
     applyQuery(query);
 }
 
-function deleteComment(singleSongInfo){
-    let sql = "DELETE FROM song WHERE ?? = ? AND ?? = ? AND ?? = ? AND ?? = ?";
+function deleteComment(commentInfo){
+    let sql = "DELETE FROM comment WHERE ?? = ? AND ?? = ? AND ?? = ? AND ?? = ?";
     let condition = [
-        listOwnerToken: commentInfo.listOwnerToken,
-        listId: commentInfo.listId,
-        songIndex: commentInfo.songIndex,
-        commentIndex: commentInfo.commentIndex,
+        'listOwnerToken', commentInfo.listOwnerToken,
+        'listId', commentInfo.listId,
+        'songIndex', commentInfo.songIndex,
+        'commentIndex', commentInfo.commentIndex,
     ]
     let query = mysql.format(sql, condition);
     applyQuery(query);
 }
 
-function modifyComment(singleSongInfo){
-    let sql = "UPDATE songList SET ? WHERE ?? = ? AND ?? = ? AND ?? = ? AND ?? = ?";
+function modifyComment(commentInfo){
+    let sql = "UPDATE comment SET ? WHERE ?? = ? AND ?? = ? AND ?? = ? AND ?? = ?";
     let setValue = {
         commentContent: commentInfo.commentContent
     }
@@ -65,7 +65,7 @@ function modifyComment(singleSongInfo){
 }
 
 module.exports = {
-    createSong = createComment,
-    deleteSong = deleteComment,
-    modifySong = modifyComment
+    createComment: createComment,
+    deleteComment: deleteComment,
+    modifyComment: modifyComment
 }
