@@ -34,7 +34,7 @@ function createSong(songListInfo, singleSongInfo){
         songName: singleSongInfo.songName,
         cover: singleSongInfo.cover,
         des: singleSongInfo.des,
-        likeNum: singleSongInfo.likeNum
+        likeNum: singleSongInfo.like
     }
     let query = mysql.format(sql, insertObject);
     applyQuery(query);
