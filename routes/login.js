@@ -24,11 +24,9 @@ router.get('/facebook/return',
             avatar: getAvatarURL(req.user._json.id),
             bio: ''
         }
-        console.log(userInfo);
-        res.status(200).json({
-            userInfo
-        });
-        //res.redirect('/');
+        console.log(req.session.token);
+        req.session.token = userInfo.token;
+        res.redirect('/profile');
     }
 );
 
