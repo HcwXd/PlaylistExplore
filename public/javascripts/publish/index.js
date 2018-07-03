@@ -12,6 +12,8 @@ add_des_wrap.style.display = "none";
 playlist_status_wrap.style.display = "none";
 
 var songList = [];
+let singleSongInfos;
+
 
 function publish() {
     try {
@@ -195,8 +197,15 @@ function getSearchResults() {
     search_input.value = "";
 
     socket.emit('getSearchResults', searchQuery);
+    socket.on('getSearchResults', (_singleSongInfos) => {
+        singleSongInfos = _singleSongInfos;
+        console.log(_singleSongInfos);
 
-    let singleSongInfos = [{
+    })
+    console.log(singleSongInfos);
+
+
+    let __singleSongInfos = [{
         url: 'https://www.youtube.com/watch?v=YisGZ_Yl-A8',
         songName: 'SmashRegz/違法 - 搭便車 ft. Triple T / 三小湯 (Music Video)',
         cover: 'https://i.ytimg.com/vi/_PmHj0EP6I8/hqdefault.jpg?sqp=-oaymwEYCKgBEF5IVfKriqkDCwgBFQAAiEIYAXAB&rs=AOn4CLDnEUnGLF16aSZnbx2bzSZRxSa6mQ',
