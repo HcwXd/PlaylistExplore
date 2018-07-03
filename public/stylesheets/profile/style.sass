@@ -42,10 +42,46 @@ html, body
       cursor: pointer
   
 
+.bio_btn
+  align-items: center
+  text-align: center
+  height: 45px
+  border: 2px solid $txt_white
+  border-left: 1px solid $txt_white
+  line-height: 45px
+  // width: 15%
+  font-size: 12px
+  background-color: $bg_grey
+  color: $txt_white
+  font-weight: 500
+  padding: 0px 10px
+  border-radius: 5px
+  margin-top: 30px
+  cursor: pointer
+.small_btn
+  margin-top: 15px
+input
+  margin-top: 30px
+  align-items: center
+  text-decoration: none
+  border: 2px solid $txt_white
+  background-color: $bg_grey
+  color: $txt_white
+  width: 90%
+  height: 35px
+  line-height: 35px
+  font-size: 12px
+  border-radius: 5px
+  padding: 0px 10px
+  &:focus
+    outline-color: rgb(44, 45, 48)
+    outline-width: 0px
+    box-shadow: none
+    color: $txt_white
+
 .content_wrap
   width: 95%
   background-color: $bg_black
-
   color: $txt_white
   margin-top: 5%
   margin-left: 50%
@@ -153,6 +189,7 @@ html, body
         font-size: 12px
         font-weight: 500
         border-radius: 0 5px 5px 0
+        cursor: pointer
   .playlist_wrap
     // background-color: $bg_grey
     width: 30% 
@@ -178,6 +215,7 @@ html, body
           padding-left: 15px
           padding-right: 15px
           height: 48px
+          cursor: pointer
         .song_like
           display: inline-block
           width: 15%

@@ -32,6 +32,44 @@ html, body {
       opacity: 0.7;
       cursor: pointer; }
 
+.bio_btn {
+  align-items: center;
+  text-align: center;
+  height: 45px;
+  border: 2px solid #bebebe;
+  border-left: 1px solid #bebebe;
+  line-height: 45px;
+  font-size: 12px;
+  background-color: #282828;
+  color: #bebebe;
+  font-weight: 500;
+  padding: 0px 10px;
+  border-radius: 5px;
+  margin-top: 30px;
+  cursor: pointer; }
+
+.small_btn {
+  margin-top: 15px; }
+
+input {
+  margin-top: 30px;
+  align-items: center;
+  text-decoration: none;
+  border: 2px solid #bebebe;
+  background-color: #282828;
+  color: #bebebe;
+  width: 90%;
+  height: 35px;
+  line-height: 35px;
+  font-size: 12px;
+  border-radius: 5px;
+  padding: 0px 10px; }
+  input:focus {
+    outline-color: #2c2d30;
+    outline-width: 0px;
+    box-shadow: none;
+    color: #bebebe; }
+
 .content_wrap {
   width: 95%;
   background-color: #1a1a1a;
@@ -138,7 +176,8 @@ html, body {
         color: #bebebe;
         font-size: 12px;
         font-weight: 500;
-        border-radius: 0 5px 5px 0; }
+        border-radius: 0 5px 5px 0;
+        cursor: pointer; }
   .content_wrap .playlist_wrap {
     width: 30%; }
     .content_wrap .playlist_wrap .playlist_info {
@@ -160,7 +199,8 @@ html, body {
         overflow: hidden;
         padding-left: 15px;
         padding-right: 15px;
-        height: 48px; }
+        height: 48px;
+        cursor: pointer; }
       .content_wrap .playlist_wrap .song_list .song_info .song_like {
         display: inline-block;
         width: 15%;

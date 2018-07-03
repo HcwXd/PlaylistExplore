@@ -9,10 +9,10 @@ socket.on('getUserInfo', (_userInfo) => {
 let userId = "horseman";
 let nowPlayingIndex = 0;
 
-let ownerInfo;
+let __ownerInfo;
 socket.emit('getOwnerInfo');
 socket.on('getOwnerInfo', (_ownerInfo) => {
-    ownerInfo = _ownerInfo;
+    __ownerInfo = _ownerInfo;
 })
 
 const _ownerInfo = {
@@ -23,7 +23,7 @@ const _ownerInfo = {
         songList: []
     }
 }
-const __ownerInfo = {
+const ownerInfo = {
     userName: "HorseMin",
     avatar: "http://junkee.com/wp-content/uploads/2017/09/Bojack-Horseman-2.jpg",
     bio: "我是馬小明，很小的小，很明的明，這是為了要湊到換行所以才加的一堆字，想看看超過第三行的效果所以又有一些字。",
@@ -266,12 +266,13 @@ function renderNewPlayer(ownerInfo, index) {
 }
 
 function renderOwnerInfo(ownerInfo) {
-    const owner_info_wrap = document.querySelector('.owner_info_wrap');
+    let owner_info_wrap = document.querySelector('.owner_info_wrap');
     let owner_info_wrap_html = `
         <img class="owner_avatar" src="${ownerInfo.avatar}" alt="gg">
         <div class="owner_name">${ownerInfo.userName}</div>
         <div class="owner_bio">${ownerInfo.bio}</div>`
     owner_info_wrap.innerHTML = owner_info_wrap_html;
+    addEditBioBtn();
 
     renderNewPlayer(ownerInfo, 0);
 
@@ -362,6 +363,70 @@ function addLike() {
         renderNewLike(ownerInfo);
     });
 
+}
+
+function addEditBioBtn() {
+    let addEditBio_btn = document.createElement('div');
+    addEditBio_btn.className = 'bio_btn';
+    addEditBio_btn.innerHTML = "add/edit your bio"
+    addEditBio_btn.addEventListener('click', addEditBio)
+
+    let addEditBio_wrap = document.createElement('div');
+    addEditBio_wrap.appendChild(addEditBio_btn);
+
+    let owner_info_wrap = document.querySelector('.owner_info_wrap');
+    owner_info_wrap.appendChild(addEditBio_wrap);
+
+    function addEditBio() {
+        let addEditBio_input = document.createElement('input');
+
+        let changeBio_btn = document.createElement('div');
+        changeBio_btn.innerHTML = "add/edit";
+        changeBio_btn.className = 'bio_btn small_btn';
+
+        let changeBio_cancel = document.createElement('div');
+        changeBio_cancel.innerHTML = "cancel";
+        changeBio_cancel.className = 'bio_btn small_btn';
+
+        addEditBio_wrap.appendChild(addEditBio_input);
+        addEditBio_wrap.appendChild(changeBio_btn);
+        addEditBio_wrap.appendChild(changeBio_cancel);
+
+        let addEditBio_btn = document.querySelector('.bio_btn');
+        addEditBio_btn.remove();
+
+        changeBio_btn.addEventListener('click', changeBio);
+        changeBio_cancel.addEventListener('click', cancelBio);
+
+        function changeBio() {
+            socket.emit("changeBio", addEditBio_input.value);
+            socket.on("changeBio", (newBio) => {
+                let owner_bio = document.querySelector('.owner_bio');
+                owner_bio.innerHTML = newBio;
+            })
+            addEditBio_input.remove();
+            changeBio_btn.remove();
+            changeBio_cancel.remove();
+            let addEditBio_btn = document.createElement('div');
+            addEditBio_btn.className = 'bio_btn';
+            addEditBio_btn.innerHTML = "add/edit your bio";
+            addEditBio_wrap.appendChild(addEditBio_btn);
+
+            addEditBio_btn.addEventListener('click', addEditBio)
+        }
+
+        function cancelBio() {
+            addEditBio_input.remove();
+            changeBio_btn.remove();
+            changeBio_cancel.remove();
+            let addEditBio_btn = document.createElement('div');
+            addEditBio_btn.className = 'bio_btn';
+            addEditBio_btn.innerHTML = "add/edit your bio";
+            addEditBio_wrap.appendChild(addEditBio_btn);
+
+            addEditBio_btn.addEventListener('click', addEditBio)
+        }
+    }
 }
 
 let submit_btn = document.querySelector('.submit_btn');
