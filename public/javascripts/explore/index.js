@@ -1,6 +1,9 @@
 cover = "https://img.youtube.com/vi/djACkCHl3JA/maxresdefault.jpg";
 
-socket.emit('"getLatestPlaylists"');
+socket.emit('getLatestPlaylists');
+socket.on('getLatestPlaylists', (_fivePlaylistInfo) => {
+    __fivePlaylistInfo = _fivePlaylistInfo;
+})
 
 var fivePlaylistInfo = [{
     ownerName: "Apple",
