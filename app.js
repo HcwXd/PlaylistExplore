@@ -20,10 +20,10 @@ const io = require('socket.io')(server);
 server.listen(3000);
 
 useSession = session({
-        secret: 'handsome',
-        resave: true,
-        saveUninitialized: true
-    });
+  secret: 'handsome',
+  resave: true,
+  saveUninitialized: true
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -57,8 +57,8 @@ app.use(function (err, req, res, next) {
   res.render('error');
 });
 
-io.use(function(socket, next){
-    useSession(socket.handshake, {}, next);
+io.use(function (socket, next) {
+  useSession(socket.handshake, {}, next);
 });
 
 io.on('connect', async (socket) => {
