@@ -32,6 +32,25 @@ html, body {
       opacity: 0.7;
       cursor: pointer; }
 
+.idle_background {
+  height: 100%;
+  width: 100%;
+  top: 0%;
+  position: fixed;
+  z-index: 100;
+  background-color: #0f0f0f;
+  transition-duration: 1s; }
+  .idle_background .album {
+    position: absolute;
+    opacity: 0.7;
+    width: 200px;
+    height: 200px;
+    border-radius: 5px;
+    background-size: cover;
+    animation: goUp 10s infinite;
+    animation-timing-function: linear;
+    transition-duration: 1s; }
+
 .content_wrap {
   width: 70%;
   color: #bebebe;
@@ -111,5 +130,16 @@ html, body {
         margin-bottom: 15px; }
       .content_wrap .posts_wrap .post .playlist_des {
         margin-bottom: 15px; }
+
+@keyframes goUp {
+  0% {
+    transform: translateY(0%);
+    opacity: 0; }
+  50% {
+    transform: translateY(-50%);
+    opacity: 1; }
+  100% {
+    transform: translateY(-100%);
+    opacity: 0; } }
 
 /*# sourceMappingURL=style.css.map */

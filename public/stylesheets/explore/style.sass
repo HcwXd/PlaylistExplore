@@ -40,6 +40,31 @@ html, body
     &:hover
       opacity: 0.7
       cursor: pointer
+
+.idle_background
+  height: 100%
+  width: 100%
+  top: 0%
+  position: fixed
+  z-index: 100
+  background-color: $bg_deep_black
+  transition-duration: 1s
+  .album
+    position: absolute
+    opacity: 0.7
+    width: 200px
+    height: 200px
+    border-radius: 5px
+    // border: 1px solid #fff
+    background-size: cover
+    animation: goUp 10s infinite
+    animation-timing-function: linear
+    transition-duration: 1s
+    // cursor: pointer
+    // &:hover
+      // animation-play-state: paused
+      // z-index: 100
+      // opacity: 1
   
 
 .content_wrap
@@ -125,4 +150,15 @@ html, body
         margin-bottom: 15px
 
 
+@keyframes goUp
+  0%
+    transform: translateY(0%)  
+    opacity: 0
+
+  50%
+    transform: translateY(-50%)  
+    opacity: 1
   
+  100%
+    transform: translateY(-100%)
+    opacity: 0
