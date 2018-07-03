@@ -64,6 +64,7 @@ io.use(function (socket, next) {
 io.on('connect', async (socket) => {
   socket.on('getSearchResults', async (URL) => {
     let singleSongInfos = await getSingleSongInfoArray(URL);
+    console.log(singleSongInfos);
     socket.emit('getSearchResults', singleSongInfos);
   });
   socket.on('publishNewPlayList', (playListInfo) => {
@@ -71,9 +72,9 @@ io.on('connect', async (socket) => {
     songListTable.createPlayList(playListInfo);
   });
   socket.on('getUserInfo', async () => {
-      console.log(socket.handshake.session.token);
-      let userInfo = await userTable.getUserInfo(socket.handshake.session.token);
-      socket.emit('getUserInfo', userInfo);
+    console.log(socket.handshake.session.token);
+    let userInfo = await userTable.getUserInfo(socket.handshake.session.token);
+    socket.emit('getUserInfo', userInfo);
   });
 })
 

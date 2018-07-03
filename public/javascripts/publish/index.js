@@ -199,11 +199,10 @@ function getSearchResults() {
     socket.emit('getSearchResults', searchQuery);
     socket.on('getSearchResults', (_singleSongInfos) => {
         singleSongInfos = _singleSongInfos;
-        console.log(_singleSongInfos);
-
-    })
-    console.log(singleSongInfos);
-
+        // console.log(singleSongInfos);
+        appendSearchResults(singleSongInfos, search_result_wrap)
+        search_result_wrap.style.display = "block";
+    });
 
     let __singleSongInfos = [{
         url: 'https://www.youtube.com/watch?v=YisGZ_Yl-A8',
@@ -235,8 +234,6 @@ function getSearchResults() {
         comments: []
     }];
 
-    appendSearchResults(singleSongInfos, search_result_wrap)
-    search_result_wrap.style.display = "block";
 
 
 }

@@ -2,7 +2,9 @@ const cheerio = require('cheerio');
 const axios = require('axios');
 const fs = require('fs');
 const config = require('./config');
-const {google} = require('googleapis');
+const {
+    google
+} = require('googleapis');
 
 // initialize the Youtube API library
 const youtube = google.youtube({
@@ -17,14 +19,14 @@ function urlToId(url) {
     return final_url;
 }
 
-function getCoverImage(id){
+function getCoverImage(id) {
     let url = 'https://img.youtube.com/vi/' + id + '/sddefault.jpg';
     return url;
 }
 
 URL = 'https://www.youtube.com/watch?v=djACkCHl3JA'
 
-async function getSingleURLInfo(URL){
+async function getSingleURLInfo(URL) {
     let videoId = urlToId(URL);
     console.log(videoId);
     const body = await youtube.videos.list({
@@ -44,9 +46,9 @@ async function getSingleURLInfo(URL){
 }
 
 // a very simple example of searching for youtube videos
-async function getSingleSongInfoArray (URL) {
+async function getSingleSongInfoArray(URL) {
     console.log(URL);
-    if(/^'https'/.test(URL)){
+    if (/^'https'/.test(URL)) {
         console.log("simple url");
         return await getSingleURLInfo(URL);
     }
@@ -67,7 +69,6 @@ async function getSingleSongInfoArray (URL) {
             comments: []
         })
     })
-    console.log(songInfoArray);
     return songInfoArray;
 }
 
