@@ -28,7 +28,7 @@ const __ownerInfo = {
     bio: "我是馬小明，很小的小，很明的明，這是為了要湊到換行所以才加的一堆字，想看看超過第三行的效果所以又有一些字。",
     playlistInfo: {
         songList: [{
-            url: "https://www.youtube.com/watch?v=_PmHj0EP6I8",
+            url: "x3bDhtuC5yk",
             songName: "既視感 - 不規則鐘擺",
             cover: "https://www.billboard.com/files/styles/900_wide/public/media/Green-Day-American-Idiot-album-covers-billboard-1000x1000.jpg",
             des: "這是一首不規則的歌",
@@ -45,7 +45,7 @@ const __ownerInfo = {
                 }
             ],
         }, {
-            url: "https://www.youtube.com/watch?v=_PmHj0EP6I8",
+            url: "x3bDhtuC5yk",
             songName: "既視感 - 不規則鐘擺",
             cover: "https://www.billboard.com/files/styles/900_wide/public/media/Green-Day-American-Idiot-album-covers-billboard-1000x1000.jpg",
             des: "這是一首不規則的歌",
@@ -62,7 +62,7 @@ const __ownerInfo = {
                 }
             ],
         }, {
-            url: "https://www.youtube.com/watch?v=m1ple6Y_C_A",
+            url: "x3bDhtuC5yk",
             songName: "Soft Lipa 蛋堡-回到過去",
             cover: "https://www.billboard.com/files/styles/900_wide/public/media/Green-Day-American-Idiot-album-covers-billboard-1000x1000.jpg",
             des: "這是一首不規則的歌",
@@ -79,7 +79,7 @@ const __ownerInfo = {
                 }
             ],
         }, {
-            url: "https://www.youtube.com/watch?v=_PmHj0EP6I8",
+            url: "x3bDhtuC5yk",
             songName: "既視感 - 不規則鐘擺",
             cover: "https://www.billboard.com/files/styles/900_wide/public/media/Green-Day-American-Idiot-album-covers-billboard-1000x1000.jpg",
             des: "這是一首不規則的歌",
@@ -96,7 +96,7 @@ const __ownerInfo = {
                 }
             ],
         }, {
-            url: "https://www.youtube.com/watch?v=_PmHj0EP6I8",
+            url: "x3bDhtuC5yk",
             songName: "既視感 - 不規則鐘擺",
             cover: "https://www.billboard.com/files/styles/900_wide/public/media/Green-Day-American-Idiot-album-covers-billboard-1000x1000.jpg",
             des: "這是一首規則的歌",
@@ -120,7 +120,7 @@ const __ownerInfo = {
 };
 
 function urlToPlayer(url) {
-    let final_url = urlToId(url)
+    let final_url = url;
     var playerHtml = `<iframe width="700" height="400" src="https://www.youtube.com/embed/${final_url}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
     return playerHtml;
 }
@@ -133,14 +133,14 @@ function urlToId(url) {
 }
 
 function generatePlayer(url) {
-    let final_url = urlToId(url)
-    player.loadVideoById(final_url)
+    // let final_url = urlToId(url)
+    player.loadVideoById(url)
 }
 
 var player;
 
 function onYouTubePlayerAPIReady() {
-    var final_url = urlToId(ownerInfo.playlistInfo.songList[0].url)
+    var final_url = ownerInfo.playlistInfo.songList[0].url;
     player = new YT.Player('video_placeholder', {
         width: '700',
         height: '400',
