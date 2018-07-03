@@ -8,6 +8,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var loginRouter = require('./routes/login');
 var getSingleSongInfoArray = require('./routes/songSearch');
+var songListTable = require('./database/songListTable');
 
 var app = express();
 const server = require('http').Server(app);
@@ -47,13 +48,13 @@ app.use(function (err, req, res, next) {
   res.render('error');
 });
 
-socketIO.on('connect', (socket) => {
-    socket.on('getSearchResults', (URL) => {
+io.on('connect', async (socket) => {
+    socket.on('getSearchResults', async (URL) => {
         let singleSongInfos = await getSingleSongInfoArray(URL);
         socket.emit('getSearchResults', singleSongInfos);
     });
     socket.on('publishNewPlayList', (playListInfo) => {
-        
+        songListTable.createPlayList(playListInfo);
     })
 })
 

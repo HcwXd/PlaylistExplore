@@ -5,7 +5,7 @@ const config = require('./passportConfig.js');
 const userTable = require('../database/userTable');
 
 function getAvatarURL(facebookId) {
-    let url = "http://graph.facebook.com/" + facebookId + "/picture?type=square";
+    let url = "http://graph.facebook.com/" + facebookId + "/picture?type=large";
     return url;
 }
 passport.use(new Strategy({
@@ -13,10 +13,9 @@ passport.use(new Strategy({
         clientSecret: config.CLIENT_SECRET,
         callbackURL: config.callbackURL
     },
-    function(accessToken, refreshToken, profile, cb) {
-        console.log(profile);
-        console.log(userTable.userExist(profile.id));
-        if(userTable.userExist(profile.id)){
+    async function(accessToken, refreshToken, profile, cb) {
+        console.log(profile.id);
+        if(await userTable.userExist(profile.id)){
             console.log('have existed');
             return cb(null, profile);
         }

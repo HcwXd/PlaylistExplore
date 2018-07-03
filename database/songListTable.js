@@ -21,6 +21,7 @@ function applyQuery(query){
         console.log(result);
     })
 }
+
 function createPlayList(playListInfo){
     let sql = "INSERT INTO songList SET ?";
     let insertObject = {

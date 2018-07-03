@@ -68,6 +68,9 @@ async function getSingleSongInfoArray (URL) {
     return songInfoArray;
 }
 
+module.exports = {
+    getSingleSongInfoArray: getSingleSongInfoArray
+}
 /*
 
 async function test(){
