@@ -11,6 +11,10 @@ html, body {
   position: relative;
   color: #3c3c3c; }
 
+a {
+  text-decoration: none;
+  color: #bebebe; }
+
 .nav_wrap {
   top: 0px;
   width: 100%;

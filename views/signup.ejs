@@ -22,9 +22,7 @@
 
         <div class="content_wrap">
             <div class="field">
-                <a href="/login/facebook">
                     <div class="fb_signup_btn">Sign Up with Facebook</div>
-                </a>
             </div>
 
             <div class="field">
@@ -47,7 +45,34 @@
                 <label>Avatar</label>
                 <input class="avatar avatar_input" type="file" name="avatar">
             </div>
-            <!-- <div class="field">
+  <%- include('components/nav') %>
+
+
+    <div class="content_wrap">
+      <div class="field">
+          <div class="fb_signup_btn">Sign Up with Facebook</div>
+      </div>
+
+      <div class="field">
+        <hr>
+      </div>
+
+      <div class="field">
+        <label>Username</label>
+        <input class="input_row username_input" placeholder="Username must longer than 1, shorter than 10" type="text" name="name">
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input class="input_row password_input" placeholder="Password must longer than 6" type="password" name="password">
+      </div>
+      <div class="field">
+        <label>Confirm password</label>
+        <input class="input_row repassword_input" placeholder="Password must longer than 6" type="password" name="repassword">
+      </div>
+      <div class="field">
+        <label>Avatar</label>
+        <input class="avatar avatar_input" type="file" name="avatar">
+      </div>
       <label>Bio</label>
       <textarea name="bio" rows="5"></textarea>
     </div> -->
