@@ -22,7 +22,9 @@
 
     <div class="content_wrap">
       <div class="field">
-        <div class="fb_signup_btn">Sign Up with Facebook</div>
+        <a href="/login/facebook">
+          <div class="fb_signup_btn">Sign Up with Facebook</div>
+        </a>
       </div>
 
       <div class="field">
@@ -45,82 +47,12 @@
         <label>Avatar</label>
         <input class="avatar avatar_input" type="file" name="avatar">
       </div>
-      <div class="content_wrap">
-        <div class="field">
-          <a>
-            <div class="fb_signup_btn">Sign Up with Facebook</div>
-          </a>
-        </div>
-
-        <div class="field">
-          <hr>
-        </div>
-
-        <div class="field">
-          <label>Username</label>
-          <input class="input_row username_input" placeholder="Username must longer than 1, shorter than 10" type="text" name="name">
-        </div>
-        <div class="field">
-          <label>Password</label>
-          <input class="input_row password_input" placeholder="Password must longer than 6" type="password" name="password">
-        </div>
-        <div class="field">
-          <label>Confirm password</label>
-          <input class="input_row repassword_input" placeholder="Password must longer than 6" type="password" name="repassword">
-        </div>
-        <div class="field">
-          <label>Avatar</label>
-          <input class="avatar avatar_input" type="file" name="avatar">
-        </div>
-        <div class="field">
-          <div class="signup_btn">Sign Up</div>
-        </div>
+      <div class="field">
+        <div class="signup_btn">Sign Up</div>
       </div>
-
-
-
-      <script src="/javascripts/sha1.js"></script>
-      <script src="/javascripts/signup/index.js"></script>
-      <script>
-        window.fbAsyncInit = function () {
-          FB.init({
-            appId: '404379326715324',
-            autoLogAppEvents: true,
-            xfbml: true,
-            version: 'v2.12'
-          });
-        };
-        (function (d, s, id) {
-          var js, fjs = d.getElementsByTagName(s)[0];
-          if (d.getElementById(id)) {
-            return;
-          }
-          js = d.createElement(s);
-          js.id = id;
-          js.src = "https://connect.facebook.net/en_US/sdk.js";
-          fjs.parentNode.insertBefore(js, fjs);
-        }(document, 'script', 'facebook-jssdk'));
-
-        function checkLoginState() {
-          FB.getLoginStatus(function (response) {
-            statusChangeCallback(response);
-          });
-        }
-      </script>
-      =======
-      <label>Bio</label>
-      <textarea name="bio" rows="5"></textarea>
-    </div> -->
-    <div class="field">
-      <div class="signup_btn">Sign Up</div>
     </div>
-    </div>
-
-
-
     <script src="/javascripts/sha1.js"></script>
     <script src="/javascripts/signup/index.js"></script>
-    >>>>>>> 7149a94b4f1ceb9db510246b1bed98bba8972d2a
 
 
 
