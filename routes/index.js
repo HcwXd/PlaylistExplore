@@ -27,5 +27,10 @@ router.get('/publish', checkLogin, function (req, res, next) {
   res.render('publish');
 });
 
+router.get('/signout', checkLogin, function (req, res, next) {
+  req.session.token = null;
+  return res.redirect('/explore');
+});
+
 
 module.exports = router;
