@@ -173,6 +173,8 @@ function renderNextPlayer() {
         </div>`;
     }
     comment_wrap.innerHTML = comment_wrap_html;
+    let like_btn = document.querySelector('.like_btn');
+    like_btn.addEventListener('click', addLike);
 }
 
 function renderPlayer() {
@@ -205,6 +207,8 @@ function renderPlayer() {
         </div>`;
     }
     comment_wrap.innerHTML = comment_wrap_html;
+    let like_btn = document.querySelector('.like_btn');
+    like_btn.addEventListener('click', addLike);
 }
 
 function renderNewPlayer(ownerInfo, index) {
@@ -231,6 +235,8 @@ function renderNewPlayer(ownerInfo, index) {
         </div>`;
     }
     comment_wrap.innerHTML = comment_wrap_html;
+    let like_btn = document.querySelector('.like_btn');
+    like_btn.addEventListener('click', addLike);
 }
 
 function renderOwnerInfo(ownerInfo) {
@@ -266,3 +272,20 @@ function renderOwnerInfo(ownerInfo) {
 }
 
 renderOwnerInfo(ownerInfo);
+
+function addComment() {
+    let comment_name = "apple";
+    let comment_avatar = "https://www.ienglishstatus.com/wp-content/uploads/2018/04/Anonymous-Whatsapp-profile-picture.jpg";
+    console.log("comment++");
+
+}
+
+function addLike() {
+    let comment_name = "apple";
+    let comment_avatar = "https://www.ienglishstatus.com/wp-content/uploads/2018/04/Anonymous-Whatsapp-profile-picture.jpg";
+    console.log("like++");
+
+}
+
+let submit_btn = document.querySelector('.submit_btn');
+submit_btn.addEventListener('click', addComment);
