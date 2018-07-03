@@ -3,6 +3,7 @@ let userInfo;
 socket.emit('getUserInfo');
 socket.on('getUserInfo', (_userInfo) => {
     userInfo = _userInfo;
+    console.log(userInfo);
 });
 
 let userId = "horseman";
@@ -237,7 +238,7 @@ function renderNewPlayer(ownerInfo, index) {
 
     }
 
-    const song_stats = document.querySelector('.song_stats');
+    let song_stats = document.querySelector('.song_stats');
     let song_stats_html = `
     <div class="like_btn">♥</div>
     <div class="like_number">${ownerInfo.playlistInfo.songList[index].like}</div>`
@@ -249,7 +250,7 @@ function renderNewPlayer(ownerInfo, index) {
     <div class="song_text">${ownerInfo.playlistInfo.songList[index].des}</div>`
     song_des.innerHTML = song_des_html;
 
-    const comment_wrap = document.querySelector('.comment_wrap');
+    let comment_wrap = document.querySelector('.comment_wrap');
     let comment_wrap_html = "";
     for (let i = 0; i < ownerInfo.playlistInfo.songList[index].comments.length; i++) {
         comment_wrap_html += `
@@ -298,17 +299,68 @@ function renderOwnerInfo(ownerInfo) {
 
 renderOwnerInfo(ownerInfo);
 
-function addComment() {
-    let comment_name = "apple";
-    let comment_avatar = "https://www.ienglishstatus.com/wp-content/uploads/2018/04/Anonymous-Whatsapp-profile-picture.jpg";
-    console.log("comment++");
+function renderNewComment(ownerInfo) {
+    let comment_wrap = document.querySelector('.comment_wrap');
+    let comment_wrap_html = "";
+    for (let i = 0; i < ownerInfo.playlistInfo.songList[nowPlayingIndex].comments.length; i++) {
+        comment_wrap_html += `
+        <div class="comment_info">
+            <img class="comment_avatar" src="${ownerInfo.playlistInfo.songList[nowPlayingIndex].comments[i].avatar}" alt="gg">
+            <div class="comment_name">${ownerInfo.playlistInfo.songList[nowPlayingIndex].comments[i].userName}</div>
+            <div class="comment_content">${ownerInfo.playlistInfo.songList[nowPlayingIndex].comments[i].content}</div>
+        </div>`;
+    }
+    comment_wrap.innerHTML = comment_wrap_html;
+}
 
+function addComment() {
+    let commentId = userInfo[0].token;
+    // Haven't define
+    let listOwnerId = ownerInfo.name;
+
+    let listId = 1;
+    let songIndex = nowPlayingIndex;
+    let comment_content = document.querySelector('.comment_text').value;
+    let commentInfo = {
+        listOwnerToken: listOwnerId,
+        listId: listId,
+        songIndex: songIndex,
+        commentId: commentId,
+        commentContent: comment_content,
+    }
+    socket.emit("newComment", commentInfo);
+    socket.on("newComment", (_ownerInfo) => {
+        ownerInfo = _ownerInfo;
+        renderNewComment(ownerInfo);
+    });
+}
+
+function renderNewLike(ownerInfo) {
+    let song_stats = document.querySelector('.song_stats');
+    let song_stats_html = `
+    <div class="like_btn">♥</div>
+    <div class="like_number">${ownerInfo.playlistInfo.songList[nowPlayingIndex].like}</div>`
+    song_stats.innerHTML = song_stats_html;
 }
 
 function addLike() {
-    let comment_name = "apple";
-    let comment_avatar = "https://www.ienglishstatus.com/wp-content/uploads/2018/04/Anonymous-Whatsapp-profile-picture.jpg";
-    console.log("like++");
+    let likeId = userInfo[0].token;
+    // Haven't define
+    let listOwnerId = ownerInfo.name;
+
+    let listId = 1;
+    let songIndex = nowPlayingIndex;
+    let likeInfo = {
+        listOwnerToken: listOwnerId,
+        listId: listId,
+        songIndex: songIndex,
+        likeId: likeId,
+    }
+    socket.emit("newLike", likeInfo);
+    socket.on("newLike", (_ownerInfo) => {
+        ownerInfo = _ownerInfo;
+        renderNewLike(ownerInfo);
+    });
 
 }
 
