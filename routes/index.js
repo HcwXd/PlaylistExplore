@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+const checkLogin = require('../middlewares/check').checkLogin
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -22,7 +23,7 @@ router.get('/signup', function (req, res, next) {
   res.render('signup');
 });
 
-router.get('/publish', function (req, res, next) {
+router.get('/publish', checkLogin, function (req, res, next) {
   res.render('publish');
 });
 
