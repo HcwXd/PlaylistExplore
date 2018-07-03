@@ -1,14 +1,18 @@
 console.log('profile');
 let userInfo;
 socket.emit('getUserInfo');
-socket.on('getUserInfo', (info) => {
-    userInfo = info;
+socket.on('getUserInfo', (_userInfo) => {
+    userInfo = _userInfo;
 });
 
 let userId = "horseman";
 let nowPlayingIndex = 0;
 
-socket.emit('getOwnerInfo', userId);
+let ownerInfo;
+socket.emit('getOwnerInfo');
+socket.on('getOwnerInfo', (_ownerInfo) => {
+    ownerInfo = _ownerInfo;
+})
 
 const _ownerInfo = {
     userName: "HorseMin",
@@ -18,7 +22,7 @@ const _ownerInfo = {
         songList: []
     }
 }
-const ownerInfo = {
+const __ownerInfo = {
     userName: "HorseMin",
     avatar: "http://junkee.com/wp-content/uploads/2017/09/Bojack-Horseman-2.jpg",
     bio: "我是馬小明，很小的小，很明的明，這是為了要湊到換行所以才加的一堆字，想看看超過第三行的效果所以又有一些字。",
