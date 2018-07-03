@@ -14,6 +14,20 @@ playlist_status_wrap.style.display = "none";
 var songList = [];
 
 function publish() {
+    try {
+        if (this.songList.length < 1) {
+            throw new Error('Playlist must contain at least one song')
+        }
+        if (!document.querySelector('.playlist_input_row').value) {
+            throw new Error('Playlist must have name')
+        }
+        if (!document.querySelector('.playlist_des_input').value) {
+            throw new Error('Playlist must have description')
+        }
+    } catch (e) {
+        alert(e);
+        return;
+    }
     let date = new Date();
     let YYYYMMDD = `${date.getFullYear()}/${date.getMonth()+1}/${date.getDay()+1}`;
     let playlistInfo = {
@@ -170,8 +184,16 @@ function appendSearchResults(singleSongInfos, rootNode) {
 function getSearchResults() {
     const search_input = document.querySelector('.search_input');
     let searchQuery = search_input.value;
+    try {
+        if (!searchQuery) {
+            throw new Error("You must input song's name or url");
+        }
+    } catch (e) {
+        alert(e);
+        return;
+    }
     search_input.value = "";
-    console.log(searchQuery);
+
     socket.emit('getSearchResults', searchQuery);
 
     let singleSongInfos = [{

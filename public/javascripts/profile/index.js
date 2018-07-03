@@ -1,11 +1,21 @@
 console.log('profile');
 
+socket.emit('getUserInfo');
+// socket.on('getUserInfo', userInfo);
+
 let userId = "horseman";
 let nowPlaying = 0;
 
 socket.emit('getOwnerInfo', userId);
 
-
+const _ownerInfo = {
+    userName: "HorseMin",
+    avatar: "http://junkee.com/wp-content/uploads/2017/09/Bojack-Horseman-2.jpg",
+    bio: "我是馬小明，很小的小，很明的明，這是為了要湊到換行所以才加的一堆字，想看看超過第三行的效果所以又有一些字。",
+    playlistInfo: {
+        songList: []
+    }
+}
 const ownerInfo = {
     userName: "HorseMin",
     avatar: "http://junkee.com/wp-content/uploads/2017/09/Bojack-Horseman-2.jpg",
@@ -173,6 +183,8 @@ function renderNextPlayer() {
         </div>`;
     }
     comment_wrap.innerHTML = comment_wrap_html;
+    let like_btn = document.querySelector('.like_btn');
+    like_btn.addEventListener('click', addLike);
 }
 
 function renderPlayer() {
@@ -205,6 +217,8 @@ function renderPlayer() {
         </div>`;
     }
     comment_wrap.innerHTML = comment_wrap_html;
+    let like_btn = document.querySelector('.like_btn');
+    like_btn.addEventListener('click', addLike);
 }
 
 function renderNewPlayer(ownerInfo, index) {
@@ -231,6 +245,8 @@ function renderNewPlayer(ownerInfo, index) {
         </div>`;
     }
     comment_wrap.innerHTML = comment_wrap_html;
+    let like_btn = document.querySelector('.like_btn');
+    like_btn.addEventListener('click', addLike);
 }
 
 function renderOwnerInfo(ownerInfo) {
@@ -266,3 +282,20 @@ function renderOwnerInfo(ownerInfo) {
 }
 
 renderOwnerInfo(ownerInfo);
+
+function addComment() {
+    let comment_name = "apple";
+    let comment_avatar = "https://www.ienglishstatus.com/wp-content/uploads/2018/04/Anonymous-Whatsapp-profile-picture.jpg";
+    console.log("comment++");
+
+}
+
+function addLike() {
+    let comment_name = "apple";
+    let comment_avatar = "https://www.ienglishstatus.com/wp-content/uploads/2018/04/Anonymous-Whatsapp-profile-picture.jpg";
+    console.log("like++");
+
+}
+
+let submit_btn = document.querySelector('.submit_btn');
+submit_btn.addEventListener('click', addComment);

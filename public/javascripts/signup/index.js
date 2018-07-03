@@ -45,17 +45,18 @@ function signUp() {
 }
 
 function fbSignUp() {
-    fetch('/login/facebook/')
-        .then((res) => {
-            console.log(res);
-        })
-        .then((out) => {
-            console.log('Checkout this JSON! ', out);
-        })
-        .catch(err => {
-            throw err
-        });
-    console.log("a");
+
+    // fetch('/login/facebook/')
+    //     .then((res) => {
+    //         console.log(res);
+    //     })
+    //     .then((out) => {
+    //         console.log('Checkout this JSON! ', out);
+    //     })
+    //     .catch(err => {
+    //         throw err
+    //     });
+    // console.log("a");
 }
 
 signup_btn.addEventListener('click', signUp)
