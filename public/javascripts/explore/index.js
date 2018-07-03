@@ -10,7 +10,7 @@ var fivePlaylistInfo = [{
         songName: "既視感 - 不規則鐘擺",
         cover: "https://img.youtube.com/vi/djACkCHl3JA/maxresdefault.jpg",
         des: "這是一首不規則的歌",
-        like: 81,
+        like: 51,
         comments: [{
                 userName: 'Penguin',
                 avatar: 'https://www.ienglishstatus.com/wp-content/uploads/2018/04/Anonymous-Whatsapp-profile-picture.jpg',
@@ -24,7 +24,7 @@ var fivePlaylistInfo = [{
         ],
     }, {
         url: "https://www.youtube.com/watch?v=_PmHj0EP6I8",
-        songName: "既視感 - 不規則鐘擺",
+        songName: "既視感 - 不規則鐘擺擺",
         cover: "https://www.billboard.com/files/styles/900_wide/public/media/Green-Day-American-Idiot-album-covers-billboard-1000x1000.jpg",
         des: "這是一首不規則的歌",
         like: 81,
@@ -472,38 +472,45 @@ for (let i = 0; i < fivePlaylistInfo.length; i++) {
     fivePlaylistInfo[i].songList.forEach(song => {
         like += song.like;
     });
-    post_html = `
-    <div class="song_list">
-        <div class="song_list_des">播放清單</div>
+
+    let song_list_div_element = document.createElement('div');
+    song_list_div_element.className = "song_list";
+    let song_list_html = `<div class="song_list_des">播放清單</div>`;
+    for (let j = 0; j < fivePlaylistInfo[i].songList.length; j++) {
+        if (fivePlaylistInfo[i].songList[j].songName.length > 11) {
+            renderSongName = fivePlaylistInfo[i].songList[j].songName.substring(0, 11) + ' ...';
+        } else {
+            renderSongName = fivePlaylistInfo[i].songList[j].songName;
+        }
+        song_list_html += `
         <div class="song_info">
-        <div class="song_name">既視感 - 不規則鐘擺</div>
+            <div class="song_name">${renderSongName}</div>
         </div>
-        <div class="song_info">
-        <div class="song_name">大象體操ElephantGym _ 中途Midway【Official Music Video】</div>
+        `
+    }
+    song_list_div_element.innerHTML = song_list_html;
+
+    let post_content = document.createElement('div');
+    post_content.className = 'post_content';
+    post_content.innerHTML = `
+        <div class="header">
+            <div class="owner_info">
+                <img class="owner_avatar" src="${fivePlaylistInfo[i].avatar}">
+                <div class="owner_name">${fivePlaylistInfo[i].ownerName}</div>
+            </div>
+            <div class="more_info">=</div>
         </div>
-        <div class="song_info">
-        <div class="song_name">tfvsjs - 七夕缺 (live version)</div>
+        <img class="playlist_cover" src="${fivePlaylistInfo[i].songList[0].cover}">
+        <div class="playlist_stats">
+            <div class="like">♥${like}</div>
+            <div class="date">${fivePlaylistInfo[i].date}</div>
         </div>
-        <div class="song_info">
-        <div class="song_name">企鵝熊愛吃雞肉球 - 十七歲</div>
+        <div class="playlist_title">${fivePlaylistInfo[i].name}</div>
+        <div class="playlist_des">${fivePlaylistInfo[i].des}</div>
         </div>
-    </div>
-    <div class="header">
-        <div class="owner_info">
-            <img class="owner_avatar" src="${fivePlaylistInfo[i].avatar}">
-            <div class="owner_name">${fivePlaylistInfo[i].ownerName}</div>
-        </div>
-        <div class="more_info">=</div>
-    </div>
-    <img class="playlist_cover" src="${fivePlaylistInfo[i].songList[0].cover}">
-    <div class="playlist_stats">
-        <div class="like">♥${like}</div>
-        <div class="date">${fivePlaylistInfo[i].date}</div>
-    </div>
-    <div class="playlist_title">${fivePlaylistInfo[i].name}</div>
-    <div class="playlist_des">${fivePlaylistInfo[i].des}</div>
-    </div>`
-    post.innerHTML = post_html;
+        `
+    post.appendChild(song_list_div_element);
+    post.appendChild(post_content);
     posts_wrap.appendChild(post);
 };
 let more_infos = document.querySelectorAll('.more_info');
@@ -511,15 +518,14 @@ more_infos.forEach(ho => ho.addEventListener('mouseout', hideSongList))
 more_infos.forEach(ho => ho.addEventListener('mouseenter', showSongList))
 
 function showSongList() {
-    const song_list = this.parentNode.previousSibling.previousSibling;
-    console.log(song_list);
+    const song_list = this.parentNode.parentNode.previousSibling;
     song_list.style.transform = "rotate(0)";
     song_list.style.left = "101%";
     song_list.style.opacity = "1";
 }
 
 function hideSongList() {
-    const song_list = this.parentNode.previousSibling.previousSibling;
+    const song_list = this.parentNode.parentNode.previousSibling;
     song_list.style.transform = "rotate(90deg)"
     song_list.style.left = "100%"
     song_list.style.opacity = "0";
