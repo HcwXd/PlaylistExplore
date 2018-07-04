@@ -92,7 +92,7 @@ async function getCompletePlayList(songListResult, needComment) {
         if(needComment){
             commentResult = await songTable.getCommentInfo(element);
         }
-        
+
         songList[element.songIndex] = {
             url: element.url,
             songName: element.songName,
@@ -106,11 +106,11 @@ async function getCompletePlayList(songListResult, needComment) {
     return songList;
 }
 
-async function getCompletePlayListInfo(playListInfo) {
+async function getCompletePlayListInfo(playListInfo, needComment) {
 
     let playListMeta = await getPlayList(playListInfo);
     songListResult = await getSongArrayInfo(playListInfo);
-    let songList = await getCompletePlayList(songListResult);
+    let songList = await getCompletePlayList(songListResult, needComment);
     let userInfo = await userTable.getUserInfo(playListInfo.token);
     let completePlayListInfo = {
         userName: userInfo.userName,
