@@ -359,7 +359,11 @@ function renderNewLike(ownerInfo) {
 }
 
 function addLike() {
-    let likeId = userInfo[0].token;
+    if (!userInfo) {
+        alert("Please log in first to express your love");
+        return
+    }
+    let likeId = userInfo.token;
     // Haven't define
     let listOwnerId = ownerInfo.name;
 
@@ -372,10 +376,10 @@ function addLike() {
         likeId: likeId,
     }
     socket.emit("newLike", likeInfo);
-    socket.on("newLike", (newLikeInfo) => {
-        ownerInfo.playlistInfo.songList[nowPlayingIndex].like = newLikeInfo;
-        renderNewLike(ownerInfo);
-    });
+
+    ownerInfo.playlistInfo.songList[nowPlayingIndex].like += 1;
+    renderNewLike(ownerInfo);
+
 
 }
 
