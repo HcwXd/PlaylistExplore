@@ -3,8 +3,8 @@ const mysql = require("mysql");
 const songTable = require('./songTable')
 const userTable = require('./userTable')
 const { map } = require('p-iteration');
-
-
+const path = require('path');
+const fs = require('fs');
 /*
     PRIMARY KEY
     token
@@ -38,16 +38,27 @@ function getData(query) {
     })
 }
 
+async function addCoverImage(imgData, path){
+    fs.writeFile(path, imgData, ()=>{
+        console.log("write successfully");
+    })
+}
+
 function createPlayList(playListInfo) {
+    let path = __dirname + "../public/img/" + playListInfo.token + '/' + playListInfo.uploadCover.name;
+    console.log(path);
     let sql = "INSERT INTO songList SET ?";
     let insertObject = {
         token: playListInfo.token,
         listId: playListInfo.listId,
         name: playListInfo.name,
         des: playListInfo.des,
-        date: playListInfo.date
+        date: playListInfo.date,
+        cover: path,
     }
+
     let query = mysql.format(sql, insertObject);
+    addCoverImage(playListInfo.uploadCover, path);
     applyQuery(query);
 
     /* add song to database */
@@ -57,11 +68,11 @@ function createPlayList(playListInfo) {
     })
 }
 
-function deletePlayList(playListInfo) {
+function deletePlayList(token, listId) {
     let sql = "DELETE FROM songList WHERE ?? = ? AND ?? = ?";
     let condition = [
-        'token', playListInfo.token,
-        'listId', playListInfo.listId,
+        'token', token,
+        'listId', listId,
     ]
     let query = mysql.format(sql, condition);
     console.log(query);
@@ -72,7 +83,7 @@ function deletePlayList(playListInfo) {
 }
 
 async function modifyPlayList(playListInfo) {
-    await deletePlayList(playListInfo);
+    await deletePlayList(playListInfo.token, playListInfo.listId);
     createPlayList(playListInfo);
 }
 
@@ -88,7 +99,7 @@ async function getCompletePlayList(songListResult, needComment) {
     let songList = [];
     await map(songListResult, async (element) => {
         //console.log(element);
-        let commentResult = 'empty';
+        let commentResult = [];
         if(needComment){
             commentResult = await songTable.getCommentInfo(element);
         }
@@ -122,7 +133,8 @@ async function getCompletePlayListInfo(playListInfo, needComment) {
             des: playListMeta.des,
             date: playListMeta.date,
             token: playListInfo.token,
-            listId: playListInfo.listId
+            listId: playListInfo.listId,
+            uploadCover: playListMeta.cover,
         }
     };
     //console.log(completePlayListInfo);
@@ -163,6 +175,7 @@ async function getLatestPlaylists(){
     console.log(pageInfo);
     return pageInfo;
 }
+
 
 
 /* test
