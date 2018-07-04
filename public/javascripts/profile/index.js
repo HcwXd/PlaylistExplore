@@ -3,7 +3,7 @@ let userInfo;
 socket.emit('getUserInfo');
 socket.on('getUserInfo', (_userInfo) => {
     userInfo = _userInfo;
-    console.log(userInfo);
+    console.log(userInfo.token);
 });
 
 let spUrl = window.location.href.split('?');
@@ -285,7 +285,10 @@ function renderOwnerInfo(ownerInfo) {
         <div class="owner_name">${ownerInfo.userName}</div>
         <div class="owner_bio">${ownerInfo.bio?ownerInfo.bio:""}</div>`
     owner_info_wrap.innerHTML = owner_info_wrap_html;
-    addEditBioBtn();
+    if (userInfo.token === urlQueryString) {
+        addEditBioBtn();
+    }
+
 
     renderNewPlayer(ownerInfo, 0);
 
