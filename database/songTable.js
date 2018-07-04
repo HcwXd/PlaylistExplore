@@ -95,9 +95,8 @@ function modifySong(singleSongInfo){
 }
 
 async function updateLike(songInfo){
-    sql = 'UPDATE song SET ? WHERE token = ? AND listId = ? AND songIndex = ?';
-    set = {likeNum: songInfo.like};
-    insert = [set, songInfo.token, songInfo.listId, songInfo.songIndex];
+    sql = 'UPDATE song SET likeNum = likeNum + 1 WHERE token = ? AND listId = ? AND songIndex = ?';
+    insert = [songInfo.listOwnerToken, songInfo.listId, songInfo.songIndex];
     query = mysql.format(sql, insert);
     result = getData(query);
     console.log(result);

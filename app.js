@@ -122,7 +122,8 @@ io.on('connect', async (socket) => {
       /* commentToken commentIndex */
   });
 
-  socket.on('addLike', async (songInfo) => {
+  socket.on('newLike', async (songInfo) => {
+    console.log(songInfo);
     songTable.updateLike(songInfo);
   });
 
