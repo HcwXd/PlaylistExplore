@@ -19,7 +19,8 @@ var app = express();
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
 
-server.listen(3000);
+const port = process.env.PORT || 3000;
+server.listen(port);
 
 useSession = session({
   secret: 'handsome',
@@ -105,21 +106,21 @@ io.on('connect', async (socket) => {
   })
 
   socket.on('newComment', async (commentInfo) => {
-      commentInfo['commentToken'] = socket.handshake.session.token;
-      console.log("comment");
-      console.log(commentInfo);
-      await commentTable.modifyComment(commentInfo);
-      songInfo = {
-          token: commentInfo.listOwnerToken,
-          listId: commentInfo.listId,
-          songIndex: commentInfo.songIndex,
-      }
-      comments = await songTable.getCommentInfo(songInfo);
-      console.log("comments");
-      console.log(comments);
-      socket.emit('newComment', comments);
+    commentInfo['commentToken'] = socket.handshake.session.token;
+    console.log("comment");
+    console.log(commentInfo);
+    await commentTable.modifyComment(commentInfo);
+    songInfo = {
+      token: commentInfo.listOwnerToken,
+      listId: commentInfo.listId,
+      songIndex: commentInfo.songIndex,
+    }
+    comments = await songTable.getCommentInfo(songInfo);
+    console.log("comments");
+    console.log(comments);
+    socket.emit('newComment', comments);
 
-      /* commentToken commentIndex */
+    /* commentToken commentIndex */
   });
 
   socket.on('newLike', async (songInfo) => {
