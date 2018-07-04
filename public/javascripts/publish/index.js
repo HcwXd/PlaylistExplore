@@ -35,7 +35,7 @@ function publish() {
     let playlistInfo = {
         name: document.querySelector('.playlist_input_row').value,
         des: document.querySelector('.playlist_des_input').value,
-        date: YYYYMMDD,
+        date: date,
         songList: this.songList,
         listId: 1
     };
