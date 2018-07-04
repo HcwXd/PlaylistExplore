@@ -341,12 +341,11 @@ function addComment() {
         listOwnerToken: listOwnerId,
         listId: listId,
         songIndex: songIndex,
-        commentId: commentId,
         commentContent: comment_content,
     }
     socket.emit("newComment", commentInfo);
-    socket.on("newComment", (_ownerInfo) => {
-        ownerInfo = _ownerInfo;
+    socket.on("newComment", (newCommentInfo) => {
+        ownerInfo.playlistInfo.songList[nowPlayingIndex].comments = newCommentInfo;
         renderNewComment(ownerInfo);
     });
 }
@@ -360,23 +359,27 @@ function renderNewLike(ownerInfo) {
 }
 
 function addLike() {
-    let likeId = userInfo[0].token;
+    if (!userInfo) {
+        alert("Please log in first to express your love");
+        return
+    }
+    let likeId = userInfo.token;
     // Haven't define
     let listOwnerId = ownerInfo.name;
 
     let listId = 1;
     let songIndex = nowPlayingIndex;
     let likeInfo = {
-        listOwnerToken: listOwnerId,
+        listOwnerToken: urlQueryString,
         listId: listId,
         songIndex: songIndex,
         likeId: likeId,
     }
     socket.emit("newLike", likeInfo);
-    socket.on("newLike", (_ownerInfo) => {
-        ownerInfo = _ownerInfo;
-        renderNewLike(ownerInfo);
-    });
+
+    ownerInfo.playlistInfo.songList[nowPlayingIndex].like += 1;
+    renderNewLike(ownerInfo);
+
 
 }
 
