@@ -1,6 +1,7 @@
 const db = require("./DB");
 const mysql = require("mysql");
 const songTable = require('./songTable')
+const userTable = require('./userTable')
 
 /*
     PRIMARY KEY
@@ -19,6 +20,20 @@ function applyQuery(query){
             return;
         }
         console.log(result);
+    })
+}
+
+function getData(query){
+    return new Promise((resolve, reject) => {
+        try{
+            console.log(query);
+            db.query(query, (error, result) => {
+                resolve(result);
+            })
+        }
+        catch(error){
+            console.log(error);
+        }
     })
 }
 
@@ -60,8 +75,81 @@ async function modifyPlayList(playListInfo){
     createPlayList(playListInfo);
 }
 
+async function getSongArrayInfo(playListInfo){
+    sql = 'SELECT * FROM song WHERE token = ?';
+    insert = [playListInfo.token];
+    query = mysql.format(sql, insert);
+    return await getData(query);
+
+}
+
+async function getCommentInfo(songInfo){
+    sql = "SELECT * FROM comment WHERE token = ? AND songIndex = ? ORDER BY commentIndex";
+    insert = [songInfo.token, songInfo.songIndex];
+    query = mysql.format(sql, insert);
+    result = await getData(query);
+}
+
+async function getCompletePlayList(songListResult){
+    let songList = [];
+    songListResult.map(async (element) => {
+        console.log(element);
+        let commentResult = await getCommentInfo(element);
+        songList[element.songIndex] = {
+            url: element.url,
+            songName: element.songName,
+            cover: element.cover,
+            des: element.des,
+            like: element.likeNum,
+            comment: commentResult,
+        };
+        console.log(songList);
+    })
+    return songList;
+}
+
+async function getCompletePlayListInfo(playListInfo){
+
+    let playListMeta = await getPlayList(playListInfo);
+    songListResult = await getSongArrayInfo(playListInfo);
+    let songList = await getCompletePlayList(songListResult);
+    let userInfo = await userTable.getUserInfo(playListInfo.token);
+    let completePlayListInfo = {
+        userName: userInfo.userName,
+        avatar: userInfo.avatar,
+        bio: userInfo.bio,
+        playListInfo: {
+            songList: songList,
+            name: playListMeta.name,
+            des: playListMeta.des,
+            date: playListMeta.date,
+            token: playListInfo.token,
+            listId: playListInfo.listId
+        }
+    };
+    console.log(completePlayListInfo);
+    return completePlayListInfo;
+}
+
+async function getPlayList(playListInfo){
+    sql = 'SELECT * FROM songList WHERE token = ?';
+    insert = [playListInfo.token];
+    query = mysql.format(sql, insert);
+    result =  await getData(query);
+    return result[0];
+}
+
+playListInfo = {
+    token: '2159235527438018',
+    listId: 1
+}
+/* test
+    getCompletePlayListInfo(playListInfo);
+*/
+
 module.exports = {
     createPlayList: createPlayList,
     deletePlayList: deletePlayList,
     modifyPlayList: modifyPlayList,
+    getCompletePlayListInfo: getCompletePlayListInfo
 }
