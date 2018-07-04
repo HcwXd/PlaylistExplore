@@ -535,7 +535,7 @@ function renderLatestPlaylist() {
 
 function getPageInfo() {
     console.log(this.dataset.token);
-    window.location(`/profile?${this.dataset.token}`);
+    window.location = `/profile?${this.dataset.token}`;
 }
 
 function showSongList() {
