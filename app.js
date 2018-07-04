@@ -109,6 +109,8 @@ io.on('connect', async (socket) => {
       comments = await songTable.getCommentInfo(songInfo);
       console.log(comments);
       socket.emit('addComment', comment);
+
+      /* commentToken commentIndex */
   });
 
   socket.on('addLike', async(songInfo)=> {
