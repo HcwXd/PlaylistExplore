@@ -4,9 +4,10 @@ socket.emit('getLatestPlaylists');
 
 let fivePlaylistInfo;
 socket.on('getLatestPlaylists', (_fivePlaylistInfo) => {
-    console.log(_fivePlaylistInfo);
+
 
     fivePlaylistInfo = _fivePlaylistInfo;
+    console.log(fivePlaylistInfo);
     renderLatestPlaylist();
 })
 
