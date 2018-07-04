@@ -15,7 +15,7 @@ router.get('/login', function (req, res, next) {
   res.render('login');
 });
 
-router.get('/profile', checkLogin, function (req, res, next) {
+router.get('/profile', function (req, res, next) {
   res.render('profile');
 });
 
