@@ -134,14 +134,16 @@ function generatePlayer(url) {
 }
 
 var player;
+let ownerInfo;
+
 
 function onYouTubePlayerAPIReady() {
-    let ownerInfo;
     socket.emit('getOwnerInfo');
     socket.on('getOwnerInfo', (_ownerInfo) => {
         ownerInfo = _ownerInfo;
         console.log(ownerInfo);
         // var final_url = 'x3bDhtuC5yk';
+        var final_url = ownerInfo.playlistInfo.songList[0].url;
         player = new YT.Player('video_placeholder', {
             width: '700',
             height: '400',
@@ -151,7 +153,6 @@ function onYouTubePlayerAPIReady() {
             }
         });
         renderOwnerInfo(ownerInfo);
-        var final_url = ownerInfo.playlistInfo.songList[0].url;
 
 
     })

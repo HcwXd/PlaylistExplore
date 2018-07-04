@@ -82,7 +82,7 @@ async function getSongArrayInfo(playListInfo) {
 
 }
 
-async function getCommentInfo(songInfo){
+async function getCommentInfo(songInfo) {
     sql = "SELECT * FROM comment WHERE listOwnerToken = ? AND songIndex = ? ORDER BY commentIndex";
     insert = [songInfo.token, songInfo.songIndex];
     query = mysql.format(sql, insert);
