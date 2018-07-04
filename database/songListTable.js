@@ -84,11 +84,15 @@ async function getSongArrayInfo(playListInfo) {
 
 }
 
-async function getCompletePlayList(songListResult) {
+async function getCompletePlayList(songListResult, needComment) {
     let songList = [];
     await map(songListResult, async (element) => {
         //console.log(element);
-        let commentResult = await songTable.getCommentInfo(element);
+        let commentResult = 'empty';
+        if(needComment){
+            commentResult = await songTable.getCommentInfo(element);
+        }
+        
         songList[element.songIndex] = {
             url: element.url,
             songName: element.songName,
@@ -141,7 +145,7 @@ playListInfo = {
 async function getPageInfo(latestPlayListInfo){
     pageInfo = [];
     await map(latestPlayListInfo, async (playlistInfo, index) => {
-        pageInfo[index] = await getCompletePlayListInfo(playlistInfo);
+        pageInfo[index] = await getCompletePlayListInfo(playlistInfo, false);
         console.log(index);
         console.log(pageInfo[index]);
     })

@@ -334,7 +334,7 @@ function addComment() {
         alert("Please log in  to add your comment");
         return
     }
-    let listOwnerId = userInfo.token;
+    let listOwnerId = urlQueryString;
 
     let listId = 1;
     let songIndex = nowPlayingIndex;
