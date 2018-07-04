@@ -13,9 +13,9 @@ const userTable = require('./userTable')
     date
 */
 
-function applyQuery(query){
+function applyQuery(query) {
     db.query(query, (error, result) => {
-        if(error){
+        if (error) {
             console.log(error);
             return;
         }
@@ -23,21 +23,20 @@ function applyQuery(query){
     })
 }
 
-function getData(query){
+function getData(query) {
     return new Promise((resolve, reject) => {
-        try{
+        try {
             console.log(query);
             db.query(query, (error, result) => {
                 resolve(result);
             })
-        }
-        catch(error){
+        } catch (error) {
             console.log(error);
         }
     })
 }
 
-function createPlayList(playListInfo){
+function createPlayList(playListInfo) {
     let sql = "INSERT INTO songList SET ?";
     let insertObject = {
         token: playListInfo.token,
@@ -56,7 +55,7 @@ function createPlayList(playListInfo){
     })
 }
 
-function deletePlayList(playListInfo){
+function deletePlayList(playListInfo) {
     let sql = "DELETE FROM songList WHERE ?? = ? AND ?? = ?";
     let condition = [
         'token', playListInfo.token,
@@ -70,12 +69,12 @@ function deletePlayList(playListInfo){
     songTable.deleteSongInList(playListInfo);
 }
 
-async function modifyPlayList(playListInfo){
+async function modifyPlayList(playListInfo) {
     await deletePlayList(playListInfo);
     createPlayList(playListInfo);
 }
 
-async function getSongArrayInfo(playListInfo){
+async function getSongArrayInfo(playListInfo) {
     sql = 'SELECT * FROM song WHERE token = ?';
     insert = [playListInfo.token];
     query = mysql.format(sql, insert);
@@ -83,8 +82,13 @@ async function getSongArrayInfo(playListInfo){
 
 }
 
+<<<<<<< HEAD
 async function getCommentInfo(songInfo){
     sql = "SELECT * FROM comment WHERE listOwnerToken = ? AND songIndex = ? ORDER BY commentIndex";
+=======
+async function getCommentInfo(songInfo) {
+    sql = "SELECT * FROM comment WHERE token = ? AND songIndex = ? ORDER BY commentIndex";
+>>>>>>> 8c9f814468d1b63bc78ce733cd2d772df0016281
     insert = [songInfo.token, songInfo.songIndex];
     query = mysql.format(sql, insert);
     result = await getData(query);
@@ -92,7 +96,7 @@ async function getCommentInfo(songInfo){
     return result;
 }
 
-async function getCompletePlayList(songListResult){
+async function getCompletePlayList(songListResult) {
     let songList = [];
     songListResult.map(async (element) => {
         console.log(element);
@@ -110,7 +114,7 @@ async function getCompletePlayList(songListResult){
     return songList;
 }
 
-async function getCompletePlayListInfo(playListInfo){
+async function getCompletePlayListInfo(playListInfo) {
 
     let playListMeta = await getPlayList(playListInfo);
     songListResult = await getSongArrayInfo(playListInfo);
@@ -120,7 +124,7 @@ async function getCompletePlayListInfo(playListInfo){
         userName: userInfo.userName,
         avatar: userInfo.avatar,
         bio: userInfo.bio,
-        playListInfo: {
+        playlistInfo: {
             songList: songList,
             name: playListMeta.name,
             des: playListMeta.des,
@@ -133,11 +137,11 @@ async function getCompletePlayListInfo(playListInfo){
     return completePlayListInfo;
 }
 
-async function getPlayList(playListInfo){
+async function getPlayList(playListInfo) {
     sql = 'SELECT * FROM songList WHERE token = ?';
     insert = [playListInfo.token];
     query = mysql.format(sql, insert);
-    result =  await getData(query);
+    result = await getData(query);
     return result[0];
 }
 

@@ -9,12 +9,6 @@ socket.on('getUserInfo', (_userInfo) => {
 let userId = "horseman";
 let nowPlayingIndex = 0;
 
-let ownerInfo;
-socket.emit('getOwnerInfo');
-socket.on('getOwnerInfo', (_ownerInfo) => {
-    ownerInfo = _ownerInfo;
-    console.log(ownerInfo);
-})
 
 const _ownerInfo = {
     userName: "HorseMin",
@@ -142,15 +136,26 @@ function generatePlayer(url) {
 var player;
 
 function onYouTubePlayerAPIReady() {
-    var final_url = ownerInfo.playlistInfo.songList[0].url;
-    player = new YT.Player('video_placeholder', {
-        width: '700',
-        height: '400',
-        videoId: final_url,
-        events: {
-            onStateChange: onPlayerStateChange
-        }
-    });
+    let ownerInfo;
+    socket.emit('getOwnerInfo');
+    socket.on('getOwnerInfo', (_ownerInfo) => {
+        ownerInfo = _ownerInfo;
+        console.log(ownerInfo);
+        // var final_url = 'x3bDhtuC5yk';
+        player = new YT.Player('video_placeholder', {
+            width: '700',
+            height: '400',
+            videoId: final_url,
+            events: {
+                onStateChange: onPlayerStateChange
+            }
+        });
+        renderOwnerInfo(ownerInfo);
+        var final_url = ownerInfo.playlistInfo.songList[0].url;
+
+
+    })
+
 }
 
 function onPlayerStateChange(event) {
@@ -271,7 +276,7 @@ function renderOwnerInfo(ownerInfo) {
     let owner_info_wrap_html = `
         <img class="owner_avatar" src="${ownerInfo.avatar}" alt="gg">
         <div class="owner_name">${ownerInfo.userName}</div>
-        <div class="owner_bio">${ownerInfo.bio}</div>`
+        <div class="owner_bio">${ownerInfo.bio?ownerInfo.bio:""}</div>`
     owner_info_wrap.innerHTML = owner_info_wrap_html;
     addEditBioBtn();
 
@@ -299,7 +304,6 @@ function renderOwnerInfo(ownerInfo) {
 
 }
 
-renderOwnerInfo(ownerInfo);
 
 function renderNewComment(ownerInfo) {
     let comment_wrap = document.querySelector('.comment_wrap');
