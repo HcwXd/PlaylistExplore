@@ -6,6 +6,7 @@ let fivePlaylistInfo;
 socket.on('getLatestPlaylists', (_fivePlaylistInfo) => {
 
     fivePlaylistInfo = _fivePlaylistInfo;
+    console.log(fivePlaylistInfo);
     renderLatestPlaylist();
 })
 

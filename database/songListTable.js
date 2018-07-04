@@ -88,7 +88,7 @@ async function getCompletePlayList(songListResult, needComment) {
     let songList = [];
     await map(songListResult, async (element) => {
         //console.log(element);
-        let commentResult = 'empty';
+        let commentResult = [];
         if(needComment){
             commentResult = await songTable.getCommentInfo(element);
         }
