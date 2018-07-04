@@ -83,6 +83,14 @@ io.on('connect', async (socket) => {
     let userInfo = await userTable.getUserInfo(socket.handshake.session.token);
     socket.emit('getUserInfo', userInfo);
   });
+  socket.on('getOwnerInfo', async () => {
+      let playListInfo = {
+          token: socket.handshake.session.token,
+          listId: '',
+      }
+      let ownerInfo = await songListTable.getCompletePlayListInfo(playListInfo);
+      socket.emit('getOwnerInfo', ownerInfo)
+  })
 })
 
 
