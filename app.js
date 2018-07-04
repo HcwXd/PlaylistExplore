@@ -12,6 +12,7 @@ var loginRouter = require('./routes/login');
 var getSingleSongInfoArray = require('./routes/songSearch');
 var songListTable = require('./database/songListTable');
 var userTable = require('./database/userTable');
+var commentTable = require('./database/commentTable');
 
 var app = express();
 const server = require('http').Server(app);
@@ -85,15 +86,6 @@ io.on('connect', async (socket) => {
     socket.emit('getUserInfo', userInfo);
   });
 
-  socket.on('getOwnerInfo', async () => {
-    let playListInfo = {
-      token: socket.handshake.session.token,
-      listId: '',
-    }
-    let ownerInfo = await songListTable.getCompletePlayListInfo(playListInfo);
-    socket.emit('getOwnerInfo', ownerInfo)
-  })
-
   socket.on('getLatestPlaylists', async () => {
     let latestPlayListInfo = await songListTable.getLatestPlaylists();
     console.log("/////////////////////////");
@@ -102,7 +94,7 @@ io.on('connect', async (socket) => {
     socket.emit('getLatestPlaylists', latestPlayListInfo);
   })
 
-  socket.on('getPageInfo', async (pageToken) => {
+  socket.on('getOwnerInfo', async (pageToken) => {
       let playListInfo = {
         token: pageToken,
         listId: '',
@@ -110,6 +102,15 @@ io.on('connect', async (socket) => {
       let ownerInfo = await songListTable.getCompletePlayListInfo(playListInfo);
       socket.emit('getOwnerInfo', ownerInfo)
   })
+
+  socket.on('addComment', async (comment) => {
+      commentTable.modifyComment(comment);
+      io.emit(comment);
+  });
+
+  socket.on('addLike', async(playlistInfo)=> {
+      songListTable.updateLike(playlistInfo);
+  });
 
 })
 

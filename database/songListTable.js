@@ -167,6 +167,10 @@ async function getLatestPlaylists(){
     console.log(pageInfo);
     return pageInfo;
 }
+
+async function updateLike(playlistInfo){
+    sql = 'UPDATE songList SET ? WHERE token = ? AND listId = ? AND ';
+}
 /* test
     getCompletePlayListInfo(playListInfo);
     getLatestPlaylists();

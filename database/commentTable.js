@@ -49,6 +49,7 @@ function deleteComment(commentInfo){
 }
 
 function modifyComment(commentInfo){
+    createComment(commentInfo);
     let sql = "UPDATE comment SET ? WHERE ?? = ? AND ?? = ? AND ?? = ? AND ?? = ?";
     let setValue = {
         commentContent: commentInfo.commentContent
