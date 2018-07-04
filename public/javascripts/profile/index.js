@@ -341,12 +341,11 @@ function addComment() {
         listOwnerToken: listOwnerId,
         listId: listId,
         songIndex: songIndex,
-        commentId: commentId,
         commentContent: comment_content,
     }
     socket.emit("newComment", commentInfo);
-    socket.on("newComment", (_ownerInfo) => {
-        ownerInfo = _ownerInfo;
+    socket.on("newComment", (newCommentInfo) => {
+        ownerInfo.playlistInfo.songList[nowPlayingIndex].comments = newCommentInfo;
         renderNewComment(ownerInfo);
     });
 }
@@ -367,14 +366,14 @@ function addLike() {
     let listId = 1;
     let songIndex = nowPlayingIndex;
     let likeInfo = {
-        listOwnerToken: listOwnerId,
+        listOwnerToken: urlQueryString,
         listId: listId,
         songIndex: songIndex,
         likeId: likeId,
     }
     socket.emit("newLike", likeInfo);
-    socket.on("newLike", (_ownerInfo) => {
-        ownerInfo = _ownerInfo;
+    socket.on("newLike", (newLikeInfo) => {
+        ownerInfo.playlistInfo.songList[nowPlayingIndex].like = newLikeInfo;
         renderNewLike(ownerInfo);
     });
 
