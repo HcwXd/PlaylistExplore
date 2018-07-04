@@ -535,10 +535,7 @@ function renderLatestPlaylist() {
 
 function getPageInfo() {
     console.log(this.dataset.token);
-    socket.emit("getPageInfo", this.dataset.token);
-    socket.on("getPageInfo", (token) => {
-        window.location(`/profile/${token}`);
-    })
+    window.location(`/profile?${this.dataset.token}`);
 }
 
 function showSongList() {
