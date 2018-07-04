@@ -5,14 +5,12 @@ socket.emit('getLatestPlaylists');
 let fivePlaylistInfo;
 socket.on('getLatestPlaylists', (_fivePlaylistInfo) => {
 
-
     fivePlaylistInfo = _fivePlaylistInfo;
-    console.log(fivePlaylistInfo);
     renderLatestPlaylist();
 })
 
 var __fivePlaylistInfo = [{
-    ownerName: "Apple",
+    userName: "Apple",
     avatar: "https://www.ienglishstatus.com/wp-content/uploads/2018/04/Anonymous-Whatsapp-profile-picture.jpg",
     songList: [{
         url: "_PmHj0EP6I8",
@@ -104,7 +102,7 @@ var __fivePlaylistInfo = [{
     des: "這是一個讓人頭昏腦脹的歌單",
     date: "2012/12/12"
 }, {
-    ownerName: "Apple",
+    userName: "Apple",
     avatar: "https://i.pinimg.com/736x/2c/9d/07/2c9d0704ae49dfde914e2b477bf9279c--stick-figure-profile-pictures.jpg",
     songList: [{
         url: "Q0Nn4TUXH5Y",
@@ -196,7 +194,7 @@ var __fivePlaylistInfo = [{
     des: "這是一個讓人頭昏腦脹的歌單",
     date: "2012/12/12"
 }, {
-    ownerName: "Apple",
+    userName: "Apple",
     avatar: "http://junkee.com/wp-content/uploads/2017/09/Bojack-Horseman-2.jpg",
     songList: [{
         url: "NxngOIdRdqE",
@@ -288,7 +286,7 @@ var __fivePlaylistInfo = [{
     des: "這是一個讓人頭昏腦脹的歌單",
     date: "2012/12/12"
 }, {
-    ownerName: "Apple",
+    userName: "Apple",
     avatar: "https://i.pinimg.com/736x/2c/9d/07/2c9d0704ae49dfde914e2b477bf9279c--stick-figure-profile-pictures.jpg",
     songList: [{
         url: "_PmHj0EP6I8",
@@ -380,7 +378,7 @@ var __fivePlaylistInfo = [{
     des: "這是一個讓人頭昏腦脹的歌單",
     date: "2012/12/12"
 }, {
-    ownerName: "Apple",
+    userName: "Apple",
     avatar: "https://www.ienglishstatus.com/wp-content/uploads/2018/04/Anonymous-Whatsapp-profile-picture.jpg",
     songList: [{
         url: "AK6pJmeqR6M",
@@ -480,18 +478,18 @@ function renderLatestPlaylist() {
         let post = document.createElement('div');
         post.className = 'post';
         let like = 0;
-        fivePlaylistInfo[i].songList.forEach(song => {
+        fivePlaylistInfo[i].playlistInfo.songList.forEach(song => {
             like += song.like;
         });
 
         let song_list_div_element = document.createElement('div');
         song_list_div_element.className = "song_list";
         let song_list_html = `<div class="song_list_des">播放清單</div>`;
-        for (let j = 0; j < fivePlaylistInfo[i].songList.length; j++) {
-            if (fivePlaylistInfo[i].songList[j].songName.length > 11) {
-                renderSongName = fivePlaylistInfo[i].songList[j].songName.substring(0, 11) + ' ...';
+        for (let j = 0; j < fivePlaylistInfo[i].playlistInfo.songList.length; j++) {
+            if (fivePlaylistInfo[i].playlistInfo.songList[j].songName.length > 11) {
+                renderSongName = fivePlaylistInfo[i].playlistInfo.songList[j].songName.substring(0, 11) + ' ...';
             } else {
-                renderSongName = fivePlaylistInfo[i].songList[j].songName;
+                renderSongName = fivePlaylistInfo[i].playlistInfo.songList[j].songName;
             }
             song_list_html += `
             <div class="song_info">
@@ -503,24 +501,24 @@ function renderLatestPlaylist() {
 
         let post_content = document.createElement('div');
         post_content.className = 'post_content'
-        // let bg_url = `https://img.youtube.com/vi/${fivePlaylistInfo[i].songList[j].url}/hqdefault.jpg`;
-        // <img class="playlist_cover" src="${fivePlaylistInfo[i].songList[0].cover}">
+        // let bg_url = `https://img.youtube.com/vi/${fivePlaylistInfo[i].playlistInfo.songList[j].url}/hqdefault.jpg`;
+        // <img class="playlist_cover" src="${fivePlaylistInfo[i].playlistInfo.songList[0].cover}">
 
         post_content.innerHTML = `
             <div class="header">
                 <div class="owner_info">
                     <img class="owner_avatar" src="${fivePlaylistInfo[i].avatar}">
-                    <div class="owner_name">${fivePlaylistInfo[i].ownerName}</div>
+                    <div class="owner_name">${fivePlaylistInfo[i].userName}</div>
                 </div>
                 <div class="more_info">=</div>
             </div>
-            <img class="playlist_cover" src="https://img.youtube.com/vi/${fivePlaylistInfo[i].songList[0].url}/hqdefault.jpg">
+            <img class="playlist_cover" data-token="${fivePlaylistInfo[i].playlistInfo.token}" src="https://img.youtube.com/vi/${fivePlaylistInfo[i].playlistInfo.songList[0].url}/hqdefault.jpg">
             <div class="playlist_stats">
                 <div class="like">♥${like}</div>
-                <div class="date">${fivePlaylistInfo[i].date}</div>
+                <div class="date">${fivePlaylistInfo[i].playlistInfo.date.substr(0,10)}</div>
             </div>
-            <div class="playlist_title">${fivePlaylistInfo[i].name}</div>
-            <div class="playlist_des">${fivePlaylistInfo[i].des}</div>
+            <div class="playlist_title">${fivePlaylistInfo[i].playlistInfo.name}</div>
+            <div class="playlist_des">${fivePlaylistInfo[i].playlistInfo.des}</div>
             </div>
             `
         post.appendChild(song_list_div_element);
@@ -530,8 +528,15 @@ function renderLatestPlaylist() {
     let more_infos = document.querySelectorAll('.more_info');
     more_infos.forEach(ho => ho.addEventListener('mouseout', hideSongList))
     more_infos.forEach(ho => ho.addEventListener('mouseenter', showSongList))
+
+    let playlist_covers = document.querySelectorAll('.playlist_cover');
+    playlist_covers.forEach(co => co.addEventListener('click', getPageInfo))
 }
 
+function getPageInfo() {
+    console.log(this.dataset.token);
+    window.location = `/profile?${this.dataset.token}`;
+}
 
 function showSongList() {
     const song_list = this.parentNode.parentNode.previousSibling;
@@ -570,7 +575,7 @@ var inactivityTime = function () {
             return num;
         }
         for (let i = 0; i < fivePlaylistInfo.length; i++) {
-            for (let j = 0; j < fivePlaylistInfo[i].songList.length; j++) {
+            for (let j = 0; j < fivePlaylistInfo[i].playlistInfo.songList.length; j++) {
                 let album = document.createElement("A");
                 album.className = "album";
                 let css_top = random(0, 80);
@@ -578,7 +583,7 @@ var inactivityTime = function () {
                 album.style.top = css_top + "%";
                 album.style.right = css_right + "%";
                 // let bg_url = `https://img.youtube.com/vi/${fivePlaylistInfo[i].songList[j].url}/maxresdefault.jpg`
-                let bg_url = `https://img.youtube.com/vi/${fivePlaylistInfo[i].songList[j].url}/hqdefault.jpg`
+                let bg_url = `https://img.youtube.com/vi/${fivePlaylistInfo[i].playlistInfo.songList[j].url}/hqdefault.jpg`
 
                 album.style.backgroundImage = `url(${bg_url})`
                 // album.setAttribute("href", "#playlist");

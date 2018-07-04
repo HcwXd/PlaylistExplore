@@ -6,6 +6,12 @@ socket.on('getUserInfo', (_userInfo) => {
     console.log(userInfo);
 });
 
+let spUrl = window.location.href.split('?');
+let urlQueryString = spUrl[1];
+
+console.log(urlQueryString);
+
+
 let userId = "horseman";
 let nowPlayingIndex = 0;
 
@@ -138,7 +144,7 @@ let ownerInfo;
 
 
 function onYouTubePlayerAPIReady() {
-    socket.emit('getOwnerInfo');
+    socket.emit('getOwnerInfo', urlQueryString);
     socket.on('getOwnerInfo', (_ownerInfo) => {
         ownerInfo = _ownerInfo;
         console.log(ownerInfo);
