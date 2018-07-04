@@ -34,7 +34,7 @@ function publish() {
         return;
     }
     let date = new Date();
-    let YYYYMMDD = `${date.getFullYear()}/${date.getMonth()+1}/${date.getDay()+1}/${date.getTime()}`;
+    // let YYYYMMDD = `${date.getFullYear()}/${date.getMonth()+1}/${date.getDay()+1}/${date.getTime()}`;
     let playlistInfo = {
         name: document.querySelector('.playlist_input_row').value,
         des: document.querySelector('.playlist_des_input').value,
@@ -99,7 +99,7 @@ function addSongToPlaylist() {
 
     let song_cover = document.createElement('img');
     song_cover.className = "song_cover";
-    song_cover.src = this.cover;
+    song_cover.src = `https://img.youtube.com/vi/${this.url}/hqdefault.jpg`;
 
     let song_name = document.createElement('div');
     song_name.className = "song_name";
@@ -113,7 +113,7 @@ function addSongToPlaylist() {
     song_edit.addEventListener('click', deleteSongFromPlaylist);
 
     song_info.songName = this.songName;
-    song_info.cover = this.cover;
+    song_info.cover = `https://img.youtube.com/vi/${this.url}/hqdefault.jpg`;
     song_info.url = this.url;
 
     song_info.appendChild(song_cover);
