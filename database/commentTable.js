@@ -50,7 +50,7 @@ function deleteComment(commentInfo){
 
 function modifyComment(commentInfo){
     createComment(commentInfo);
-    let sql = "UPDATE comment SET ? WHERE ?? = ? AND ?? = ? AND ?? = ? AND ?? = ?";
+    let sql = "UPDATE comment SET ? WHERE ?? = ? AND ?? = ? AND ?? = ?";
     let setValue = {
         commentContent: commentInfo.commentContent
     }
@@ -58,7 +58,6 @@ function modifyComment(commentInfo){
         setValue,
         'listOwnerToken', commentInfo.listOwnerToken,
         'listId', commentInfo.listId,
-        'songIndex', commentInfo.songIndex,
         'commentIndex', commentInfo.commentIndex,
     ];
     let query = mysql.format(sql, insert);
@@ -69,7 +68,6 @@ commentInfo = {
     listOwnerToken: 1813929758691464,
     listId: 1,
     songIndex: 0,
-    commentIndex: 1,
     commentToken: '1813929758691464',
     commentContent: 'I like this song too!'
 }
