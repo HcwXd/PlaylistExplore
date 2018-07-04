@@ -273,7 +273,7 @@ function renderOwnerInfo(ownerInfo) {
     let owner_info_wrap_html = `
         <img class="owner_avatar" src="${ownerInfo.avatar}" alt="gg">
         <div class="owner_name">${ownerInfo.userName}</div>
-        <div class="owner_bio">${ownerInfo.bio}</div>`
+        <div class="owner_bio">${ownerInfo.bio?ownerInfo.bio:""}</div>`
     owner_info_wrap.innerHTML = owner_info_wrap_html;
     addEditBioBtn();
 
