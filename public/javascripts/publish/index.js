@@ -31,7 +31,7 @@ function publish() {
         return;
     }
     let date = new Date();
-    let YYYYMMDD = `${date.getFullYear()}/${date.getMonth()+1}/${date.getDay()+1}`;
+    let YYYYMMDD = `${date.getFullYear()}/${date.getMonth()+1}/${date.getDay()+1}/${date.getTime()}`;
     let playlistInfo = {
         name: document.querySelector('.playlist_input_row').value,
         des: document.querySelector('.playlist_des_input').value,
