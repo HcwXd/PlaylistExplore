@@ -2,6 +2,7 @@ const db = require("./DB");
 const mysql = require("mysql");
 const songTable = require('./songTable')
 const userTable = require('./userTable')
+const { map } = require('p-iteration');
 
 /*
     PRIMARY KEY
@@ -26,7 +27,7 @@ function applyQuery(query) {
 function getData(query) {
     return new Promise((resolve, reject) => {
         try {
-            console.log(query);
+            //console.log(query);
             db.query(query, (error, result) => {
                 resolve(result);
             })
@@ -87,14 +88,14 @@ async function getCommentInfo(songInfo) {
     insert = [songInfo.token, songInfo.songIndex];
     query = mysql.format(sql, insert);
     result = await getData(query);
-    console.log(result);
+    //console.log(result);
     return result;
 }
 
 async function getCompletePlayList(songListResult) {
     let songList = [];
-    songListResult.map(async (element) => {
-        console.log(element);
+    await map(songListResult, async (element) => {
+        //console.log(element);
         let commentResult = await getCommentInfo(element);
         songList[element.songIndex] = {
             url: element.url,
@@ -104,7 +105,7 @@ async function getCompletePlayList(songListResult) {
             like: element.likeNum,
             comments: commentResult,
         };
-        console.log(songList);
+        //console.log(songList);
     })
     return songList;
 }
@@ -128,7 +129,7 @@ async function getCompletePlayListInfo(playListInfo) {
             listId: playListInfo.listId
         }
     };
-    console.log(completePlayListInfo);
+    //console.log(completePlayListInfo);
     return completePlayListInfo;
 }
 
@@ -145,15 +146,25 @@ playListInfo = {
     listId: 1
 }
 
+async function getPageInfo(latestPlayListInfo){
+    pageInfo = [];
+    await map(latestPlayListInfo, async (playlistInfo, index) => {
+        pageInfo[index] = await getCompletePlayListInfo(playlistInfo);
+        console.log(index);
+        console.log(pageInfo[index]);
+    })
+    console.log("ret");
+    console.log(pageInfo);
+    return pageInfo;
+}
+
 async function getLatestPlaylists(){
     sql = 'SELECT * FROM songList ORDER BY date DESC LIMIT 5';
     query = mysql.format(sql);
     latestPlayListInfo = await getData(query);
-    console.log(latestPlayListInfo);
-    pageInfo = [];
-    latestPlayListInfo.map(async (playlistInfo, index) => {
-        pageInfo[index] = await getCompletePlayListInfo(playlistInfo);
-    })
+    pageInfo = await getPageInfo(latestPlayListInfo);
+    console.log("Page Info");
+    console.log(pageInfo);
     return pageInfo;
 }
 /* test
