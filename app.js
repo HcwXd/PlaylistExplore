@@ -96,12 +96,12 @@ io.on('connect', async (socket) => {
   })
 
   socket.on('getOwnerInfo', async (pageToken) => {
-      let playListInfo = {
-        token: pageToken,
-        listId: '',
-      }
-      let ownerInfo = await songListTable.getCompletePlayListInfo(playListInfo);
-      socket.emit('getOwnerInfo', ownerInfo)
+    let playListInfo = {
+      token: pageToken,
+      listId: '',
+    }
+    let ownerInfo = await songListTable.getCompletePlayListInfo(playListInfo);
+    socket.emit('getOwnerInfo', ownerInfo)
   })
 
   socket.on('newComment', async (commentInfo) => {
@@ -122,12 +122,12 @@ io.on('connect', async (socket) => {
       /* commentToken commentIndex */
   });
 
-  socket.on('addLike', async(songInfo)=> {
-      songTable.updateLike(songInfo);
+  socket.on('addLike', async (songInfo) => {
+    songTable.updateLike(songInfo);
   });
 
-  socket.on('updateBio', async(bioInfo) => {
-      userTable.updateBio(bioInfo);
+  socket.on('updateBio', async (bioInfo) => {
+    userTable.updateBio(bioInfo);
   })
 
 })
