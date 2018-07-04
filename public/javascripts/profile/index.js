@@ -347,6 +347,7 @@ function addComment() {
         songIndex: songIndex,
         commentContent: comment_content,
     }
+    console.log(commentInfo);
     socket.emit("newComment", commentInfo);
     socket.on("newComment", (newCommentInfo) => {
         ownerInfo.playlistInfo.songList[nowPlayingIndex].comments = newCommentInfo;
