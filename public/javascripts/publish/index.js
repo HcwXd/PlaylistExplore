@@ -190,7 +190,6 @@ function appendSearchResults(singleSongInfos, rootNode) {
 }
 
 function getSearchResults() {
-    const search_input = document.querySelector('.search_input');
     let searchQuery = search_input.value;
     try {
         if (!searchQuery) {
@@ -245,5 +244,12 @@ function getSearchResults() {
 }
 
 
+
+let search_input = document.querySelector('.search_input');
+search_input.addEventListener('keydown', (e) => {
+    if (e.keyCode === 13) {
+        getSearchResults();
+    }
+});
 
 search_btn.addEventListener('click', getSearchResults)
