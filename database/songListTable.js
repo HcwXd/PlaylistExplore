@@ -102,7 +102,7 @@ async function getCompletePlayList(songListResult) {
             cover: element.cover,
             des: element.des,
             like: element.likeNum,
-            comment: commentResult,
+            comments: commentResult,
         };
         console.log(songList);
     })
@@ -144,14 +144,30 @@ playListInfo = {
     token: '2159235527438018',
     listId: 1
 }
+
+async function getLatestPlaylists(){
+    sql = 'SELECT * FROM songList ORDER BY date DESC LIMIT 5';
+    query = mysql.format(sql);
+    latestPlayListInfo = await getData(query);
+    console.log(latestPlayListInfo);
+    pageInfo = [];
+    latestPlayListInfo.map(async (playlistInfo, index) => {
+        pageInfo[index] = await getCompletePlayListInfo(playlistInfo);
+    })
+    return pageInfo;
+}
 /* test
     getCompletePlayListInfo(playListInfo);
+    getLatestPlaylists();
+
 */
+
 
 
 module.exports = {
     createPlayList: createPlayList,
     deletePlayList: deletePlayList,
     modifyPlayList: modifyPlayList,
-    getCompletePlayListInfo: getCompletePlayListInfo
+    getCompletePlayListInfo: getCompletePlayListInfo,
+    getLatestPlaylists: getLatestPlaylists
 }
