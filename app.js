@@ -13,6 +13,7 @@ var getSingleSongInfoArray = require('./routes/songSearch');
 var songListTable = require('./database/songListTable');
 var userTable = require('./database/userTable');
 var commentTable = require('./database/commentTable');
+var songTable = require('./database/songTable');
 
 var app = express();
 const server = require('http').Server(app);
@@ -104,13 +105,19 @@ io.on('connect', async (socket) => {
   })
 
   socket.on('addComment', async (comment) => {
-      commentTable.modifyComment(comment);
-      io.emit(comment);
+      await commentTable.modifyComment(comment);
+      comments = await songTable.getCommentInfo(songInfo);
+      console.log(comments);
+      socket.emit('addComment', comment);
   });
 
-  socket.on('addLike', async(playlistInfo)=> {
-      songListTable.updateLike(playlistInfo);
+  socket.on('addLike', async(songInfo)=> {
+      songTable.updateLike(songInfo);
   });
+
+  socket.on('updateBio', async(bioInfo) => {
+      userTable.updateBio(bioInfo);
+  })
 
 })
 

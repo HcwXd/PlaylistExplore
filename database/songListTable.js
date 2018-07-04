@@ -4,6 +4,7 @@ const songTable = require('./songTable')
 const userTable = require('./userTable')
 const { map } = require('p-iteration');
 
+
 /*
     PRIMARY KEY
     token
@@ -83,20 +84,11 @@ async function getSongArrayInfo(playListInfo) {
 
 }
 
-async function getCommentInfo(songInfo) {
-    sql = "SELECT * FROM comment WHERE listOwnerToken = ? AND songIndex = ? ORDER BY commentIndex";
-    insert = [songInfo.token, songInfo.songIndex];
-    query = mysql.format(sql, insert);
-    result = await getData(query);
-    //console.log(result);
-    return result;
-}
-
 async function getCompletePlayList(songListResult) {
     let songList = [];
     await map(songListResult, async (element) => {
         //console.log(element);
-        let commentResult = await getCommentInfo(element);
+        let commentResult = await songTable.getCommentInfo(element);
         songList[element.songIndex] = {
             url: element.url,
             songName: element.songName,
@@ -168,9 +160,7 @@ async function getLatestPlaylists(){
     return pageInfo;
 }
 
-async function updateLike(playlistInfo){
-    sql = 'UPDATE songList SET ? WHERE token = ? AND listId = ? AND ';
-}
+
 /* test
     getCompletePlayListInfo(playListInfo);
     getLatestPlaylists();

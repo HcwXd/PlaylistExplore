@@ -65,6 +65,17 @@ function modifyComment(commentInfo){
     applyQuery(query);
 }
 
+commentInfo = {
+    listOwnerToken: 1813929758691464,
+    listId: 1,
+    songIndex: 0,
+    commentIndex: 1,
+    commentToken: '1813929758691464',
+    commentContent: 'I like this song too!'
+}
+
+modifyComment(commentInfo);
+
 module.exports = {
     createComment: createComment,
     deleteComment: deleteComment,
