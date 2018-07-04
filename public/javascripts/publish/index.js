@@ -14,6 +14,9 @@ playlist_status_wrap.style.display = "none";
 var songList = [];
 let singleSongInfos;
 
+let spUrl = window.location.href.split('?');
+let urlQueryString = spUrl[1];
+
 
 function publish() {
     try {
@@ -42,7 +45,7 @@ function publish() {
     console.log(playlistInfo);
 
     socket.emit('publishNewPlaylist', playlistInfo);
-    window.location = "/profile";
+    window.location = `/profile?${urlQueryString}`;
 }
 
 function readyToPublish() {
