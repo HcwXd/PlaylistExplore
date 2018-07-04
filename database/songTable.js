@@ -14,6 +14,19 @@ const mysql = require("mysql");
     likeNum
 */
 
+function getData(query) {
+    return new Promise((resolve, reject) => {
+        try {
+            console.log(query);
+            db.query(query, (error, result) => {
+                resolve(result);
+            })
+        } catch (error) {
+            console.log(error);
+        }
+    })
+}
+
 function applyQuery(query){
     db.query(query, (error, result) => {
         if(error){
@@ -80,9 +93,50 @@ function modifySong(singleSongInfo){
     applyQuery(query);
 }
 
+async function updateLike(songInfo){
+    sql = 'UPDATE song SET ? WHERE token = ? AND listId = ? AND songIndex = ?';
+    set = {likeNum: songInfo.like};
+    insert = [set, songInfo.token, songInfo.listId, songInfo.songIndex];
+    query = mysql.format(sql, insert);
+    result = getData(query);
+    console.log(result);
+}
+
+async function getCommentInfo(songInfo) {
+    sql = "SELECT * FROM comment WHERE listOwnerToken = ? AND songIndex = ? ORDER BY commentIndex";
+    insert = [songInfo.token, songInfo.songIndex];
+    query = mysql.format(sql, insert);
+    result = await getData(query);
+    console.log(result);
+    return result;
+}
+
+/* test
+songInfo = {
+    token: '1813929758691464',
+    listId: 1,
+    songIndex: 0
+}
+getCommentInfo(songInfo);
+
+*/
+
+/* test
+songInfo = {
+    like: 88,
+    token: '1813929758691464',
+    listId: 1,
+    songIndex: 1
+}
+
+updateLike(songInfo);
+*/
+
 module.exports = {
     createSong: createSong,
     deleteSong: deleteSong,
     modifySong: modifySong,
     deleteSongInList: deleteSongInList,
+    updateLike: updateLike,
+    getCommentInfo: getCommentInfo
 }

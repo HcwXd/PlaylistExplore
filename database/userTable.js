@@ -41,8 +41,16 @@ async function getUserInfo(token){
     return userInfo[0];
 }
 
+async function updateBio(bioInfo){
+    let sql = 'UPDATE user SET ? WHERE token = ?';
+    let insert = [{bio: bioInfo.content}, bioInfo.id];
+    let query = mysql.format(sql, insert);
+    applyQuery(query);
+}
+
 module.exports = {
     userExist: userExist,
     createAccount: createAccount,
-    getUserInfo: getUserInfo
+    getUserInfo: getUserInfo,
+    updateBio: updateBio
 }
