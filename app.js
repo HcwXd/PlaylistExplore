@@ -74,10 +74,8 @@ io.on('connect', async (socket) => {
   });
   socket.on('publishNewPlaylist', (playListInfo) => {
     console.log(playListInfo);
-
     playListInfo['token'] = socket.handshake.session.token;
     songListTable.modifyPlayList(playListInfo);
-    res.redirect('/login');
   });
   socket.on('getUserInfo', async () => {
     console.log(socket.handshake.session.token);
