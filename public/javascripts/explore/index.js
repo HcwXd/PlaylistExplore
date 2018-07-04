@@ -6,6 +6,7 @@ let fivePlaylistInfo;
 socket.on('getLatestPlaylists', (_fivePlaylistInfo) => {
 
     fivePlaylistInfo = _fivePlaylistInfo;
+    console.log(fivePlaylistInfo);
     renderLatestPlaylist();
 })
 
@@ -504,11 +505,12 @@ function renderLatestPlaylist() {
         // let bg_url = `https://img.youtube.com/vi/${fivePlaylistInfo[i].playlistInfo.songList[j].url}/hqdefault.jpg`;
         // <img class="playlist_cover" src="${fivePlaylistInfo[i].playlistInfo.songList[0].cover}">
 
-        if (fivePlaylistInfo[i].playlistInfo.uploadCover) {
-            coverPhoto = fivePlaylistInfo[i].playlistInfo.uploadCover;
-        } else {
+        //if (fivePlaylistInfo[i].playlistInfo.uploadCover) {
+            //coverPhoto = fivePlaylistInfo[i].playlistInfo.uploadCover;
+        //} else {
             coverPhoto = `https://img.youtube.com/vi/${fivePlaylistInfo[i].playlistInfo.songList[0].url}/hqdefault.jpg`;
-        }
+        //}
+
 
         post_content.innerHTML = `
             <div class="header">

@@ -1,6 +1,5 @@
 const passport = require('passport');
 const Strategy = require('passport-facebook').Strategy;
-const fs = require('fs');
 const config = require('./passportConfig.js');
 /* database */
 const userTable = require('../database/userTable');
@@ -25,8 +24,6 @@ passport.use(new Strategy({
             userName: profile._json.name,
             avatar: getAvatarURL(profile._json.id)
         }
-        let path = __dirname + "../public/img/" + profile._json.id + '/';
-        fs.mkdirSync(path);
         userTable.createAccount(userData);
         return cb(null, profile);
     }));

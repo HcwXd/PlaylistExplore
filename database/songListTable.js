@@ -3,8 +3,8 @@ const mysql = require("mysql");
 const songTable = require('./songTable')
 const userTable = require('./userTable')
 const { map } = require('p-iteration');
-const path = require('path');
-const fs = require('fs');
+
+
 /*
     PRIMARY KEY
     token
@@ -38,27 +38,16 @@ function getData(query) {
     })
 }
 
-async function addCoverImage(imgData, path){
-    fs.writeFile(path, imgData, ()=>{
-        console.log("write successfully");
-    })
-}
-
 function createPlayList(playListInfo) {
-    let path = __dirname + "../public/img/" + playListInfo.token + '/' + playListInfo.uploadCover.name;
-    console.log(path);
     let sql = "INSERT INTO songList SET ?";
     let insertObject = {
         token: playListInfo.token,
         listId: playListInfo.listId,
         name: playListInfo.name,
         des: playListInfo.des,
-        date: playListInfo.date,
-        cover: path,
+        date: playListInfo.date
     }
-
     let query = mysql.format(sql, insertObject);
-    addCoverImage(playListInfo.uploadCover, path);
     applyQuery(query);
 
     /* add song to database */
@@ -68,11 +57,11 @@ function createPlayList(playListInfo) {
     })
 }
 
-function deletePlayList(token, listId) {
+function deletePlayList(playListInfo) {
     let sql = "DELETE FROM songList WHERE ?? = ? AND ?? = ?";
     let condition = [
-        'token', token,
-        'listId', listId,
+        'token', playListInfo.token,
+        'listId', playListInfo.listId,
     ]
     let query = mysql.format(sql, condition);
     console.log(query);
@@ -83,7 +72,7 @@ function deletePlayList(token, listId) {
 }
 
 async function modifyPlayList(playListInfo) {
-    await deletePlayList(playListInfo.token, playListInfo.listId);
+    await deletePlayList(playListInfo);
     createPlayList(playListInfo);
 }
 
@@ -133,8 +122,7 @@ async function getCompletePlayListInfo(playListInfo, needComment) {
             des: playListMeta.des,
             date: playListMeta.date,
             token: playListInfo.token,
-            listId: playListInfo.listId,
-            uploadCover: playListMeta.cover,
+            listId: playListInfo.listId
         }
     };
     //console.log(completePlayListInfo);
@@ -175,7 +163,6 @@ async function getLatestPlaylists(){
     console.log(pageInfo);
     return pageInfo;
 }
-
 
 
 /* test
