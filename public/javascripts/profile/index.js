@@ -334,9 +334,7 @@ function addComment() {
         alert("Please log in  to add your comment");
         return
     }
-    let commentId = userInfo.token;
-    // Haven't define
-    let listOwnerId = ownerInfo.name;
+    let listOwnerId = userInfo.token;
 
     let listId = 1;
     let songIndex = nowPlayingIndex;
