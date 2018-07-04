@@ -330,6 +330,10 @@ function renderNewComment(ownerInfo) {
 }
 
 function addComment() {
+    if (!userInfo) {
+        alert("Please log in  to add your comment");
+        return
+    }
     let commentId = userInfo.token;
     // Haven't define
     let listOwnerId = ownerInfo.name;
@@ -360,7 +364,7 @@ function renderNewLike(ownerInfo) {
 
 function addLike() {
     if (!userInfo) {
-        alert("Please log in first to express your love");
+        alert("Please log in to express your love");
         return
     }
     let likeId = userInfo.token;
