@@ -504,6 +504,12 @@ function renderLatestPlaylist() {
         // let bg_url = `https://img.youtube.com/vi/${fivePlaylistInfo[i].playlistInfo.songList[j].url}/hqdefault.jpg`;
         // <img class="playlist_cover" src="${fivePlaylistInfo[i].playlistInfo.songList[0].cover}">
 
+        if (fivePlaylistInfo[i].playlistInfo.uploadCover) {
+            coverPhoto = fivePlaylistInfo[i].playlistInfo.uploadCover;
+        } else {
+            coverPhoto = `https://img.youtube.com/vi/${fivePlaylistInfo[i].playlistInfo.songList[0].url}/hqdefault.jpg`;
+        }
+
         post_content.innerHTML = `
             <div class="header">
                 <div class="owner_info">
@@ -512,7 +518,7 @@ function renderLatestPlaylist() {
                 </div>
                 <div class="more_info">=</div>
             </div>
-            <img class="playlist_cover" data-token="${fivePlaylistInfo[i].playlistInfo.token}" src="https://img.youtube.com/vi/${fivePlaylistInfo[i].playlistInfo.songList[0].url}/hqdefault.jpg">
+            <img class="playlist_cover" data-token="${fivePlaylistInfo[i].playlistInfo.token}" src="${coverPhoto}">
             <div class="playlist_stats">
                 <div class="like">♥${like}</div>
                 <div class="date">${fivePlaylistInfo[i].playlistInfo.date.substr(0,10)}</div>
