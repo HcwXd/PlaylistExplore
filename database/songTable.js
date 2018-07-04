@@ -1,6 +1,7 @@
 const db = require("./DB");
 const mysql = require("mysql");
-
+const { map } = require('p-iteration');
+const userTable = require('./userTable');
 /*
     Primary Key
     token
@@ -107,8 +108,20 @@ async function getCommentInfo(songInfo) {
     insert = [songInfo.token, songInfo.songIndex];
     query = mysql.format(sql, insert);
     result = await getData(query);
-    console.log(result);
-    return result;
+    let commentInfoArray = [];
+    await map(result, async(element, index) => {
+
+        userInfo = await userTable.getUserInfo(element.commentToken);
+
+        commentInfoArray[index] = {
+            userName: userInfo.userName,
+            avatar: userInfo.avatar,
+            commentIndex: element.commentIndex,
+            content: element.commentContent
+        }
+    })
+    console.log(commentInfoArray);
+    return commentInfoArray;
 }
 
 /* test

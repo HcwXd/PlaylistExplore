@@ -72,8 +72,9 @@ commentInfo = {
     commentContent: 'I like this song too!'
 }
 
-modifyComment(commentInfo);
-
+/* test
+    modifyComment(commentInfo);
+*/
 module.exports = {
     createComment: createComment,
     deleteComment: deleteComment,
