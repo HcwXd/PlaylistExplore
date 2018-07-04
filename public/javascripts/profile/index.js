@@ -14,6 +14,7 @@ socket.emit('getOwnerInfo');
 socket.on('getOwnerInfo', (_ownerInfo) => {
     ownerInfo = _ownerInfo;
     console.log(ownerInfo);
+    renderOwnerInfo(ownerInfo);
 })
 
 const _ownerInfo = {
@@ -142,7 +143,8 @@ function generatePlayer(url) {
 var player;
 
 function onYouTubePlayerAPIReady() {
-    var final_url = ownerInfo.playlistInfo.songList[0].url;
+    // var final_url = ownerInfo.playlistInfo.songList[0].url;
+    var final_url = 'x3bDhtuC5yk';
     player = new YT.Player('video_placeholder', {
         width: '700',
         height: '400',
@@ -299,7 +301,6 @@ function renderOwnerInfo(ownerInfo) {
 
 }
 
-renderOwnerInfo(ownerInfo);
 
 function renderNewComment(ownerInfo) {
     let comment_wrap = document.querySelector('.comment_wrap');
