@@ -558,9 +558,9 @@ var inactivityTime = function () {
     // DOM Events
     document.onload = resetTimer;
     document.onmousemove = resetTimer;
-    document.onmousedown = resetTimer; // touchscreen presses
+    // document.onmousedown = resetTimer; // touchscreen presses
     document.ontouchstart = resetTimer;
-    document.onclick = resetTimer; // touchpad clicks
+    // document.onclick = resetTimer; // touchpad clicks
     document.onscroll = resetTimer; // scrolling with arrow keys
     document.onkeypress = resetTimer;
 
@@ -582,6 +582,7 @@ var inactivityTime = function () {
                 let css_right = random(0, 80);
                 album.style.top = css_top + "%";
                 album.style.right = css_right + "%";
+                album.href = `/profile?${fivePlaylistInfo[i].playlistInfo.token}`
                 // let bg_url = `https://img.youtube.com/vi/${fivePlaylistInfo[i].songList[j].url}/maxresdefault.jpg`
                 let bg_url = `https://img.youtube.com/vi/${fivePlaylistInfo[i].playlistInfo.songList[j].url}/hqdefault.jpg`
 
