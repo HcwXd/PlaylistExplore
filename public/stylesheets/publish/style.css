@@ -24,7 +24,7 @@ html, body {
   min-height: 100%; }
   .content_wrap .publish_wrap {
     z-index: 10;
-    width: 300px;
+    width: 450px;
     position: absolute;
     top: 45%;
     left: 50%;
@@ -64,7 +64,7 @@ html, body {
             outline-width: 0px;
             box-shadow: none;
             color: #bebebe; }
-        .content_wrap .publish_wrap .container .field .playlist_des_input {
+        .content_wrap .publish_wrap .container .field .playlist_des_input, .content_wrap .publish_wrap .container .field .avatar_input {
           margin-top: 15px;
           align-items: center;
           text-decoration: none;
@@ -76,7 +76,7 @@ html, body {
           line-height: 18px;
           border-radius: 5px;
           padding: 15px 15px; }
-          .content_wrap .publish_wrap .container .field .playlist_des_input:focus {
+          .content_wrap .publish_wrap .container .field .playlist_des_input:focus, .content_wrap .publish_wrap .container .field .avatar_input:focus {
             word-wrap: break-all;
             outline-color: #2c2d30;
             outline-width: 0px;
