@@ -34,18 +34,19 @@ function publish() {
         return;
     }
     let date = new Date();
-    // let YYYYMMDD = `${date.getFullYear()}/${date.getMonth()+1}/${date.getDay()+1}/${date.getTime()}`;
+    let uploadCover = document.querySelector('.avatar_input').files[0];
     let playlistInfo = {
         name: document.querySelector('.playlist_input_row').value,
         des: document.querySelector('.playlist_des_input').value,
         date: date,
         songList: this.songList,
-        listId: 1
+        listId: 1,
+        uploadCover: uploadCover
     };
     console.log(playlistInfo);
 
     socket.emit('publishNewPlaylist', playlistInfo);
-    window.location = `/profile?${urlQueryString}`;
+    // window.location = `/profile?${urlQueryString}`;
 }
 
 function readyToPublish() {
@@ -60,7 +61,11 @@ function readyToPublish() {
         </div>
         <div class="field">
             <label>Playlist Description</label>
-            <textarea rows="20" cols="20" class="playlist_des_input" placeholder="Write something about the playlist..."></textarea>
+            <textarea rows="15" cols="20" class="playlist_des_input" placeholder="Write something about the playlist..."></textarea>
+        </div>
+        <div class="field">
+            <label>Cover</label>
+            <input class="avatar_input" type="file" name="avatar">
         </div>
         <a data="/profile">
             <div class="real_publish_btn">Publish</div>
@@ -166,11 +171,9 @@ function appendSearchResults(singleSongInfos, rootNode) {
 
         let song_info = document.createElement('div');
         song_info.className = "song_info"
-        // song_info.setAttribute("data-url", singleSongInfo.url);
 
         let song_cover = document.createElement('img');
         song_cover.className = "song_cover"
-        // song_cover.src = singleSongInfo.cover;
         song_cover.src = `https://img.youtube.com/vi/${singleSongInfo.url}/hqdefault.jpg`
 
         let song_name = document.createElement('div');
