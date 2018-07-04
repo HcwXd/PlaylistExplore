@@ -110,14 +110,14 @@ io.on('connect', async (socket) => {
       console.log(commentInfo);
       await commentTable.modifyComment(commentInfo);
       songInfo = {
-          token: comment.listOwnerToken,
-          listId: comment.listId,
-          songIndex: comment.songIndex,
+          token: commentInfo.listOwnerToken,
+          listId: commentInfo.listId,
+          songIndex: commentInfo.songIndex,
       }
       comments = await songTable.getCommentInfo(songInfo);
       console.log("comments");
       console.log(comments);
-      socket.emit('addComment', comments);
+      socket.emit('newComment', comments);
 
       /* commentToken commentIndex */
   });
