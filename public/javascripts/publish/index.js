@@ -46,7 +46,7 @@ function publish() {
     console.log(playlistInfo);
 
     socket.emit('publishNewPlaylist', playlistInfo);
-    // window.location = `/profile?${urlQueryString}`;
+    window.location = `/profile?${urlQueryString}`;
 }
 
 function readyToPublish() {
