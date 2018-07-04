@@ -327,14 +327,16 @@ function renderNewComment(ownerInfo) {
         </div>`;
     }
     comment_wrap.innerHTML = comment_wrap_html;
+    document.querySelector('.comment_text').value = "";
+
 }
 
 function addComment() {
     if (!userInfo) {
-        alert("Please log in  to add your comment");
+        alert("Please log in to add your comment");
         return
     }
-    let listOwnerId = userInfo.token;
+    let listOwnerId = urlQueryString;
 
     let listId = 1;
     let songIndex = nowPlayingIndex;
@@ -353,12 +355,15 @@ function addComment() {
     });
 }
 
-function renderNewLike(ownerInfo) {
+function renderNewLike(ownerInfo, newLikeNumber) {
     let song_stats = document.querySelector('.song_stats');
     let song_stats_html = `
     <div class="like_btn">♥</div>
     <div class="like_number">${ownerInfo.playlistInfo.songList[nowPlayingIndex].like}</div>`
     song_stats.innerHTML = song_stats_html;
+
+    let song_list_child = document.querySelector('.song_list').childNodes;
+    song_list_child[nowPlayingIndex + 1].lastChild.innerHTML = `♥ ${newLikeNumber}`;
 }
 
 function addLike() {
@@ -381,7 +386,8 @@ function addLike() {
     socket.emit("newLike", likeInfo);
 
     ownerInfo.playlistInfo.songList[nowPlayingIndex].like += 1;
-    renderNewLike(ownerInfo);
+    let newLikeNumber = ownerInfo.playlistInfo.songList[nowPlayingIndex].like;
+    renderNewLike(ownerInfo, newLikeNumber);
 
 
 }
