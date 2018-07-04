@@ -84,10 +84,12 @@ async function getSongArrayInfo(playListInfo){
 }
 
 async function getCommentInfo(songInfo){
-    sql = "SELECT * FROM comment WHERE token = ? AND songIndex = ? ORDER BY commentIndex";
+    sql = "SELECT * FROM comment WHERE listOwnerToken = ? AND songIndex = ? ORDER BY commentIndex";
     insert = [songInfo.token, songInfo.songIndex];
     query = mysql.format(sql, insert);
     result = await getData(query);
+    console.log(result);
+    return result;
 }
 
 async function getCompletePlayList(songListResult){
@@ -146,6 +148,7 @@ playListInfo = {
 /* test
     getCompletePlayListInfo(playListInfo);
 */
+
 
 module.exports = {
     createPlayList: createPlayList,
