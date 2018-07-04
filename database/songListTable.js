@@ -173,8 +173,6 @@ async function getLatestPlaylists(){
 
 */
 
-
-
 module.exports = {
     createPlayList: createPlayList,
     deletePlayList: deletePlayList,
