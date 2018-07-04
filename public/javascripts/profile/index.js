@@ -9,13 +9,6 @@ socket.on('getUserInfo', (_userInfo) => {
 let userId = "horseman";
 let nowPlayingIndex = 0;
 
-let ownerInfo;
-socket.emit('getOwnerInfo');
-socket.on('getOwnerInfo', (_ownerInfo) => {
-    ownerInfo = _ownerInfo;
-    console.log(ownerInfo);
-    renderOwnerInfo(ownerInfo);
-})
 
 const _ownerInfo = {
     userName: "HorseMin",
@@ -143,16 +136,26 @@ function generatePlayer(url) {
 var player;
 
 function onYouTubePlayerAPIReady() {
-    // var final_url = ownerInfo.playlistInfo.songList[0].url;
-    var final_url = 'x3bDhtuC5yk';
-    player = new YT.Player('video_placeholder', {
-        width: '700',
-        height: '400',
-        videoId: final_url,
-        events: {
-            onStateChange: onPlayerStateChange
-        }
-    });
+    let ownerInfo;
+    socket.emit('getOwnerInfo');
+    socket.on('getOwnerInfo', (_ownerInfo) => {
+        ownerInfo = _ownerInfo;
+        console.log(ownerInfo);
+        // var final_url = 'x3bDhtuC5yk';
+        player = new YT.Player('video_placeholder', {
+            width: '700',
+            height: '400',
+            videoId: final_url,
+            events: {
+                onStateChange: onPlayerStateChange
+            }
+        });
+        renderOwnerInfo(ownerInfo);
+        var final_url = ownerInfo.playlistInfo.songList[0].url;
+
+
+    })
+
 }
 
 function onPlayerStateChange(event) {
