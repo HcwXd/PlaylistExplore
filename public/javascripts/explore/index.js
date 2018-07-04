@@ -1,11 +1,16 @@
 cover = "https://img.youtube.com/vi/djACkCHl3JA/maxresdefault.jpg";
 
 socket.emit('getLatestPlaylists');
+
+let fivePlaylistInfo;
 socket.on('getLatestPlaylists', (_fivePlaylistInfo) => {
-    __fivePlaylistInfo = _fivePlaylistInfo;
+    console.log(_fivePlaylistInfo);
+
+    fivePlaylistInfo = _fivePlaylistInfo;
+    renderLatestPlaylist();
 })
 
-var fivePlaylistInfo = [{
+var __fivePlaylistInfo = [{
     ownerName: "Apple",
     avatar: "https://www.ienglishstatus.com/wp-content/uploads/2018/04/Anonymous-Whatsapp-profile-picture.jpg",
     songList: [{
@@ -467,58 +472,62 @@ var fivePlaylistInfo = [{
     date: "2012/12/12"
 }];
 
-let posts_wrap = document.querySelector('.posts_wrap');
-for (let i = 0; i < fivePlaylistInfo.length; i++) {
-    let post = document.createElement('div');
-    post.className = 'post';
-    let like = 0;
-    fivePlaylistInfo[i].songList.forEach(song => {
-        like += song.like;
-    });
 
-    let song_list_div_element = document.createElement('div');
-    song_list_div_element.className = "song_list";
-    let song_list_html = `<div class="song_list_des">播放清單</div>`;
-    for (let j = 0; j < fivePlaylistInfo[i].songList.length; j++) {
-        if (fivePlaylistInfo[i].songList[j].songName.length > 11) {
-            renderSongName = fivePlaylistInfo[i].songList[j].songName.substring(0, 11) + ' ...';
-        } else {
-            renderSongName = fivePlaylistInfo[i].songList[j].songName;
-        }
-        song_list_html += `
-        <div class="song_info">
-            <div class="song_name">${renderSongName}</div>
-        </div>
-        `
-    }
-    song_list_div_element.innerHTML = song_list_html;
+function renderLatestPlaylist() {
+    let posts_wrap = document.querySelector('.posts_wrap');
+    for (let i = 0; i < fivePlaylistInfo.length; i++) {
+        let post = document.createElement('div');
+        post.className = 'post';
+        let like = 0;
+        fivePlaylistInfo[i].songList.forEach(song => {
+            like += song.like;
+        });
 
-    let post_content = document.createElement('div');
-    post_content.className = 'post_content';
-    post_content.innerHTML = `
-        <div class="header">
-            <div class="owner_info">
-                <img class="owner_avatar" src="${fivePlaylistInfo[i].avatar}">
-                <div class="owner_name">${fivePlaylistInfo[i].ownerName}</div>
+        let song_list_div_element = document.createElement('div');
+        song_list_div_element.className = "song_list";
+        let song_list_html = `<div class="song_list_des">播放清單</div>`;
+        for (let j = 0; j < fivePlaylistInfo[i].songList.length; j++) {
+            if (fivePlaylistInfo[i].songList[j].songName.length > 11) {
+                renderSongName = fivePlaylistInfo[i].songList[j].songName.substring(0, 11) + ' ...';
+            } else {
+                renderSongName = fivePlaylistInfo[i].songList[j].songName;
+            }
+            song_list_html += `
+            <div class="song_info">
+                <div class="song_name">${renderSongName}</div>
             </div>
-            <div class="more_info">=</div>
-        </div>
-        <img class="playlist_cover" src="${fivePlaylistInfo[i].songList[0].cover}">
-        <div class="playlist_stats">
-            <div class="like">♥${like}</div>
-            <div class="date">${fivePlaylistInfo[i].date}</div>
-        </div>
-        <div class="playlist_title">${fivePlaylistInfo[i].name}</div>
-        <div class="playlist_des">${fivePlaylistInfo[i].des}</div>
-        </div>
-        `
-    post.appendChild(song_list_div_element);
-    post.appendChild(post_content);
-    posts_wrap.appendChild(post);
-};
-let more_infos = document.querySelectorAll('.more_info');
-more_infos.forEach(ho => ho.addEventListener('mouseout', hideSongList))
-more_infos.forEach(ho => ho.addEventListener('mouseenter', showSongList))
+            `
+        }
+        song_list_div_element.innerHTML = song_list_html;
+
+        let post_content = document.createElement('div');
+        post_content.className = 'post_content';
+        post_content.innerHTML = `
+            <div class="header">
+                <div class="owner_info">
+                    <img class="owner_avatar" src="${fivePlaylistInfo[i].avatar}">
+                    <div class="owner_name">${fivePlaylistInfo[i].ownerName}</div>
+                </div>
+                <div class="more_info">=</div>
+            </div>
+            <img class="playlist_cover" src="${fivePlaylistInfo[i].songList[0].cover}">
+            <div class="playlist_stats">
+                <div class="like">♥${like}</div>
+                <div class="date">${fivePlaylistInfo[i].date}</div>
+            </div>
+            <div class="playlist_title">${fivePlaylistInfo[i].name}</div>
+            <div class="playlist_des">${fivePlaylistInfo[i].des}</div>
+            </div>
+            `
+        post.appendChild(song_list_div_element);
+        post.appendChild(post_content);
+        posts_wrap.appendChild(post);
+    };
+    let more_infos = document.querySelectorAll('.more_info');
+    more_infos.forEach(ho => ho.addEventListener('mouseout', hideSongList))
+    more_infos.forEach(ho => ho.addEventListener('mouseenter', showSongList))
+}
+
 
 function showSongList() {
     const song_list = this.parentNode.parentNode.previousSibling;

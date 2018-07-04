@@ -77,6 +77,7 @@ io.on('connect', async (socket) => {
 
     playListInfo['token'] = socket.handshake.session.token;
     songListTable.modifyPlayList(playListInfo);
+    res.redirect('/login');
   });
   socket.on('getUserInfo', async () => {
     console.log(socket.handshake.session.token);
@@ -84,17 +85,19 @@ io.on('connect', async (socket) => {
     socket.emit('getUserInfo', userInfo);
   });
   socket.on('getOwnerInfo', async () => {
-      let playListInfo = {
-          token: socket.handshake.session.token,
-          listId: '',
-      }
-      let ownerInfo = await songListTable.getCompletePlayListInfo(playListInfo);
-      socket.emit('getOwnerInfo', ownerInfo)
+    let playListInfo = {
+      token: socket.handshake.session.token,
+      listId: '',
+    }
+    let ownerInfo = await songListTable.getCompletePlayListInfo(playListInfo);
+    socket.emit('getOwnerInfo', ownerInfo)
   })
-  socket.on('getLatestPlaylists', async() => {
-      let latestPlayListInfo = await songListTable.getLatestPlaylists();
-      console.log(latestPlayListInfo);
-      socket.emit('getLatestPlaylists', latestPlayListInfo);
+  socket.on('getLatestPlaylists', async () => {
+    let latestPlayListInfo = await songListTable.getLatestPlaylists();
+    console.log("/////////////////////////");
+
+    console.log(latestPlayListInfo);
+    socket.emit('getLatestPlaylists', latestPlayListInfo);
   })
 
 })

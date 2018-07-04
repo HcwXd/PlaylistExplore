@@ -182,7 +182,7 @@ function renderNextPlayer() {
 
     const song_des = document.querySelector('.song_des');
     let song_des_html = `
-    <div class="song_date">${playlistInfo.date}</div>
+    <div class="song_date">${playlistInfo.date.substr(0,10)}</div>
     <div class="song_text">${playlistInfo.songList[index].des}</div>`
     song_des.innerHTML = song_des_html;
 
@@ -216,7 +216,7 @@ function renderPlayer() {
 
     const song_des = document.querySelector('.song_des');
     let song_des_html = `
-    <div class="song_date">${playlistInfo.date}</div>
+    <div class="song_date">${playlistInfo.date.substr(0,10)}</div>
     <div class="song_text">${playlistInfo.songList[index].des}</div>`
     song_des.innerHTML = song_des_html;
 
@@ -253,7 +253,7 @@ function renderNewPlayer(ownerInfo, index) {
 
     const song_des = document.querySelector('.song_des');
     let song_des_html = `
-    <div class="song_date">${ownerInfo.playlistInfo.date}</div>
+    <div class="song_date">${ownerInfo.playlistInfo.date.substr(0,10)}</div>
     <div class="song_text">${ownerInfo.playlistInfo.songList[index].des}</div>`
     song_des.innerHTML = song_des_html;
 
