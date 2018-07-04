@@ -330,7 +330,7 @@ function renderNewComment(ownerInfo) {
 }
 
 function addComment() {
-    let commentId = userInfo[0].token;
+    let commentId = userInfo.token;
     // Haven't define
     let listOwnerId = ownerInfo.name;
 

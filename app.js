@@ -96,38 +96,38 @@ io.on('connect', async (socket) => {
   })
 
   socket.on('getOwnerInfo', async (pageToken) => {
-      let playListInfo = {
-        token: pageToken,
-        listId: '',
-      }
-      let ownerInfo = await songListTable.getCompletePlayListInfo(playListInfo);
-      socket.emit('getOwnerInfo', ownerInfo)
+    let playListInfo = {
+      token: pageToken,
+      listId: '',
+    }
+    let ownerInfo = await songListTable.getCompletePlayListInfo(playListInfo);
+    socket.emit('getOwnerInfo', ownerInfo)
   })
 
   socket.on('newComment', async (commentInfo) => {
-      commentInfo['commentToken'] = socket.handshake.session.token;
-      console.log("comment");
-      console.log(commentInfo);
-      await commentTable.modifyComment(commentInfo);
-      songInfo = {
-          token: comment.listOwnerToken,
-          listId: comment.listId,
-          songIndex: comment.songIndex,
-      }
-      comments = await songTable.getCommentInfo(songInfo);
-      console.log("comments");
-      console.log(comments);
-      socket.emit('addComment', comments);
+    commentInfo['commentToken'] = socket.handshake.session.token;
+    console.log("comment");
+    console.log(commentInfo);
+    await commentTable.modifyComment(commentInfo);
+    songInfo = {
+      token: comment.listOwnerToken,
+      listId: comment.listId,
+      songIndex: comment.songIndex,
+    }
+    comments = await songTable.getCommentInfo(songInfo);
+    console.log("comments");
+    console.log(comments);
+    socket.emit('newComment', comments);
 
-      /* commentToken commentIndex */
+    /* commentToken commentIndex */
   });
 
-  socket.on('addLike', async(songInfo)=> {
-      songTable.updateLike(songInfo);
+  socket.on('addLike', async (songInfo) => {
+    songTable.updateLike(songInfo);
   });
 
-  socket.on('updateBio', async(bioInfo) => {
-      userTable.updateBio(bioInfo);
+  socket.on('updateBio', async (bioInfo) => {
+    userTable.updateBio(bioInfo);
   })
 
 })
