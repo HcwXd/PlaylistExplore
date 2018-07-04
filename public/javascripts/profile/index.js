@@ -285,7 +285,7 @@ function renderOwnerInfo(ownerInfo) {
         <div class="owner_name">${ownerInfo.userName}</div>
         <div class="owner_bio">${ownerInfo.bio?ownerInfo.bio:""}</div>`
     owner_info_wrap.innerHTML = owner_info_wrap_html;
-    if (userInfo.token === urlQueryString) {
+    if (userInfo && (userInfo.token === urlQueryString)) {
         addEditBioBtn();
     }
 
