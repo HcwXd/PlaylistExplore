@@ -6,7 +6,7 @@ let fivePlaylistInfo;
 socket.on('getLatestPlaylists', (_fivePlaylistInfo) => {
     console.log(_fivePlaylistInfo);
 
-    fivePlaylistInfo = _fivePlaylistInfo;
+    fivePlaylistInfo = __fivePlaylistInfo;
     renderLatestPlaylist();
 })
 
@@ -501,7 +501,10 @@ function renderLatestPlaylist() {
         song_list_div_element.innerHTML = song_list_html;
 
         let post_content = document.createElement('div');
-        post_content.className = 'post_content';
+        post_content.className = 'post_content'
+        // let bg_url = `https://img.youtube.com/vi/${fivePlaylistInfo[i].songList[j].url}/hqdefault.jpg`;
+        // <img class="playlist_cover" src="${fivePlaylistInfo[i].songList[0].cover}">
+
         post_content.innerHTML = `
             <div class="header">
                 <div class="owner_info">
@@ -510,7 +513,7 @@ function renderLatestPlaylist() {
                 </div>
                 <div class="more_info">=</div>
             </div>
-            <img class="playlist_cover" src="${fivePlaylistInfo[i].songList[0].cover}">
+            <img class="playlist_cover" src="https://img.youtube.com/vi/${fivePlaylistInfo[i].songList[0].url}/hqdefault.jpg">
             <div class="playlist_stats">
                 <div class="like">♥${like}</div>
                 <div class="date">${fivePlaylistInfo[i].date}</div>
@@ -573,7 +576,9 @@ var inactivityTime = function () {
                 let css_right = random(0, 80);
                 album.style.top = css_top + "%";
                 album.style.right = css_right + "%";
-                let bg_url = `https://img.youtube.com/vi/${fivePlaylistInfo[i].songList[j].url}/maxresdefault.jpg`
+                // let bg_url = `https://img.youtube.com/vi/${fivePlaylistInfo[i].songList[j].url}/maxresdefault.jpg`
+                let bg_url = `https://img.youtube.com/vi/${fivePlaylistInfo[i].songList[j].url}/hqdefault.jpg`
+
                 album.style.backgroundImage = `url(${bg_url})`
                 // album.setAttribute("href", "#playlist");
                 let delay = random(-6, 0)

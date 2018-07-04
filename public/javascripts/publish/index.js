@@ -167,7 +167,8 @@ function appendSearchResults(singleSongInfos, rootNode) {
 
         let song_cover = document.createElement('img');
         song_cover.className = "song_cover"
-        song_cover.src = singleSongInfo.cover;
+        // song_cover.src = singleSongInfo.cover;
+        song_cover.src = `https://img.youtube.com/vi/${singleSongInfo.url}/hqdefault.jpg`
 
         let song_name = document.createElement('div');
         song_name.className = "song_name"
