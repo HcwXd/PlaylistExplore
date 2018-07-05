@@ -9,6 +9,13 @@ npm start
 ```
 打開[本地端網址](http://localhost:3000/)（localhost:3000/）
 
+### Test account
+請使用者組帳號密碼使用臉書登入
+```
+account: 0979531495
+password: abcd12345
+```
+
 
 ## 功能說明
 
