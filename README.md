@@ -3,6 +3,7 @@
 ## Usage
 ```
 git clone https://github.com/HcwXd/PlaylistExplore.git
+cd PlaylistExplore
 npm install
 npm start
 ```
