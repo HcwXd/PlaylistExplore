@@ -188,6 +188,30 @@ function readyToPublish() {
 
     let real_publish_btn_node = document.querySelector('.real_publish_btn');
     real_publish_btn_node.addEventListener('click', publish);
+
+    let song_name_node_collection = document.querySelectorAll('.song_info > .song_name');
+    let readySongNames = [];
+    song_name_node_collection.forEach((node) => {
+        readySongNames.push(node.innerText)
+    });
+
+    let newSongListState = [];
+    let oldSongListState = [...songListState];
+
+    for (let newIndex = 0; newIndex < readySongNames.length; newIndex++) {
+        let popIndex;
+        oldSongListState = oldSongListState.map((item) => {
+            if (item.songName === readySongNames[newIndex]) {
+                newSongListState.push(item);
+                popIndex = oldSongListState.indexOf(item);
+            } else {
+                return item;
+            }
+        });
+        if (popIndex > -1) {
+            oldSongListState.splice(popIndex, 1);
+        }
+    };
 }
 
 function publish() {
