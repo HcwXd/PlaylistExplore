@@ -106,6 +106,7 @@ function addSongToPlaylist() {
     song_edit_node.className = "song_edit";
     song_edit_node.innerHTML = "X";
     song_edit_node.url = this.url;
+    song_edit_node.dataset.url = this.url;
     song_edit_node.addEventListener('click', deleteSongFromPlaylist);
 
     let song_info_node = document.createElement('div');
@@ -252,6 +253,7 @@ function addDragHandler() {
         item.addEventListener('dragleave', handleDragLeave);
         item.addEventListener('drop', handleDrop);
         item.addEventListener('dragend', handleDragEnd);
+        item.lastChild.addEventListener('click', deleteSongFromPlaylist);
     });
 }
 
@@ -259,7 +261,6 @@ function addDragHandler() {
 let dragItem = null;
 
 function handleDragStart(e) {
-    console.log("dragItem", dragItem);
     dragItem = this;
 
     e.dataTransfer.effectAllowed = 'move';
@@ -280,7 +281,6 @@ function handleDragOver(e) {
 function handleDragLeave(e) {
     this.style.borderTop = "0px solid yellow";
 
-    console.log("handleDragLeave", this);
 }
 
 function handleDrop(e) {
