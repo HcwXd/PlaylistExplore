@@ -153,7 +153,7 @@ html, body {
       .content_wrap .publishing_wrap .search_result_wrap .pick_des {
         border: 1px solid #bebebe;
         padding: 15px; }
-      .content_wrap .publishing_wrap .search_result_wrap .song_info {
+      .content_wrap .publishing_wrap .search_result_wrap .result_song_info {
         cursor: pointer;
         display: flex;
         justify-content: space-between;
@@ -161,14 +161,14 @@ html, body {
         border-top: 0px solid #bebebe;
         padding: 5px 0px;
         align-items: center; }
-        .content_wrap .publishing_wrap .search_result_wrap .song_info .song_name {
+        .content_wrap .publishing_wrap .search_result_wrap .result_song_info .song_name {
           display: inline-block;
           width: 85%;
           overflow: hidden;
           padding-left: 15px;
           padding-right: 15px;
           height: 48px; }
-        .content_wrap .publishing_wrap .search_result_wrap .song_info .song_cover {
+        .content_wrap .publishing_wrap .search_result_wrap .result_song_info .song_cover {
           width: 70px;
           height: 70px;
           display: inline-block;
