@@ -1,14 +1,170 @@
-cover = "https://img.youtube.com/vi/djACkCHl3JA/maxresdefault.jpg";
-
 socket.emit('getLatestPlaylists');
 
 let fivePlaylistInfo;
-socket.on('getLatestPlaylists', (_fivePlaylistInfo) => {
+socket.on('getLatestPlaylists', (socketOn_fivePlaylistInfo) => {
 
-    fivePlaylistInfo = _fivePlaylistInfo;
+    fivePlaylistInfo = socketOn_fivePlaylistInfo;
     console.log(fivePlaylistInfo);
     renderLatestPlaylist();
 })
+
+function renderLatestPlaylist() {
+    let posts_wrap_node = document.querySelector('.posts_wrap');
+    posts_wrap_node.innerHTML = "";
+
+    for (let playlistIndex = 0; playlistIndex < fivePlaylistInfo.length; playlistIndex++) {
+        let currentPlaylist = fivePlaylistInfo[playlistIndex];
+
+        let post_node = document.createElement('div');
+        post_node.className = 'post';
+
+        let totalLike = 0;
+        currentPlaylist.playlistInfo.songList.forEach(song => {
+            totalLike += song.like;
+        });
+
+        let song_list_node = document.createElement('div');
+        song_list_node.className = "song_list";
+
+        let song_list_html = `<div class="song_list_des">播放清單</div>`;
+        for (let songIndex = 0; songIndex < currentPlaylist.playlistInfo.songList.length; songIndex++) {
+
+            if (currentPlaylist.playlistInfo.songList[songIndex].songName.length > 11) {
+                renderSongName = currentPlaylist.playlistInfo.songList[songIndex].songName.substring(0, 11) + ' ...';
+            } else {
+                renderSongName = currentPlaylist.playlistInfo.songList[songIndex].songName;
+            }
+
+            song_list_html += `
+            <div class="song_info">
+                <div class="song_name">${renderSongName}</div>
+            </div>
+            `
+        }
+        song_list_node.innerHTML = song_list_html;
+
+        let post_content_node = document.createElement('div');
+        post_content_node.className = 'post_content'
+
+        post_content_node.innerHTML = `
+            <div class="header">
+                <div class="owner_info">
+                    <img class="owner_avatar" src="${currentPlaylist.avatar}">
+                    <div class="owner_name">${currentPlaylist.userName}</div>
+                </div>
+                <div class="more_info">=</div>
+            </div>
+            <img class="playlist_cover" data-token="${currentPlaylist.playlistInfo.token}" 
+            src="https://img.youtube.com/vi/${currentPlaylist.playlistInfo.songList[0].url}/hqdefault.jpg">
+            <div class="playlist_stats">
+                <div class="like">♥${totalLike}</div>
+                <div class="date">${currentPlaylist.playlistInfo.date.substr(0,10)}</div>
+            </div>
+            <div class="playlist_title">${currentPlaylist.playlistInfo.name}</div>
+            <div class="playlist_des">${currentPlaylist.playlistInfo.des}</div>
+            </div>
+            `
+
+        post_node.appendChild(song_list_node);
+        post_node.appendChild(post_content_node);
+        posts_wrap_node.appendChild(post_node);
+    };
+
+    let more_infos_node = document.querySelectorAll('.more_info');
+    more_infos_node.forEach(node => node.addEventListener('mouseout', hideSongList))
+    more_infos_node.forEach(node => node.addEventListener('mouseenter', showSongList))
+
+    let playlist_covers_node = document.querySelectorAll('.playlist_cover');
+    playlist_covers_node.forEach(node => node.addEventListener('click', goToTargetPlaylist))
+}
+
+function goToTargetPlaylist() {
+    window.location = `/profile?${this.dataset.token}`;
+}
+
+function showSongList() {
+    let song_list_node = this.parentNode.parentNode.previousSibling;
+    song_list_node.style.transform = "rotate(0)";
+    song_list_node.style.left = "101%";
+    song_list_node.style.opacity = "1";
+}
+
+function hideSongList() {
+    let song_list_node = this.parentNode.parentNode.previousSibling;
+    song_list_node.style.transform = "rotate(90deg)"
+    song_list_node.style.left = "100%"
+    song_list_node.style.opacity = "0";
+}
+
+function countInactivityTime() {
+    let idleTime;
+    window.onload = resetTimer;
+    // DOM Events
+    document.onload = resetTimer;
+    document.onmousemove = resetTimer;
+    // document.onmousedown = resetTimer; // touchscreen presses
+    document.ontouchstart = resetTimer;
+    // document.onclick = resetTimer; // touchpad clicks
+    document.onscroll = resetTimer; // scrolling with arrow keys
+    document.onkeypress = resetTimer;
+
+    function idleRender() {
+        let idle_background_node = document.createElement('div');
+        idle_background_node.className = "idle_background";
+
+        let content_wrap_node = document.querySelector('.content_wrap');
+        content_wrap_node.parentNode.appendChild(idle_background_node);
+
+        function random(min, max) {
+            let num = Math.floor(Math.random() * (max - min)) + min;
+            return num;
+        }
+        for (let i = 0; i < fivePlaylistInfo.length; i++) {
+            for (let j = 0; j < fivePlaylistInfo[i].playlistInfo.songList.length; j++) {
+
+                let album_node = document.createElement("A");
+                album_node.className = "album";
+
+                album_node.style.top = random(0, 80) + "%";
+                album_node.style.right = random(0, 80) + "%";
+                album_node.href = `/profile?${fivePlaylistInfo[i].playlistInfo.token}`
+                album_node.style.animationDelay = random(-6, 0) + "s";
+
+                let bg_url = `https://img.youtube.com/vi/${fivePlaylistInfo[i].playlistInfo.songList[j].url}/hqdefault.jpg`
+                album_node.style.backgroundImage = `url(${bg_url})`
+
+                idle_background_node.appendChild(album_node);
+            }
+
+        }
+    }
+
+    function resetTimer() {
+        if (document.querySelector('.idle_background')) {
+            document.querySelector('.idle_background').remove();
+        }
+        clearTimeout(idleTime);
+        idleTime = setTimeout(idleRender, 2000)
+
+    }
+};
+
+countInactivityTime();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 var __fivePlaylistInfo = [{
     userName: "Apple",
@@ -471,150 +627,3 @@ var __fivePlaylistInfo = [{
     des: "這是一個讓人頭昏腦脹的歌單",
     date: "2012/12/12"
 }];
-
-
-function renderLatestPlaylist() {
-    let posts_wrap = document.querySelector('.posts_wrap');
-    for (let i = 0; i < fivePlaylistInfo.length; i++) {
-        let post = document.createElement('div');
-        post.className = 'post';
-        let like = 0;
-        fivePlaylistInfo[i].playlistInfo.songList.forEach(song => {
-            like += song.like;
-        });
-
-        let song_list_div_element = document.createElement('div');
-        song_list_div_element.className = "song_list";
-        let song_list_html = `<div class="song_list_des">播放清單</div>`;
-        for (let j = 0; j < fivePlaylistInfo[i].playlistInfo.songList.length; j++) {
-            if (fivePlaylistInfo[i].playlistInfo.songList[j].songName.length > 11) {
-                renderSongName = fivePlaylistInfo[i].playlistInfo.songList[j].songName.substring(0, 11) + ' ...';
-            } else {
-                renderSongName = fivePlaylistInfo[i].playlistInfo.songList[j].songName;
-            }
-            song_list_html += `
-            <div class="song_info">
-                <div class="song_name">${renderSongName}</div>
-            </div>
-            `
-        }
-        song_list_div_element.innerHTML = song_list_html;
-
-        let post_content = document.createElement('div');
-        post_content.className = 'post_content'
-        // let bg_url = `https://img.youtube.com/vi/${fivePlaylistInfo[i].playlistInfo.songList[j].url}/hqdefault.jpg`;
-        // <img class="playlist_cover" src="${fivePlaylistInfo[i].playlistInfo.songList[0].cover}">
-
-        // if (fivePlaylistInfo[i].playlistInfo.uploadCover) {
-        //     coverPhoto = fivePlaylistInfo[i].playlistInfo.uploadCover;
-        // } else {
-        //     coverPhoto = `https://img.youtube.com/vi/${fivePlaylistInfo[i].playlistInfo.songList[0].url}/hqdefault.jpg`;
-        // }
-
-        post_content.innerHTML = `
-            <div class="header">
-                <div class="owner_info">
-                    <img class="owner_avatar" src="${fivePlaylistInfo[i].avatar}">
-                    <div class="owner_name">${fivePlaylistInfo[i].userName}</div>
-                </div>
-                <div class="more_info">=</div>
-            </div>
-            <img class="playlist_cover" data-token="${fivePlaylistInfo[i].playlistInfo.token}" src="https://img.youtube.com/vi/${fivePlaylistInfo[i].playlistInfo.songList[0].url}/hqdefault.jpg">
-            <div class="playlist_stats">
-                <div class="like">♥${like}</div>
-                <div class="date">${fivePlaylistInfo[i].playlistInfo.date.substr(0,10)}</div>
-            </div>
-            <div class="playlist_title">${fivePlaylistInfo[i].playlistInfo.name}</div>
-            <div class="playlist_des">${fivePlaylistInfo[i].playlistInfo.des}</div>
-            </div>
-            `
-        post.appendChild(song_list_div_element);
-        post.appendChild(post_content);
-        posts_wrap.appendChild(post);
-    };
-    let more_infos = document.querySelectorAll('.more_info');
-    more_infos.forEach(ho => ho.addEventListener('mouseout', hideSongList))
-    more_infos.forEach(ho => ho.addEventListener('mouseenter', showSongList))
-
-    let playlist_covers = document.querySelectorAll('.playlist_cover');
-    playlist_covers.forEach(co => co.addEventListener('click', getPageInfo))
-}
-
-function getPageInfo() {
-    console.log(this.dataset.token);
-    window.location = `/profile?${this.dataset.token}`;
-}
-
-function showSongList() {
-    const song_list = this.parentNode.parentNode.previousSibling;
-    song_list.style.transform = "rotate(0)";
-    song_list.style.left = "101%";
-    song_list.style.opacity = "1";
-}
-
-function hideSongList() {
-    const song_list = this.parentNode.parentNode.previousSibling;
-    song_list.style.transform = "rotate(90deg)"
-    song_list.style.left = "100%"
-    song_list.style.opacity = "0";
-}
-
-var inactivityTime = function () {
-    var t;
-    window.onload = resetTimer;
-    // DOM Events
-    document.onload = resetTimer;
-    document.onmousemove = resetTimer;
-    // document.onmousedown = resetTimer; // touchscreen presses
-    document.ontouchstart = resetTimer;
-    // document.onclick = resetTimer; // touchpad clicks
-    document.onscroll = resetTimer; // scrolling with arrow keys
-    document.onkeypress = resetTimer;
-
-    function idleRender() {
-        let content_wrap = document.querySelector('.content_wrap');
-        let idle_background = document.createElement('div');
-        idle_background.className = "idle_background";
-        content_wrap.parentNode.appendChild(idle_background);
-
-        function random(min, max) {
-            var num = Math.floor(Math.random() * (max - min)) + min;
-            return num;
-        }
-        for (let i = 0; i < fivePlaylistInfo.length; i++) {
-            for (let j = 0; j < fivePlaylistInfo[i].playlistInfo.songList.length; j++) {
-                let album = document.createElement("A");
-                album.className = "album";
-                let css_top = random(0, 80);
-                let css_right = random(0, 80);
-                album.style.top = css_top + "%";
-                album.style.right = css_right + "%";
-                album.href = `/profile?${fivePlaylistInfo[i].playlistInfo.token}`
-                // let bg_url = `https://img.youtube.com/vi/${fivePlaylistInfo[i].songList[j].url}/maxresdefault.jpg`
-                let bg_url = `https://img.youtube.com/vi/${fivePlaylistInfo[i].playlistInfo.songList[j].url}/hqdefault.jpg`
-
-                album.style.backgroundImage = `url(${bg_url})`
-                // album.setAttribute("href", "#playlist");
-                let delay = random(-6, 0)
-                album.style.animationDelay = delay + "s";
-                idle_background.appendChild(album);
-                // album.addEventListener("click", () => {
-                //     socket.emit("getPlaylistUrl", albumCollection[i].url);
-                // })
-
-            }
-
-        }
-    }
-
-    function resetTimer() {
-        if (document.querySelector('.idle_background')) {
-            document.querySelector('.idle_background').remove();
-        }
-        clearTimeout(t);
-        t = setTimeout(idleRender, 3000)
-
-    }
-};
-
-inactivityTime();
