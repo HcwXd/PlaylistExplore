@@ -4,9 +4,6 @@
 <head>
   <meta charset="UTF-8">
   <title>Playlist Explore - share and discover music</title>
-
-
-
   <link rel="stylesheet" href="/stylesheets/profile/style.css">
   <link rel="stylesheet" href="/stylesheets/components/style.css">
   <script src="/socket.io/socket.io.js"></script>
@@ -18,13 +15,13 @@
 
 <body>
   <%- include('components/nav') %>
-
-
     <div class="content_wrap">
-
       <div class="owner_info_wrap">
-      </div>
+        <% if (token === id) { %>
+          <h1>AAAAAAAA</h1>
+          <% } %>
 
+      </div>
       <div class="player_wrap">
 
         <div class="youtube_player">
@@ -48,10 +45,6 @@
         </div>
       </div>
     </div>
-
-
-
-
     <script src="/javascripts/profile/index.js"></script>
 
 

@@ -16,8 +16,10 @@ router.get('/login', function (req, res, next) {
 });
 
 router.get('/profile', function (req, res, next) {
-  console.log("apple", req.query.id);
-  res.render('profile');
+  let queryId = {
+    id: req.query.id
+  }
+  res.render('profile', queryId);
 });
 
 router.get('/signup', function (req, res, next) {
