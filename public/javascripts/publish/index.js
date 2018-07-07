@@ -222,8 +222,8 @@ function publish() {
     };
     socket.emit('publishNewPlaylist', playlistInfo);
 
-    const userToken = window.location.href.split('?')[1];
-    window.location = `/profile?${userToken}`;
+    const userToken = window.location.href.split('?id=')[1];
+    window.location = `/profile?id=${userToken}`;
 }
 
 

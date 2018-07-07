@@ -79,7 +79,7 @@ function renderLatestPlaylist() {
 }
 
 function goToTargetPlaylist() {
-    window.location = `/profile?${this.dataset.token}`;
+    window.location = `/profile?id=${this.dataset.token}`;
 }
 
 function showSongList() {

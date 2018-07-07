@@ -4,7 +4,7 @@ socket.on('getUserInfo', (socketOn_userInfo) => {
     userInfo = socketOn_userInfo;
 });
 
-const listOwnerToken = window.location.href.split('?')[1];
+const listOwnerToken = window.location.href.split('?id=')[1];
 let nowPlayingIndex = 0;
 let player;
 let ownerInfo;
@@ -144,6 +144,7 @@ function addComment() {
 
     let listId = 1;
     let songIndex = nowPlayingIndex;
+
     let commentInfo = {
         listOwnerToken,
         listId,
