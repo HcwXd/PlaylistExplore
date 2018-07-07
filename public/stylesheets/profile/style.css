@@ -126,20 +126,20 @@ input {
         padding: 5px 15px 5px 15px; }
       .content_wrap .player_wrap .song_des .song_text {
         padding: 5px 15px 15px 15px; }
-    .content_wrap .player_wrap .comment_wrap {
+    .content_wrap .player_wrap .comment_content_wrap {
       padding: 5px 15px; }
-      .content_wrap .player_wrap .comment_wrap .comment_info {
+      .content_wrap .player_wrap .comment_content_wrap .comment_info {
         display: flex;
         align-items: center;
         padding: 5px 5px;
         border-bottom: 1px solid #bebebe; }
-        .content_wrap .player_wrap .comment_wrap .comment_info .comment_avatar {
+        .content_wrap .player_wrap .comment_content_wrap .comment_info .comment_avatar {
           width: 40px;
           height: 40px;
           border-radius: 100%; }
-        .content_wrap .player_wrap .comment_wrap .comment_info .comment_name {
+        .content_wrap .player_wrap .comment_content_wrap .comment_info .comment_name {
           margin-left: 15px; }
-        .content_wrap .player_wrap .comment_wrap .comment_info .comment_content {
+        .content_wrap .player_wrap .comment_content_wrap .comment_info .comment_content {
           margin-left: 15px; }
     .content_wrap .player_wrap .comment_submit {
       padding: 5px 15px;
