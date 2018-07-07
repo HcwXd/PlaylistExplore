@@ -113,6 +113,7 @@ function addSongToPlaylist() {
     song_info_node.songName = this.songName;
     song_info_node.cover = `https://img.youtube.com/vi/${this.url}/hqdefault.jpg`;
     song_info_node.url = this.url;
+    song_info_node.draggable = true;
 
     song_info_node.appendChild(song_cover_node);
     song_info_node.appendChild(song_name_node);
@@ -120,6 +121,7 @@ function addSongToPlaylist() {
 
     let song_list_node = document.querySelector('.song_list');
     song_list_node.appendChild(song_info_node);
+    addDragHandler();
 
     let singleSongInfo = {
         url: this.url,
@@ -188,15 +190,6 @@ function readyToPublish() {
     real_publish_btn_node.addEventListener('click', publish);
 }
 
-
-
-
-
-
-
-
-
-
 function publish() {
     try {
         if (!document.querySelector('.playlist_input_row').value) {
@@ -227,7 +220,65 @@ function publish() {
 }
 
 
+function addDragHandler() {
+    let song_info_node_collection = document.querySelectorAll('.song_info');
+    song_info_node_collection.forEach(item => {
+        item.addEventListener('dragstart', handleDragStart);
+        item.addEventListener('dragover', handleDragOver);
+        item.addEventListener('dragleave', handleDragLeave);
+        item.addEventListener('drop', handleDrop);
+        item.addEventListener('dragend', handleDragEnd);
+    });
+}
 
+
+let dragItem = null;
+
+function handleDragStart(e) {
+    console.log("dragItem", dragItem);
+    dragItem = this;
+
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/html', this.outerHTML);
+}
+
+function handleDragOver(e) {
+    if (e.preventDefault) {
+        e.preventDefault();
+    }
+    this.classList.add('overTop');
+    this.style.borderTop = "2px solid yellow";
+
+    e.dataTransfer.dropEffect = 'move';
+    return false;
+}
+
+function handleDragLeave(e) {
+    this.style.borderTop = "0px solid yellow";
+
+    console.log("handleDragLeave", this);
+}
+
+function handleDrop(e) {
+    if (e.stopPropagation) {
+        e.stopPropagation();
+    }
+    console.log("handleDrop", this);
+
+    if (dragItem != this) {
+        this.parentNode.removeChild(dragItem);
+        let dropHTML = e.dataTransfer.getData('text/html');
+        this.insertAdjacentHTML('beforebegin', dropHTML);
+        let dropElem = this.previousSibling;
+        addDragHandler(dropElem);
+    }
+    this.style.borderTop = "0px solid yellow";
+    return false;
+}
+
+function handleDragEnd(e) {
+    this.style.borderTop = "0px solid yellow";
+}
 
 
 
