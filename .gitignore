@@ -1,5 +1,6 @@
 node_modules
 .gitignore
+.DS_Store
 package-lock.json
 */*/style.sass
 */*/.sass-cache
