@@ -79,7 +79,8 @@ input {
   transform: translateX(-50%);
   display: flex;
   position: relative;
-  justify-content: space-between; }
+  justify-content: space-between;
+  min-height: 100%; }
   .content_wrap .owner_info_wrap {
     width: 25%;
     display: flex;

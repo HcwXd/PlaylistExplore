@@ -14,6 +14,9 @@ function onYouTubePlayerAPIReady() {
     socket.on('getOwnerInfo', (socketOn_ownerInfo) => {
         ownerInfo = socketOn_ownerInfo;
 
+        renderOwnerInfo(ownerInfo);
+        renderPlayerInfo(ownerInfo);
+
         player = new YT.Player('video_placeholder', {
             width: '700',
             height: '400',
@@ -22,8 +25,6 @@ function onYouTubePlayerAPIReady() {
                 onStateChange: onPlayerStateChange
             }
         });
-        renderOwnerInfo(ownerInfo);
-        renderPlayerInfo(ownerInfo);
         renderPlaylist(ownerInfo);
     })
 }
