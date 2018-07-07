@@ -50,7 +50,7 @@ function renderPlayerInfo(ownerInfo) {
         comment_submit.style.fontSize = "24px";
     }
     renderNewSongStatsAndDes();
-    renderNewComment(ownerInfo);
+    renderNewComment();
 }
 
 function renderPlaylist(ownerInfo) {
@@ -78,7 +78,7 @@ function renderPlaylist(ownerInfo) {
 function onPlayerStateChange(event) {
     if (event.data === 0) {
         if (nowPlayingIndex + 1 < ownerInfo.playlistInfo.songList.length) {
-            renderNextSongPlayer(nowPlayingIndex)
+            renderNextSongPlayer()
         }
     }
 }
@@ -90,7 +90,7 @@ function renderNextSongPlayer() {
     player.loadVideoById(playlistInfo.songList[nowPlayingIndex].url)
 
     renderNewSongStatsAndDes();
-    renderNewComment(ownerInfo);
+    renderNewComment();
 }
 
 function renderClickSongPlayer() {
@@ -100,7 +100,7 @@ function renderClickSongPlayer() {
     player.loadVideoById(playlistInfo.songList[nowPlayingIndex].url)
 
     renderNewSongStatsAndDes();
-    renderNewComment(ownerInfo);
+    renderNewComment();
 }
 
 function renderNewSongStatsAndDes() {
@@ -121,7 +121,7 @@ function renderNewSongStatsAndDes() {
 }
 
 
-function renderNewComment(ownerInfo) {
+function renderNewComment() {
     let comment_wrap = document.querySelector('.comment_content_wrap');
     let comment_wrap_html = "";
     for (let i = 0; i < ownerInfo.playlistInfo.songList[nowPlayingIndex].comments.length; i++) {
@@ -141,22 +141,20 @@ function addComment() {
         alert("Please log in to add your comment");
         return
     }
-    let listOwnerId = listOwnerToken;
 
     let listId = 1;
     let songIndex = nowPlayingIndex;
-    let comment_content = document.querySelector('.comment_text').value;
     let commentInfo = {
-        listOwnerToken: listOwnerId,
-        listId: listId,
-        songIndex: songIndex,
-        commentContent: comment_content,
+        listOwnerToken,
+        listId,
+        songIndex,
+        commentContent: document.querySelector('.comment_text').value,
     }
-    console.log(commentInfo);
+
     socket.emit("newComment", commentInfo);
     socket.on("newComment", (newCommentInfo) => {
         ownerInfo.playlistInfo.songList[nowPlayingIndex].comments = newCommentInfo;
-        renderNewComment(ownerInfo);
+        renderNewComment();
     });
 }
 
@@ -177,16 +175,14 @@ function addLike() {
         return
     }
     let likeId = userInfo.token;
-    // Haven't define
-    let listOwnerId = ownerInfo.name;
-
     let listId = 1;
     let songIndex = nowPlayingIndex;
+
     let likeInfo = {
-        listOwnerToken: listOwnerToken,
-        listId: listId,
-        songIndex: songIndex,
-        likeId: likeId,
+        listOwnerToken,
+        listId,
+        songIndex,
+        likeId,
     }
     socket.emit("newLike", likeInfo);
 
@@ -196,37 +192,38 @@ function addLike() {
 }
 
 function addEditBioBtn() {
-    let addEditBio_btn = document.createElement('div');
-    addEditBio_btn.className = 'bio_btn';
-    addEditBio_btn.innerHTML = "add/edit your bio"
-    addEditBio_btn.addEventListener('click', addEditBio)
+    let addEditBio_btn_node = document.createElement('div');
+    addEditBio_btn_node.className = 'bio_btn';
+    addEditBio_btn_node.innerHTML = "add/edit your bio"
+    addEditBio_btn_node.addEventListener('click', addEditBio)
 
-    let addEditBio_wrap = document.createElement('div');
-    addEditBio_wrap.appendChild(addEditBio_btn);
+    let addEditBio_wrap_node = document.createElement('div');
+    addEditBio_wrap_node.className = 'addEditBio_wrap';
+    addEditBio_wrap_node.appendChild(addEditBio_btn_node);
 
     let owner_info_wrap = document.querySelector('.owner_info_wrap');
-    owner_info_wrap.appendChild(addEditBio_wrap);
+    owner_info_wrap.appendChild(addEditBio_wrap_node);
 
     function addEditBio() {
         let addEditBio_input = document.createElement('input');
+        addEditBio_input.className = 'addEditBio_input';
 
         let changeBio_btn = document.createElement('div');
         changeBio_btn.innerHTML = "add/edit";
         changeBio_btn.className = 'bio_btn small_btn';
+        changeBio_btn.addEventListener('click', changeBio);
 
         let changeBio_cancel = document.createElement('div');
         changeBio_cancel.innerHTML = "cancel";
         changeBio_cancel.className = 'bio_btn small_btn';
-
-        addEditBio_wrap.appendChild(addEditBio_input);
-        addEditBio_wrap.appendChild(changeBio_btn);
-        addEditBio_wrap.appendChild(changeBio_cancel);
-
-        let addEditBio_btn = document.querySelector('.bio_btn');
-        addEditBio_btn.remove();
-
-        changeBio_btn.addEventListener('click', changeBio);
         changeBio_cancel.addEventListener('click', cancelBio);
+
+        addEditBio_wrap_node.appendChild(addEditBio_input);
+        addEditBio_wrap_node.appendChild(changeBio_btn);
+        addEditBio_wrap_node.appendChild(changeBio_cancel);
+
+        let addEditBio_btn_node = document.querySelector('.bio_btn');
+        addEditBio_btn_node.remove();
 
         function changeBio() {
             socket.emit("changeBio", addEditBio_input.value);
@@ -237,24 +234,26 @@ function addEditBioBtn() {
             addEditBio_input.remove();
             changeBio_btn.remove();
             changeBio_cancel.remove();
-            let addEditBio_btn = document.createElement('div');
-            addEditBio_btn.className = 'bio_btn';
-            addEditBio_btn.innerHTML = "add/edit your bio";
-            addEditBio_wrap.appendChild(addEditBio_btn);
 
-            addEditBio_btn.addEventListener('click', addEditBio)
+            let addEditBio_btn_node = document.createElement('div');
+            addEditBio_btn_node.className = 'bio_btn';
+            addEditBio_btn_node.innerHTML = "add/edit your bio";
+            addEditBio_wrap_node.appendChild(addEditBio_btn_node);
+
+            addEditBio_btn_node.addEventListener('click', addEditBio)
         }
 
         function cancelBio() {
             addEditBio_input.remove();
             changeBio_btn.remove();
             changeBio_cancel.remove();
-            let addEditBio_btn = document.createElement('div');
-            addEditBio_btn.className = 'bio_btn';
-            addEditBio_btn.innerHTML = "add/edit your bio";
-            addEditBio_wrap.appendChild(addEditBio_btn);
 
-            addEditBio_btn.addEventListener('click', addEditBio)
+            let addEditBio_btn_node = document.createElement('div');
+            addEditBio_btn_node.className = 'bio_btn';
+            addEditBio_btn_node.innerHTML = "add/edit your bio";
+            addEditBio_wrap_node.appendChild(addEditBio_btn_node);
+
+            addEditBio_btn_node.addEventListener('click', addEditBio)
         }
     }
 }
