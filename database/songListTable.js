@@ -108,10 +108,26 @@ async function getCompletePlayList(songListResult, needComment) {
 
 async function getCompletePlayListInfo(playListInfo, needComment) {
 
+    let userInfo = await userTable.getUserInfo(playListInfo.token);
     let playListMeta = await getPlayList(playListInfo);
+    if(!playListMeta){
+        return {
+            userName: userInfo.userName,
+            avatar: userInfo.avatar,
+            bio: userInfo.bio,
+            playlistInfo: {
+                songList: [],
+                name: '',
+                des: '',
+                date: '',
+                token: '',
+                listId: ''
+            }
+        }
+    }
     songListResult = await getSongArrayInfo(playListInfo);
     let songList = await getCompletePlayList(songListResult, needComment);
-    let userInfo = await userTable.getUserInfo(playListInfo.token);
+
     let completePlayListInfo = {
         userName: userInfo.userName,
         avatar: userInfo.avatar,
