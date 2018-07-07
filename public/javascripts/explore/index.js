@@ -2,7 +2,7 @@ socket.emit('getLatestPlaylists');
 
 let fivePlaylistInfo;
 socket.on('getLatestPlaylists', (socketOn_fivePlaylistInfo) => {
-
+    document.querySelector('.loader').remove();
     fivePlaylistInfo = socketOn_fivePlaylistInfo;
     console.log(fivePlaylistInfo);
     renderLatestPlaylist();
@@ -144,7 +144,7 @@ function countInactivityTime() {
             document.querySelector('.idle_background').remove();
         }
         clearTimeout(idleTime);
-        idleTime = setTimeout(idleRender, 2000)
+        idleTime = setTimeout(idleRender, 5000)
 
     }
 };

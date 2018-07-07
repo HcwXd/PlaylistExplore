@@ -12,6 +12,7 @@ let ownerInfo;
 function onYouTubePlayerAPIReady() {
     socket.emit('getOwnerInfo', listOwnerToken);
     socket.on('getOwnerInfo', (socketOn_ownerInfo) => {
+        document.querySelector('.loader').remove();
         ownerInfo = socketOn_ownerInfo;
 
         renderOwnerInfo(ownerInfo);
