@@ -44,20 +44,63 @@ function signUp() {
     socket.emit("userSignUp", user);
 }
 
-function fbSignUp() {
+avatar_input.addEventListener('change', uploadImgur);
 
-    // fetch('/login/facebook/')
-    //     .then((res) => {
-    //         console.log(res);
-    //     })
-    //     .then((out) => {
-    //         console.log('Checkout this JSON! ', out);
-    //     })
-    //     .catch(err => {
-    //         throw err
-    //     });
-    // console.log("a");
+function uploadImgur() {
+    let files = avatar_input.files;
+
+    if (files.length) {
+
+        // Reject big files
+        if (files[0].size > this.dataset.maxSize * 1024) {
+            alert("Please select a smaller file")
+            return false;
+        }
+
+        // Begin file upload
+        console.log("Uploading file to Imgur..");
+
+        // Replace ctrlq with your own API key
+        let apiUrl = 'https://api.imgur.com/3/image';
+        let apiKey = "50db29122a23727";
+
+        let settings = {
+            async: false,
+            crossDomain: true,
+            processData: false,
+            contentType: false,
+            // method: 'POST',
+            // body: 'json',
+            type: 'POST',
+            url: apiUrl,
+            headers: {
+                Authorization: 'Client-ID ' + apiKey,
+                Accept: 'application/json'
+            },
+            mimeType: 'multipart/form-data'
+        };
+
+        let formData = new FormData();
+        formData.append("image", files[0]);
+        settings.data = formData;
+
+        // Response contains stringified JSON
+        // Image URL available at response.data.link
+        // fetch(apiUrl, settings).then(function (response) {
+        //         // console.log(response.json());
+        //         return response.json();
+        //     })
+        //     .then(function (body) {
+        //         //doSomething with body;
+        //     });
+
+        $.ajax(settings).done(function (response) {
+            console.log(response);
+        });
+    }
 }
 
+
+
 signup_btn.addEventListener('click', signUp)
-fb_signup_btn.addEventListener('click', fbSignUp)
+// fb_signup_btn.addEventListener('click', fbSignUp)
