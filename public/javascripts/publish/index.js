@@ -113,6 +113,8 @@ function addSongToPlaylist() {
     })
     this.style.boxShadow = "0px 0px 0px 2px yellow inset"
     playlist_status_wrap_node.style.display = "block";
+    add_des_wrap_node.style.display = "none";
+
     /** 
     add_des_wrap_node.style.display = "flex";
 
