@@ -146,6 +146,7 @@ io.on('connect', async (socket) => {
 
       if(userTable.userExist(user.account)){
           socket.emit('duplicateAccount');
+          return;
       }
 
       userInfo = {
@@ -168,13 +169,20 @@ io.on('connect', async (socket) => {
   })
 
   socket.on('userSignIn', async (user) => {
-      if(! await userTable.userExist(user.account)){
+      if(! (ret = await userTable.userExist(user.account))){
+          console.log("accountNotExist");
           socket.emit('accountNotExist');
+          return;
       }
-      if(! await userTable.confirmUser(user)){
+      if(! (ret = await userTable.confirmUser(user))){
+          console.log("wrongPassword");
           socket.emit('wrongPassword');
+          return;
       }
+
       socket.emit('signInSuccess');
+      socket.handshake.session.token = user.account;
+      console.log(socket.handshake.session);
   });
 
 })
