@@ -96,6 +96,7 @@ io.on('connect', async (socket) => {
 
     console.log(latestPlayListInfo);
     socket.emit('getLatestPlaylists', latestPlayListInfo);
+    console.log(latestPlayListInfo);
   })
 
   socket.on('getOwnerInfo', async (pageToken) => {
