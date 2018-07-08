@@ -26,10 +26,19 @@ function signIn() {
         return;
     }
     let user = {
-        name: username_input.value,
+        account: username_input.value,
         password: Crypto.SHA1(password_input.value),
     }
     socket.emit("userSignIn", user);
+    socket.on('accountNotExist', () => {
+        alert("Account doesn't exist");
+    });
+    socket.on('wrongPassword', () => {
+        alert("Wrong password");
+    });
+    socket.on('signInSuccess', () => {
+        window.location = "/explore";
+    });
 }
 
 signin_btn.addEventListener('click', signIn)
