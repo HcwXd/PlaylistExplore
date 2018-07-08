@@ -78,43 +78,17 @@ async function modifyPlayList(playListInfo) {
     createPlayList(playListInfo);
 }
 
-async function getSongArrayInfo(playListInfo) {
-    sql = 'SELECT * FROM song WHERE token = ?';
-    insert = [playListInfo.token];
+
+
+async function getCompletePlayListInfo(playListInfo){
+
+    sql = 'SELECT l.*, u.userName, u.avatar, u.bio \
+           FROM songList l, user u \
+           WHERE l.token = ? and l.listId = ? and l.token = u.token';
+    insert = [playListInfo.token, playListInfo.listId];
     query = mysql.format(sql, insert);
-    return await getData(query);
-
-}
-
-async function getCompletePlayList(songListResult, needComment) {
-    let songList = [];
-    await map(songListResult, async (element) => {
-        //console.log(element);
-        let commentResult = [];
-        if(needComment){
-            commentResult = await songTable.getCommentInfo(element);
-        }
-
-        songList[element.songIndex] = {
-            url: element.url,
-            songName: element.songName,
-            cover: element.cover,
-            des: element.des,
-            like: element.likeNum,
-            comments: commentResult,
-        };
-        //console.log(songList);
-    })
-    return songList;
-}
-
-
-
-async function getCompletePlayListInfo_(playListInfo, needComment) {
-
-    let userInfo = await userTable.getUserInfo(playListInfo.token);
-    let playListMeta = await getPlayList(playListInfo);
-    if(!playListMeta){
+    songListData = await getData(query);
+    if(songListData.length == 0){
         return {
             userName: userInfo.userName,
             avatar: userInfo.avatar,
@@ -129,34 +103,6 @@ async function getCompletePlayListInfo_(playListInfo, needComment) {
             }
         }
     }
-    songListResult = await getSongArrayInfo(playListInfo);
-    let songList = await getCompletePlayList(songListResult, needComment);
-
-    let completePlayListInfo = {
-        userName: userInfo.userName,
-        avatar: userInfo.avatar,
-        bio: userInfo.bio,
-        playlistInfo: {
-            songList: songList,
-            name: playListMeta.name,
-            des: playListMeta.des,
-            date: playListMeta.date,
-            token: playListInfo.token,
-            listId: playListInfo.listId
-        }
-    };
-    //console.log(completePlayListInfo);
-    return completePlayListInfo;
-}
-
-async function getCompletePlayListInfo(playListInfo){
-
-    sql = 'SELECT l.*, u.userName, u.avatar \
-           FROM songList l, user u \
-           WHERE l.token = ? and l.listId = ? and l.token = u.token';
-    insert = [playListInfo.token, playListInfo.listId];
-    query = mysql.format(sql, insert);
-    songListData = await getData(query);
 
     sql = 'SELECT *  \
             FROM song \
@@ -173,39 +119,10 @@ async function getCompletePlayListInfo(playListInfo){
     return result[0];
 }
 
-async function getPlayList(playListInfo) {
-    sql = 'SELECT * FROM songList WHERE token = ?';
-    insert = [playListInfo.token];
-    query = mysql.format(sql, insert);
-    result = await getData(query);
-    return result[0];
-}
 
 playListInfo = {
     token: '2159235527438018',
     listId: 1
-}
-
-async function getPageInfo(latestPlayListInfo){
-    pageInfo = [];
-    await map(latestPlayListInfo, async (playlistInfo, index) => {
-        pageInfo[index] = await getCompletePlayListInfo(playlistInfo, false);
-        console.log(index);
-        console.log(pageInfo[index]);
-    })
-    console.log("ret");
-    console.log(pageInfo);
-    return pageInfo;
-}
-
-async function getLatestPlaylists_(){
-    sql = 'SELECT * FROM songList ORDER BY date DESC LIMIT 5';
-    query = mysql.format(sql);
-    latestPlayListInfo = await getData(query);
-    pageInfo = await getPageInfo(latestPlayListInfo);
-    console.log("Page Info");
-    console.log(pageInfo);
-    return pageInfo;
 }
 
 function makeLatestPlayLists(songListData, songData){
@@ -217,6 +134,7 @@ function makeLatestPlayLists(songListData, songData){
         latestSongPlaylists.push({
             userName: songList.userName,
             avatar: songList.avatar,
+            bio: songList.bio,
             playlistInfo: {
                 songList: [],
                 name: songList.name,
@@ -240,8 +158,6 @@ function makeLatestPlayLists(songListData, songData){
     })
     return (latestSongPlaylists);
 }
-
-
 
 async function getLatestPlaylists(limitNum){
     sql = 'SELECT s.* ,u.userName, u.avatar FROM songList s, user u \
@@ -274,16 +190,14 @@ async function getLatestPlaylists(limitNum){
 }
 
 
-
+/* test
     playListInfo = {
         token: '2159235527438018',
         listId: 1
     }
     getCompletePlayListInfo_(playListInfo);
-
+*/
     //getLatestPlaylists();
-
-
 
 module.exports = {
     createPlayList: createPlayList,

@@ -64,6 +64,9 @@ function deleteSongInList(songListInfo){
     ]
     let query = mysql.format(sql, condition);
     applyQuery(query);
+
+    sql = "DELETE FROM comment WHERE ??=? and ?? = ?";
+    applyQuery(query);
 }
 
 function deleteSong(singleSongInfo){
