@@ -1,6 +1,15 @@
 const db = require("./DB");
 const mysql = require("mysql");
 
+function applyQuery(query){
+    db.query(query, (error, result) => {
+        if(error){
+            console.log(error);
+            return;
+        }
+        console.log(result);
+    })
+}
 
 
 function createAccount(userData) {
@@ -43,7 +52,7 @@ async function getUserInfo(token){
 
 async function updateBio(bioInfo){
     let sql = 'UPDATE user SET ? WHERE token = ?';
-    let insert = [{bio: bioInfo.content}, bioInfo.id];
+    let insert = [{bio: bioInfo.content}, bioInfo.token];
     let query = mysql.format(sql, insert);
     applyQuery(query);
 }

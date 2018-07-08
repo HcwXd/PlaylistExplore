@@ -4,6 +4,8 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var session = require('express-session');
+var bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -89,7 +91,7 @@ io.on('connect', async (socket) => {
   });
 
   socket.on('getLatestPlaylists', async () => {
-    let latestPlayListInfo = await songListTable.getLatestPlaylists();
+    let latestPlayListInfo = await songListTable.getLatestPlaylists(5);
     console.log("/////////////////////////");
 
     console.log(latestPlayListInfo);
@@ -99,7 +101,7 @@ io.on('connect', async (socket) => {
   socket.on('getOwnerInfo', async (pageToken) => {
     let playListInfo = {
       token: pageToken,
-      listId: '',
+      listId: 1,
     }
     let ownerInfo = await songListTable.getCompletePlayListInfo(playListInfo, true);
     socket.emit('getOwnerInfo', ownerInfo)
@@ -128,8 +130,24 @@ io.on('connect', async (socket) => {
     songTable.updateLike(songInfo);
   });
 
-  socket.on('updateBio', async (bioInfo) => {
-    userTable.updateBio(bioInfo);
+  socket.on('changeBio', async (bio) => {
+     bioInfo = {
+         content: bio,
+         token: socket.handshake.session.token
+     }
+     await userTable.updateBio(bioInfo);
+     socket.emit('changeBio', bio);
+  })
+
+  socket.on('userSignUp', async (userInfo) => {
+      if(userTable.userExist(userInfo.token)){
+          socket.emit('duplicateAccount');
+      }
+      bcrypt.hash(userInfo.password, saltRounds, function(err, hash) {
+          userInfo.password = hash;
+          userTable.createAccount(userInfo);
+          socket.emit('createAccountSuccess');
+      });
   })
 
 })

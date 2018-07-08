@@ -20,6 +20,8 @@ function getData(query) {
         try {
             console.log(query);
             db.query(query, (error, result) => {
+                if(error)
+                    console.log(error);
                 resolve(result);
             })
         } catch (error) {
@@ -62,6 +64,9 @@ function deleteSongInList(songListInfo){
     ]
     let query = mysql.format(sql, condition);
     applyQuery(query);
+
+    sql = "DELETE FROM comment WHERE ??=? and ?? = ?";
+    applyQuery(query);
 }
 
 function deleteSong(singleSongInfo){
@@ -103,22 +108,22 @@ async function updateLike(songInfo){
 }
 
 async function getCommentInfo(songInfo) {
-    sql = "SELECT * FROM comment WHERE listOwnerToken = ? AND songIndex = ? ORDER BY commentIndex";
+    sql = "SELECT c.* ,u.userName, u.avatar \
+           FROM comment c, user u \
+           WHERE c.listOwnerToken = ? AND c.songIndex = ? AND c.commentToken = u.token \
+           ORDER BY c.commentIndex";
     insert = [songInfo.token, songInfo.songIndex];
     query = mysql.format(sql, insert);
     result = await getData(query);
     let commentInfoArray = [];
-    await map(result, async(element, index) => {
-
-        userInfo = await userTable.getUserInfo(element.commentToken);
-
+    result.map((element, index) => {
         commentInfoArray[index] = {
-            userName: userInfo.userName,
-            avatar: userInfo.avatar,
+            userName: element.userName,
+            avatar: element.avatar,
             commentIndex: element.commentIndex,
             content: element.commentContent
         }
-    })
+    });
     console.log(commentInfoArray);
     return commentInfoArray;
 }
@@ -130,8 +135,9 @@ songInfo = {
     songIndex: 0
 }
 getCommentInfo(songInfo);
-
 */
+
+
 
 /* test
 songInfo = {
