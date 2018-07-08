@@ -44,7 +44,14 @@ function renderLatestPlaylist() {
         song_list_node.innerHTML = song_list_html;
 
         let post_content_node = document.createElement('div');
-        post_content_node.className = 'post_content'
+        post_content_node.className = 'post_content';
+
+        let coverPhoto;
+        if (currentPlaylist.playlistInfo.uploadCover === null) {
+            coverPhoto = `https://img.youtube.com/vi/${currentPlaylist.playlistInfo.songList[0].url}/hqdefault.jpg`
+        } else {
+            coverPhoto = currentPlaylist.playlistInfo.uploadCover;
+        }
 
         post_content_node.innerHTML = `
             <div class="header">
@@ -55,7 +62,7 @@ function renderLatestPlaylist() {
                 <div class="more_info">=</div>
             </div>
             <img class="playlist_cover" data-token="${currentPlaylist.playlistInfo.token}" 
-            src="https://img.youtube.com/vi/${currentPlaylist.playlistInfo.songList[0].url}/hqdefault.jpg">
+            src="${coverPhoto}">
             <div class="playlist_stats">
                 <div class="like">♥${totalLike}</div>
                 <div class="date">${currentPlaylist.playlistInfo.date.substr(0,10)}</div>
