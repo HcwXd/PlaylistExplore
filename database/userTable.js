@@ -36,10 +36,10 @@ function getData(query){
 }
 
 async function userExist(token) {
-    queryString = "SELECT 1 FROM user WHERE EXISTS (SELECT 1 FROM user WHERE token = " +
-        token + ") ORDER BY token LIMIT 1;"
-    let ret = await getData(queryString);
-    console.log(ret);
+    sql = "SELECT token FROM user WHERE token =  ?";
+    insert = [token];
+    query = mysql.format(sql, insert);
+    let ret = await getData(query);
     return Boolean(ret.length);
 }
 
@@ -57,9 +57,28 @@ async function updateBio(bioInfo){
     applyQuery(query);
 }
 
+async function confirmUser(userInfo){
+    console.log(userInfo);
+    let sql = "SELECT password from user where token = ?";
+    let insert = [userInfo.account];
+    let query = mysql.format(sql, insert);
+    let result = await getData(query);
+    console.log(result);
+    if(result[0].password == userInfo.password){
+        console.log("sign in success");
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+
+
 module.exports = {
     userExist: userExist,
     createAccount: createAccount,
     getUserInfo: getUserInfo,
-    updateBio: updateBio
+    updateBio: updateBio,
+    confirmUser: confirmUser
 }

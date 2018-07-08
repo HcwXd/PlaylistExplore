@@ -140,16 +140,42 @@ io.on('connect', async (socket) => {
      socket.emit('changeBio', bio);
   })
 
-  socket.on('userSignUp', async (userInfo) => {
-      if(userTable.userExist(userInfo.token)){
+  socket.on('userSignUp', async (user) => {
+
+      console.log(user);
+
+      if(userTable.userExist(user.account)){
           socket.emit('duplicateAccount');
       }
-      bcrypt.hash(userInfo.password, saltRounds, function(err, hash) {
+
+      userInfo = {
+          userName: user.name,
+          avatar: user.avatar,
+          bio: '',
+          token: user.account,
+          password: user.password
+      }
+
+      await userTable.createAccount(userInfo);
+      socket.emit('createAccountSuccess');
+/*
+      bcrypt.hash(userInfo.password, saltRounds, async function(err, hash) {
           userInfo.password = hash;
-          userTable.createAccount(userInfo);
+          await userTable.createAccount(userInfo);
           socket.emit('createAccountSuccess');
       });
+*/
   })
+
+  socket.on('userSignIn', async (user) => {
+      if(! await userTable.userExist(user.account)){
+          socket.emit('accountNotExist');
+      }
+      if(! await userTable.confirmUser(user)){
+          socket.emit('wrongPassword');
+      }
+      socket.emit('signInSuccess');
+  });
 
 })
 
