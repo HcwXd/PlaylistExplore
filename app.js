@@ -99,7 +99,7 @@ io.on('connect', async (socket) => {
   socket.on('getOwnerInfo', async (pageToken) => {
     let playListInfo = {
       token: pageToken,
-      listId: '',
+      listId: 1,
     }
     let ownerInfo = await songListTable.getCompletePlayListInfo(playListInfo, true);
     socket.emit('getOwnerInfo', ownerInfo)

@@ -108,7 +108,9 @@ async function getCompletePlayList(songListResult, needComment) {
     return songList;
 }
 
-async function getCompletePlayListInfo(playListInfo, needComment) {
+
+
+async function getCompletePlayListInfo_(playListInfo, needComment) {
 
     let userInfo = await userTable.getUserInfo(playListInfo.token);
     let playListMeta = await getPlayList(playListInfo);
@@ -145,6 +147,30 @@ async function getCompletePlayListInfo(playListInfo, needComment) {
     };
     //console.log(completePlayListInfo);
     return completePlayListInfo;
+}
+
+async function getCompletePlayListInfo(playListInfo){
+
+    sql = 'SELECT l.*, u.userName, u.avatar \
+           FROM songList l, user u \
+           WHERE l.token = ? and l.listId = ? and l.token = u.token';
+    insert = [playListInfo.token, playListInfo.listId];
+    query = mysql.format(sql, insert);
+    songListData = await getData(query);
+
+    sql = 'SELECT *  \
+            FROM song \
+            WHERE token = ? and listId = ? ';
+    insert = [playListInfo.token, playListInfo.listId];
+    query = mysql.format(sql, insert);
+    //console.log(query);
+    songData = await getData(query);
+    //console.log(songData);
+    songData.map(element => {element['comments'] = []});
+    songData[0]['comments'] = await songTable.getCommentInfo(songData[0]);
+
+    result = makeLatestPlayLists(songListData, songData);
+    return result[0];
 }
 
 async function getPlayList(playListInfo) {
@@ -248,9 +274,13 @@ async function getLatestPlaylists(limitNum){
 }
 
 
-/* test
-    getCompletePlayListInfo(playListInfo);
-*/
+
+    playListInfo = {
+        token: '2159235527438018',
+        listId: 1
+    }
+    getCompletePlayListInfo_(playListInfo);
+
     //getLatestPlaylists();
 
 
