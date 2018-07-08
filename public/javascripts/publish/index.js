@@ -106,6 +106,7 @@ function addSongToPlaylist() {
     song_edit_node.className = "song_edit";
     song_edit_node.innerHTML = "X";
     song_edit_node.url = this.url;
+    song_edit_node.dataset.url = this.url;
     song_edit_node.addEventListener('click', deleteSongFromPlaylist);
 
     let song_info_node = document.createElement('div');
@@ -113,6 +114,7 @@ function addSongToPlaylist() {
     song_info_node.songName = this.songName;
     song_info_node.cover = `https://img.youtube.com/vi/${this.url}/hqdefault.jpg`;
     song_info_node.url = this.url;
+    song_info_node.draggable = true;
 
     song_info_node.appendChild(song_cover_node);
     song_info_node.appendChild(song_name_node);
@@ -120,6 +122,7 @@ function addSongToPlaylist() {
 
     let song_list_node = document.querySelector('.song_list');
     song_list_node.appendChild(song_info_node);
+    addDragHandler();
 
     let singleSongInfo = {
         url: this.url,
@@ -186,16 +189,31 @@ function readyToPublish() {
 
     let real_publish_btn_node = document.querySelector('.real_publish_btn');
     real_publish_btn_node.addEventListener('click', publish);
+
+    let song_name_node_collection = document.querySelectorAll('.song_info > .song_name');
+    let readySongNames = [];
+    song_name_node_collection.forEach((node) => {
+        readySongNames.push(node.innerText)
+    });
+
+    let newSongListState = [];
+    let oldSongListState = [...songListState];
+
+    for (let newIndex = 0; newIndex < readySongNames.length; newIndex++) {
+        let popIndex;
+        oldSongListState = oldSongListState.map((item) => {
+            if (item.songName === readySongNames[newIndex]) {
+                newSongListState.push(item);
+                popIndex = oldSongListState.indexOf(item);
+            } else {
+                return item;
+            }
+        });
+        if (popIndex > -1) {
+            oldSongListState.splice(popIndex, 1);
+        }
+    };
 }
-
-
-
-
-
-
-
-
-
 
 function publish() {
     try {
@@ -222,12 +240,69 @@ function publish() {
     };
     socket.emit('publishNewPlaylist', playlistInfo);
 
-    const userToken = window.location.href.split('?')[1];
-    window.location = `/profile?${userToken}`;
+    const userToken = window.location.href.split('?id=')[1];
+    window.location = `/profile?id=${userToken}`;
 }
 
 
+function addDragHandler() {
+    let song_info_node_collection = document.querySelectorAll('.song_info');
+    song_info_node_collection.forEach(item => {
+        item.addEventListener('dragstart', handleDragStart);
+        item.addEventListener('dragover', handleDragOver);
+        item.addEventListener('dragleave', handleDragLeave);
+        item.addEventListener('drop', handleDrop);
+        item.addEventListener('dragend', handleDragEnd);
+        item.lastChild.addEventListener('click', deleteSongFromPlaylist);
+    });
+}
 
+
+let dragItem = null;
+
+function handleDragStart(e) {
+    dragItem = this;
+
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/html', this.outerHTML);
+}
+
+function handleDragOver(e) {
+    if (e.preventDefault) {
+        e.preventDefault();
+    }
+    this.classList.add('overTop');
+    this.style.borderTop = "2px solid yellow";
+
+    e.dataTransfer.dropEffect = 'move';
+    return false;
+}
+
+function handleDragLeave(e) {
+    this.style.borderTop = "0px solid yellow";
+
+}
+
+function handleDrop(e) {
+    if (e.stopPropagation) {
+        e.stopPropagation();
+    }
+    console.log("handleDrop", this);
+
+    if (dragItem != this) {
+        this.parentNode.removeChild(dragItem);
+        let dropHTML = e.dataTransfer.getData('text/html');
+        this.insertAdjacentHTML('beforebegin', dropHTML);
+        let dropElem = this.previousSibling;
+        addDragHandler(dropElem);
+    }
+    this.style.borderTop = "0px solid yellow";
+    return false;
+}
+
+function handleDragEnd(e) {
+    this.style.borderTop = "0px solid yellow";
+}
 
 
 

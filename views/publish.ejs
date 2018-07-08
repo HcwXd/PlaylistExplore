@@ -28,26 +28,6 @@
       <div class="publishing_wrap">
         <div class="search_result_wrap">
           <div class="pick_des">請選擇你要加入的歌曲</div>
-          <!-- <div class="song_info">
-            <img class="song_cover" src="https://www.billboard.com/files/styles/900_wide/public/media/Green-Day-American-Idiot-album-covers-billboard-1000x1000.jpg">
-            <div class="song_name">大象體操ElephantGym _ 中途Midway【Official Music Video】</div>
-          </div>
-          <div class="song_info">
-            <img class="song_cover" src="https://www.billboard.com/files/styles/900_wide/public/media/Green-Day-American-Idiot-album-covers-billboard-1000x1000.jpg">
-            <div class="song_name">大象體操ElephantGym _ 中途Midway【Official Music Video】</div>
-          </div>
-          <div class="song_info">
-            <img class="song_cover" src="https://www.billboard.com/files/styles/900_wide/public/media/Green-Day-American-Idiot-album-covers-billboard-1000x1000.jpg">
-            <div class="song_name">大象體操ElephantGym _ 中途Midway【Official Music Video】</div>
-          </div>
-          <div class="song_info">
-            <img class="song_cover" src="https://www.billboard.com/files/styles/900_wide/public/media/Green-Day-American-Idiot-album-covers-billboard-1000x1000.jpg">
-            <div class="song_name">大象體操ElephantGym _ 中途Midway【Official Music Video】</div>
-          </div>
-          <div class="song_info">
-            <img class="song_cover" src="https://www.billboard.com/files/styles/900_wide/public/media/Green-Day-American-Idiot-album-covers-billboard-1000x1000.jpg">
-            <div class="song_name">大象體操ElephantGym _ 中途Midway【Official Music Video】</div>
-          </div> -->
         </div>
         <div class="add_des_wrap">
           <textarea rows="20" cols="20" class="des_input" placeholder="Write something about the song"></textarea>
@@ -57,33 +37,12 @@
           <div class="hidden_block">
             <div class="pick_des">目前的播放清單</div>
             <div class="song_list">
-              <!-- <div class="song_info">
-              <img class="song_cover" src="https://www.billboard.com/files/styles/900_wide/public/media/Green-Day-American-Idiot-album-covers-billboard-1000x1000.jpg">
-              <div class="song_name">大象體操ElephantGym _ 中途Midway【Official Music Video】</div>
-              <div class="song_edit">X</div>
-            </div>
-            <div class="song_info">
-              <img class="song_cover" src="https://www.billboard.com/files/styles/900_wide/public/media/Green-Day-American-Idiot-album-covers-billboard-1000x1000.jpg">
-              <div class="song_name">大象體操ElephantGym _ 中途Midway【Official Music Video】</div>
-              <div class="song_edit">X</div>
-            </div>
-            <div class="song_info">
-              <img class="song_cover" src="https://www.billboard.com/files/styles/900_wide/public/media/Green-Day-American-Idiot-album-covers-billboard-1000x1000.jpg">
-              <div class="song_name">大象體操ElephantGym _ 中途Midway【Official Music Video】</div>
-              <div class="song_edit">X</div>
-            </div> -->
             </div>
             <div class="publish_btn">Ready to Publish</div>
           </div>
         </div>
-
-
       </div>
-
     </div>
-
-
-
 
     <script src="/javascripts/publish/index.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
@@ -95,7 +54,7 @@
       $(document).ready(function () {
         $("#search").autocomplete({
           source: function (request, response) {
-            $.getJSON("http://suggestqueries.google.com/complete/search?callback=?", {
+            $.getJSON("https://suggestqueries.google.com/complete/search?callback=?", {
               "hl": "en", // Language
               "ds": "yt", // Restrict lookup to youtube
               "jsonp": "suggestCallBack", // jsonp callback function name

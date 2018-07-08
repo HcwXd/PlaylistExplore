@@ -226,7 +226,8 @@ html, body {
         border: 1px solid #bebebe;
         border-top: 0px solid #bebebe;
         padding: 5px 0px;
-        align-items: center; }
+        align-items: center;
+        cursor: move; }
         .content_wrap .publishing_wrap .playlist_status_wrap .song_info .song_name {
           display: inline-block;
           width: 85%;

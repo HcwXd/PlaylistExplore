@@ -39,4 +39,23 @@ a {
       opacity: 0.7;
       cursor: pointer; }
 
+.loader {
+  position: fixed;
+  top: calc(50% - 30px);
+  left: calc(50% - 30px);
+  border: 8px solid #1a1a1a;
+  border-top: 8px solid #f2f2f2;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 2s linear infinite;
+  transition-delay: 1s;
+  z-index: 100; }
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg); }
+  100% {
+    transform: rotate(360deg); } }
+
 /*# sourceMappingURL=style.css.map */
