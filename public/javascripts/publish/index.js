@@ -7,6 +7,7 @@ add_des_wrap_node.style.display = "none";
 playlist_status_wrap_node.style.display = "none";
 
 let songListState = [];
+let uploadCover;
 
 const search_input_node = document.querySelector('.search_input');
 search_input_node.addEventListener('keydown', (e) => {
@@ -171,7 +172,7 @@ function readyToPublish() {
         </div>
         <div class="field">
             <label>Cover</label>
-            <input class="avatar_input" type="file" name="avatar">
+            <input class="avatar_input" type="file" name="avatar" data-maxSize="5000">
         </div>
         <a data="/profile">
             <div class="real_publish_btn">Publish</div>
@@ -179,8 +180,12 @@ function readyToPublish() {
     </div>
   `;
 
+
     let content_wrap_node = document.querySelector('.content_wrap');
     content_wrap_node.appendChild(publish_wrap_node);
+
+    let avatar_input_node = document.querySelector('.avatar_input');
+    avatar_input_node.addEventListener('change', uploadImgur);
 
     let cancel_node = document.querySelector('.cancel');
     cancel_node.addEventListener('click', () => {
@@ -229,7 +234,6 @@ function publish() {
     }
 
     let date = new Date();
-    let uploadCover = document.querySelector('.avatar_input').files[0];
     let playlistInfo = {
         name: document.querySelector('.playlist_input_row').value,
         des: document.querySelector('.playlist_des_input').value,
@@ -238,10 +242,54 @@ function publish() {
         listId: 1,
         uploadCover: uploadCover
     };
+    console.log(playlistInfo);
+
     socket.emit('publishNewPlaylist', playlistInfo);
 
     const userToken = window.location.href.split('?id=')[1];
     window.location = `/profile?id=${userToken}`;
+}
+
+
+function uploadImgur() {
+    let files = this.files;
+
+    if (files.length) {
+
+        if (files[0].size > this.dataset.maxSize * 1024) {
+            alert("Please select a smaller file")
+            return false;
+        }
+
+        console.log("Uploading file to Imgur..");
+
+        let apiUrl = 'https://api.imgur.com/3/image';
+        let apiKey = "50db29122a23727";
+
+        let settings = {
+            async: false,
+            crossDomain: true,
+            processData: false,
+            contentType: false,
+            type: 'POST',
+            url: apiUrl,
+            headers: {
+                Authorization: 'Client-ID ' + apiKey,
+                Accept: 'application/json'
+            },
+            mimeType: 'multipart/form-data'
+        };
+
+        let formData = new FormData();
+        formData.append("image", files[0]);
+        settings.data = formData;
+
+        $.ajax(settings).done(function (response) {
+            responseData = JSON.parse(response);
+            uploadCover = responseData.data.link;
+            // console.log(responseData.data.link);
+        });
+    }
 }
 
 
