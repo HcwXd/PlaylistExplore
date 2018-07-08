@@ -36,7 +36,7 @@ function signUp() {
         return;
     }
     if (avatar_input.files[0]) {
-        avatar = avatar_input.files[0];
+        avatar = uploadCover;
     } else {
         avatar = false;
     }
@@ -44,7 +44,7 @@ function signUp() {
         name: username_input.value,
         account: email_input.value,
         password: Crypto.SHA1(password_input.value),
-        avatar: uploadCover
+        avatar: avatar
     }
     socket.emit("userSignUp", user);
     socket.on('duplicateAccount', () => {
