@@ -4,28 +4,32 @@ const username_input = document.querySelector('.username_input');
 const password_input = document.querySelector('.password_input');
 const repassword_input = document.querySelector('.repassword_input');
 const avatar_input = document.querySelector('.avatar_input');
+const email_input = document.querySelector('.email_input');
 
 const signup_btn = document.querySelector('.signup_btn');
-
+let uploadCover;
 
 function signUp() {
     var reg = new RegExp('^\\w+$');
     var avatar;
     try {
         if (!(username_input.value.length >= 1 && username_input.value.length <= 10)) {
-            throw new Error('Username must shorter than 10')
+            throw new Error('Username must shorter than 10');
+        }
+        if (!(email_input.value.length >= 1)) {
+            throw new Error('You have to input your email address');
         }
         if (!reg.test(username_input.value)) {
-            throw new Error('Username must only contain numbers, words and _')
+            throw new Error('Username must only contain numbers, words and _');
         }
         if (!reg.test(password_input.value)) {
-            throw new Error('Password must only contain numbers, words and _')
+            throw new Error('Password must only contain numbers, words and _');
         }
         if (password_input.value.length < 6) {
-            throw new Error('Password must longer than 6')
+            throw new Error('Password must longer than 6');
         }
         if (password_input.value !== repassword_input.value) {
-            throw new Error('Password confirmed is inconsistent')
+            throw new Error('Password confirmed is inconsistent');
         }
     } catch (e) {
         alert(e);
@@ -38,10 +42,20 @@ function signUp() {
     }
     let user = {
         name: username_input.value,
+        account: email_input.value,
         password: Crypto.SHA1(password_input.value),
-        avatar: avatar
+        avatar: uploadCover
     }
     socket.emit("userSignUp", user);
+    socket.on('duplicateAccount', () => {
+        alert("Account have been signed up")
+    });
+    socket.on('createAccountSuccess', () => {
+        window.location = "/explore";
+    });
+
+
+
 }
 
 avatar_input.addEventListener('change', uploadImgur);
@@ -84,7 +98,7 @@ function uploadImgur() {
 
         $.ajax(settings).done(function (response) {
             responseData = JSON.parse(response);
-            console.log(responseData.data.link);
+            uploadCover = responseData.data.link;
         });
     }
 }
