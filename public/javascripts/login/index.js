@@ -8,7 +8,6 @@ const signin_btn = document.querySelector('.signup_btn');
 
 function signIn() {
     var reg = new RegExp('^\\w+$');
-    var avatar;
     try {
         if (!(username_input.value.length >= 1 && username_input.value.length <= 10)) {
             throw new Error('Username must shorter than 10')
