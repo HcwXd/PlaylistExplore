@@ -47,7 +47,8 @@ function createPlayList(playListInfo) {
         listId: playListInfo.listId,
         name: playListInfo.name,
         des: playListInfo.des,
-        date: playListInfo.date
+        date: playListInfo.date,
+        cover: playListInfo.uploadCover
     }
     let query = mysql.format(sql, insertObject);
     applyQuery(query);
@@ -99,7 +100,8 @@ async function getCompletePlayListInfo(playListInfo){
                 des: '',
                 date: '',
                 token: '',
-                listId: ''
+                listId: '',
+                uploadCover: ''
             }
         }
     }
@@ -141,7 +143,8 @@ function makeLatestPlayLists(songListData, songData){
                 des: songList.des,
                 date: songList.date,
                 token: songList.token,
-                listId: songList.listId
+                listId: songList.listId,
+                uploadCover: songList.cover
             }
         })
         for(index = global_index; index < songData.length; index++){
