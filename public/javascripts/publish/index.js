@@ -47,8 +47,6 @@ function appendSearchResults(singleSongInfos, root_node) {
     for (let i = 0; i < singleSongInfos.length; i++) {
         let singleSongInfo = singleSongInfos[i];
 
-
-
         let song_cover_node = document.createElement('img');
         song_cover_node.className = "song_cover"
         song_cover_node.src = `https://img.youtube.com/vi/${singleSongInfo.url}/hqdefault.jpg`
@@ -58,11 +56,12 @@ function appendSearchResults(singleSongInfos, root_node) {
         song_name_node.innerHTML = singleSongInfo.songName;
 
         let result_song_info_node = document.createElement('div');
-        result_song_info_node.className = "result_song_info"
+        result_song_info_node.className = "result_song_info";
+
         result_song_info_node.songName = singleSongInfo.songName;
         result_song_info_node.cover = singleSongInfo.cover;
         result_song_info_node.url = singleSongInfo.url;
-        result_song_info_node.addEventListener('click', addDesToPickedSong);
+        result_song_info_node.addEventListener('click', addSongToPlaylist);
 
         result_song_info_node.appendChild(song_cover_node);
         result_song_info_node.appendChild(song_name_node);
@@ -70,30 +69,59 @@ function appendSearchResults(singleSongInfos, root_node) {
     }
 }
 
-function addDesToPickedSong() {
+function showDesAddingWrap() {
+    add_des_wrap_node.style.display = "flex";
+    let add_btn_node = document.querySelector('.add_btn');
+    let des_input_node = document.querySelector('.des_input');
+
+    songListState.some(item => {
+        if (item.url === this.dataset.url) {
+            if (item.des) {
+                des_input_node.value = item.des;
+            } else {
+                des_input_node.value = "";
+            }
+
+            return;
+        }
+    });
+    add_btn_node.url = this.dataset.url;
+    add_btn_node.addEventListener('click', addDesToSong);
+}
+
+function addDesToSong() {
+    let songUrl = this.url;
+    let des_input_node = document.querySelector('.des_input');
+
+    songListState.some(item => {
+        if (item.url === songUrl) {
+            item.des = des_input_node.value;
+            return;
+        }
+    });
+    console.log("Update SongListState");
+
+    console.log(songListState);
+    add_des_wrap_node.style.display = "none";
+    des_input_node.value = "";
+}
+
+function addSongToPlaylist() {
     let result_song_info_node_collection = document.querySelectorAll('.result_song_info');
     result_song_info_node_collection.forEach(node => {
         node.style.boxShadow = "0 0"
     })
-
     this.style.boxShadow = "0px 0px 0px 2px yellow inset"
+    playlist_status_wrap_node.style.display = "block";
+    /** 
     add_des_wrap_node.style.display = "flex";
 
-    let add_btn_node = document.querySelector('.add_btn');
-    add_btn_node.url = this.url;
-    add_btn_node.cover = this.cover;
-    add_btn_node.songName = this.songName;
-
-    add_btn_node.addEventListener('click', addSongToPlaylist);
-}
-
-function addSongToPlaylist() {
-    playlist_status_wrap_node.style.display = "block";
     add_des_wrap_node.style.display = "none";
-
-    let des_input_node = document.querySelector('.des_input');
-    this.des = des_input_node.value;
-    des_input_node.value = "";
+    
+        let des_input_node = document.querySelector('.des_input');
+        this.des = des_input_node.value;
+        des_input_node.value = "";
+    */
 
     let song_cover_node = document.createElement('img');
     song_cover_node.className = "song_cover";
@@ -110,6 +138,13 @@ function addSongToPlaylist() {
     song_edit_node.dataset.url = this.url;
     song_edit_node.addEventListener('click', deleteSongFromPlaylist);
 
+    let song_add_des_node = document.createElement('div');
+    song_add_des_node.className = "song_add_des";
+    song_add_des_node.innerHTML = "+";
+    song_add_des_node.url = this.url;
+    song_add_des_node.dataset.url = this.url;
+    song_add_des_node.addEventListener('click', showDesAddingWrap);
+
     let song_info_node = document.createElement('div');
     song_info_node.className = "song_info";
     song_info_node.songName = this.songName;
@@ -117,6 +152,7 @@ function addSongToPlaylist() {
     song_info_node.url = this.url;
     song_info_node.draggable = true;
 
+    song_info_node.appendChild(song_add_des_node);
     song_info_node.appendChild(song_cover_node);
     song_info_node.appendChild(song_name_node);
     song_info_node.appendChild(song_edit_node);
@@ -302,6 +338,8 @@ function addDragHandler() {
         item.addEventListener('drop', handleDrop);
         item.addEventListener('dragend', handleDragEnd);
         item.lastChild.addEventListener('click', deleteSongFromPlaylist);
+        item.firstChild.addEventListener('click', showDesAddingWrap);
+
     });
 }
 

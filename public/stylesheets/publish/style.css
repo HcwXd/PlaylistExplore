@@ -227,7 +227,16 @@ html, body {
         border-top: 0px solid #bebebe;
         padding: 5px 0px;
         align-items: center;
-        cursor: move; }
+        cursor: move;
+        position: relative; }
+        .content_wrap .publishing_wrap .playlist_status_wrap .song_info .song_add_des {
+          position: absolute;
+          left: 0%;
+          top: 50%;
+          transform: translate(-100%, -50%);
+          border: 1px solid #bebebe;
+          cursor: pointer;
+          padding: 5px; }
         .content_wrap .publishing_wrap .playlist_status_wrap .song_info .song_name {
           display: inline-block;
           width: 85%;
