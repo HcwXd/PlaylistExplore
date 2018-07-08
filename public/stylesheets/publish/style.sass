@@ -235,6 +235,10 @@ html, body
     .playlist_status_wrap
       margin-right: 15px
       width: 30%
+      max-height: 700px
+      overflow-x: initial
+      overflow-y: scroll
+      margin-bottom: 30px
       .pick_des
         border: 1px solid $txt_white
         padding: 15px
@@ -282,7 +286,7 @@ html, body
         border: 2px solid $txt_white
         border-left: 1px solid $txt_white
         line-height: 45px
-        width: 100%
+        width: calc(100% - 2px)
         font-size: 12px
         background-color: $bg_grey
         color: $txt_white

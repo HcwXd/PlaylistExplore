@@ -216,7 +216,11 @@ html, body {
           opacity: 0.9; }
     .content_wrap .publishing_wrap .playlist_status_wrap {
       margin-right: 15px;
-      width: 30%; }
+      width: 30%;
+      max-height: 700px;
+      overflow-x: initial;
+      overflow-y: scroll;
+      margin-bottom: 30px; }
       .content_wrap .publishing_wrap .playlist_status_wrap .pick_des {
         border: 1px solid #bebebe;
         padding: 15px; }
@@ -263,7 +267,7 @@ html, body {
         border: 2px solid #bebebe;
         border-left: 1px solid #bebebe;
         line-height: 45px;
-        width: 100%;
+        width: calc(100% - 2px);
         font-size: 12px;
         background-color: #282828;
         color: #bebebe;
