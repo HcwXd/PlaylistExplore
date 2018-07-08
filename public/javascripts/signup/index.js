@@ -51,16 +51,13 @@ function uploadImgur() {
 
     if (files.length) {
 
-        // Reject big files
         if (files[0].size > this.dataset.maxSize * 1024) {
             alert("Please select a smaller file")
             return false;
         }
 
-        // Begin file upload
         console.log("Uploading file to Imgur..");
 
-        // Replace ctrlq with your own API key
         let apiUrl = 'https://api.imgur.com/3/image';
         let apiKey = "50db29122a23727";
 
@@ -69,8 +66,6 @@ function uploadImgur() {
             crossDomain: true,
             processData: false,
             contentType: false,
-            // method: 'POST',
-            // body: 'json',
             type: 'POST',
             url: apiUrl,
             headers: {
@@ -86,16 +81,10 @@ function uploadImgur() {
 
         // Response contains stringified JSON
         // Image URL available at response.data.link
-        // fetch(apiUrl, settings).then(function (response) {
-        //         // console.log(response.json());
-        //         return response.json();
-        //     })
-        //     .then(function (body) {
-        //         //doSomething with body;
-        //     });
 
         $.ajax(settings).done(function (response) {
-            console.log(response);
+            responseData = JSON.parse(response);
+            console.log(responseData.data.link);
         });
     }
 }
