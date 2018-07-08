@@ -89,7 +89,7 @@ io.on('connect', async (socket) => {
   });
 
   socket.on('getLatestPlaylists', async () => {
-    let latestPlayListInfo = await songListTable.getLatestPlaylists();
+    let latestPlayListInfo = await songListTable.getLatestPlaylists(5);
     console.log("/////////////////////////");
 
     console.log(latestPlayListInfo);

@@ -30,6 +30,8 @@ function getData(query) {
         try {
             //console.log(query);
             db.query(query, (error, result) => {
+                if(error)
+                    console.log(error);
                 resolve(result);
             })
         } catch (error) {
@@ -170,7 +172,7 @@ async function getPageInfo(latestPlayListInfo){
     return pageInfo;
 }
 
-async function getLatestPlaylists(){
+async function getLatestPlaylists_(){
     sql = 'SELECT * FROM songList ORDER BY date DESC LIMIT 5';
     query = mysql.format(sql);
     latestPlayListInfo = await getData(query);
@@ -180,12 +182,78 @@ async function getLatestPlaylists(){
     return pageInfo;
 }
 
+function makeLatestPlayLists(songListData, songData){
+    console.log("enter");
+    latestSongPlaylists = [];
+    let global_index = 0;
+    songListData.map((songList, listIndex) => {
+
+        latestSongPlaylists.push({
+            userName: songList.userName,
+            avatar: songList.avatar,
+            playlistInfo: {
+                songList: [],
+                name: songList.name,
+                des: songList.des,
+                date: songList.date,
+                token: songList.token,
+                listId: songList.listId
+            }
+        })
+        for(index = global_index; index < songData.length; index++){
+            if(songData[index].listId == songList.listId &&
+               songData[index].token == songList.token){
+                   songData[index]['like'] = songData[index].likeNum;
+                   latestSongPlaylists[listIndex].playlistInfo.songList.push(songData[index]);
+               }
+               else{
+                   global_index = index;
+                   break;
+               }
+        }
+    })
+    return (latestSongPlaylists);
+}
+
+
+
+async function getLatestPlaylists(limitNum){
+    sql = 'SELECT s.* ,u.userName, u.avatar FROM songList s, user u \
+           where s.token = u.token \
+           ORDER BY s.date DESC LIMIT ?';
+    query = mysql.format(sql, [limitNum]);
+    songListData = await getData(query);
+    //console.log(songListData);
+    sql = '';
+    for(index = 0 ; index < limitNum-1 ; index++){
+        sql += 'SELECT *  \
+               FROM song \
+               WHERE token = ? and listId = ?  \
+               Union ';
+    }
+    sql += 'SELECT *  \
+            FROM song \
+            WHERE token = ? and listId = ? ';
+    /* get whole song list */
+    insert = [];
+    songListData.map((element) => {
+        insert.push(element.token);
+        insert.push(element.listId);
+    })
+    query = mysql.format(sql, insert);
+    //console.log(query);
+    songData = await getData(query);
+    //console.log(songData);
+    return makeLatestPlayLists(songListData, songData);
+}
+
 
 /* test
     getCompletePlayListInfo(playListInfo);
-    getLatestPlaylists();
-
 */
+    //getLatestPlaylists();
+
+
 
 module.exports = {
     createPlayList: createPlayList,
