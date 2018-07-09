@@ -112,11 +112,11 @@ io.on('connect', async (socket) => {
     commentInfo['commentToken'] = socket.handshake.session.token;
     console.log("comment");
     console.log(commentInfo);
-    await commentTable.modifyComment(commentInfo);
+    await commentTable.createComment(commentInfo);
     songInfo = {
       token: commentInfo.listOwnerToken,
-      listId: commentInfo.listId,
       songIndex: commentInfo.songIndex,
+      listId: commentInfo.listId
     }
     comments = await songTable.getCommentInfo(songInfo);
     console.log("comments");
@@ -184,6 +184,14 @@ io.on('connect', async (socket) => {
       socket.emit('signInSuccess');
       socket.handshake.session.token = user.account;
       console.log(socket.handshake.session);
+  });
+
+  socket.on('getSongComment', async (songInfo) => {
+      console.log(songInfo);
+      comments = await songTable.getCommentInfo(songInfo);
+      console.log("comments");
+      console.log(comments);
+      socket.emit('getSongComment', comments);
   });
 
 })

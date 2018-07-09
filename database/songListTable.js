@@ -69,7 +69,6 @@ function deletePlayList(playListInfo) {
     let query = mysql.format(sql, condition);
     console.log(query);
     applyQuery(query);
-
     /* delete song in database */
     songTable.deleteSongInList(playListInfo);
 }
@@ -89,7 +88,12 @@ async function getCompletePlayListInfo(playListInfo){
     insert = [playListInfo.token, playListInfo.listId];
     query = mysql.format(sql, insert);
     songListData = await getData(query);
+    console.log("getCompletePlayListInfo");
+    console.log(songListData);
     if(songListData.length == 0){
+        console.log("no list");
+        userInfo = await userTable.getUserInfo(playListInfo.token);
+        console.log(userInfo);
         return {
             userName: userInfo.userName,
             avatar: userInfo.avatar,
