@@ -218,7 +218,8 @@ html, body {
       margin-right: 15px;
       width: 30%;
       max-height: 700px;
-      overflow-x: initial;
+      padding-left: 23px;
+      margin-left: -23px;
       overflow-y: scroll;
       margin-bottom: 30px; }
       .content_wrap .publishing_wrap .playlist_status_wrap .pick_des {
