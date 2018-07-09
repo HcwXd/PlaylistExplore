@@ -50,6 +50,7 @@ async function getUserInfo(token){
     let sql = 'SELECT * FROM user WHERE token = ?';
     let query = mysql.format(sql, token);
     let userInfo = await getData(query);
+    console.log(userInfo);
     return userInfo[0];
 }
 

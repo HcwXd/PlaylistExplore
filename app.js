@@ -86,7 +86,8 @@ io.on('connect', async (socket) => {
     songListTable.modifyPlayList(playListInfo);
   });
 
-  socket.on('getUserInfo', async () => {
+  socket.on('getUserInfo', async (token) => {
+    console.log(token);
     console.log(socket.handshake.session.token);
     let userInfo = await userTable.getUserInfo(socket.handshake.session.token);
     socket.emit('getUserInfo', userInfo);
@@ -111,10 +112,12 @@ io.on('connect', async (socket) => {
   })
 
   socket.on('newComment', async (commentInfo) => {
-    commentInfo['commentToken'] = socket.handshake.session.token;
-    console.log("comment");
-    console.log(commentInfo);
-    await commentTable.createComment(commentInfo);
+    if(commentInfo.commentContent){
+        commentInfo['commentToken'] = socket.handshake.session.token;
+        console.log("comment");
+        console.log(commentInfo);
+        await commentTable.createComment(commentInfo);
+    }
     songInfo = {
       token: commentInfo.listOwnerToken,
       songIndex: commentInfo.songIndex,
