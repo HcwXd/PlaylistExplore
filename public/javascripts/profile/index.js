@@ -9,15 +9,20 @@ let nowPlayingIndex = 0;
 let player;
 let ownerInfo;
 
+socket.on('newComment', (commentArray) => {
+    console.log("newComments");
+    ownerInfo.playlistInfo.songList[nowPlayingIndex].comments = commentArray;
+    renderNewComment();
+})
+
 function onYouTubePlayerAPIReady() {
     socket.emit('getOwnerInfo', listOwnerToken);
     socket.on('getOwnerInfo', (socketOn_ownerInfo) => {
         document.querySelector('.loader').remove();
         ownerInfo = socketOn_ownerInfo;
-
+        console.log("ownerInfo:");
+        console.log(ownerInfo);
         renderOwnerInfo(ownerInfo);
-        renderPlayerInfo(ownerInfo);
-
         player = new YT.Player('video_placeholder', {
             width: '700',
             height: '400',
@@ -26,6 +31,7 @@ function onYouTubePlayerAPIReady() {
                 onStateChange: onPlayerStateChange
             }
         });
+        renderPlayerInfo(ownerInfo);
         renderPlaylist(ownerInfo);
     })
 }
@@ -51,7 +57,12 @@ function renderPlayerInfo(ownerInfo) {
         comment_submit.style.fontSize = "24px";
     }
     renderNewSongStatsAndDes();
-    renderNewComment();
+    let commentInfo = {
+        listOwnerToken: ownerInfo.playlistInfo.token,
+        listId: ownerInfo.playlistInfo.listId,
+        songIndex: nowPlayingIndex
+    }
+    socket.emit('newComment', commentInfo);
 }
 
 function renderPlaylist(ownerInfo) {
@@ -91,7 +102,12 @@ function renderNextSongPlayer() {
     player.loadVideoById(playlistInfo.songList[nowPlayingIndex].url)
 
     renderNewSongStatsAndDes();
-    renderNewComment();
+    let commentInfo = {
+        listOwnerToken: ownerInfo.playlistInfo.token,
+        listId: ownerInfo.playlistInfo.listId,
+        songIndex: nowPlayingIndex
+    }
+    socket.emit('newComment', commentInfo);
 }
 
 function renderClickSongPlayer() {
@@ -101,7 +117,12 @@ function renderClickSongPlayer() {
     player.loadVideoById(playlistInfo.songList[nowPlayingIndex].url)
 
     renderNewSongStatsAndDes();
-    renderNewComment();
+    let commentInfo = {
+        listOwnerToken: ownerInfo.playlistInfo.token,
+        listId: ownerInfo.playlistInfo.listId,
+        songIndex: nowPlayingIndex
+    }
+    socket.emit('newComment', commentInfo);
 }
 
 function renderNewSongStatsAndDes() {
