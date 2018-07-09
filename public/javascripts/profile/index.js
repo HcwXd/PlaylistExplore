@@ -71,6 +71,9 @@ function renderPlaylist(ownerInfo) {
     <div class="playlist_name">${ownerInfo.playlistInfo.name}</div>
     <div class="playlist_des">${ownerInfo.playlistInfo.des}</div>`
     playlist_info_node.innerHTML = playlist_info_html;
+    if (userInfo && (userInfo.token === listOwnerToken)) {
+        addEditPlaylistBtn();
+    }
 
     const song_list_node = document.querySelector('.song_list');
     for (let i = 0; i < ownerInfo.playlistInfo.songList.length; i++) {
@@ -85,6 +88,18 @@ function renderPlaylist(ownerInfo) {
         song_info_node.addEventListener('click', renderClickSongPlayer);
         song_list_node.appendChild(song_info_node);
     }
+}
+
+function addEditPlaylistBtn() {
+    let edit_playlist_btn_node = document.createElement('div');
+    edit_playlist_btn_node.className = "edit_playlist_btn";
+    edit_playlist_btn_node.innerHTML = "Edit"
+    document.querySelector('.playlist_info').appendChild(edit_playlist_btn_node);
+    edit_playlist_btn_node.addEventListener('click', editPlaylist)
+}
+
+function editPlaylist() {
+    socket.emit('editPlaylist', ownerInfo);
 }
 
 function onPlayerStateChange(event) {
