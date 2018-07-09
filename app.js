@@ -183,6 +183,8 @@ io.on('connect', async (socket) => {
 
       socket.emit('signInSuccess');
       socket.handshake.session.token = user.account;
+      socket.handshake.session.userName = user.userName;
+      socket.handshake.session.avatar = user.avatar;
       console.log(socket.handshake.session);
   });
 

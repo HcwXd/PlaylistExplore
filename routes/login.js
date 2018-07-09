@@ -26,6 +26,8 @@ router.get('/facebook/return',
         }
         console.log(req.session.token);
         req.session.token = userInfo.token;
+        req.session.userName = userInfo.userName;
+        req.session.avatar = userInfo.avatar;
         res.redirect('/explore');
     }
 );
