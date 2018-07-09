@@ -41,6 +41,8 @@ function applyQuery(query){
 }
 
 function createSong(songListInfo, singleSongInfo){
+    console.log('create song');
+    console.log(singleSongInfo);
     let sql = "INSERT INTO song SET ?";
     let insertObject = {
         token: songListInfo.token,
@@ -49,7 +51,7 @@ function createSong(songListInfo, singleSongInfo){
         url: singleSongInfo.url,
         songName: singleSongInfo.songName,
         cover: singleSongInfo.cover,
-        des: singleSongInfo.des,
+        des: singleSongInfo.des || 'No description',
         likeNum: singleSongInfo.like
     }
     let query = mysql.format(sql, insertObject);

@@ -61,7 +61,7 @@ function renderLatestPlaylist() {
                 </div>
                 <div class="more_info">=</div>
             </div>
-            <img class="playlist_cover" data-token="${currentPlaylist.playlistInfo.token}" 
+            <img class="playlist_cover" data-token="${currentPlaylist.playlistInfo.token}"
             src="${coverPhoto}">
             <div class="playlist_stats">
                 <div class="like">♥${totalLike}</div>
@@ -134,7 +134,7 @@ function countInactivityTime() {
 
                 album_node.style.top = random(0, 80) + "%";
                 album_node.style.right = random(0, 80) + "%";
-                album_node.href = `/profile?${fivePlaylistInfo[i].playlistInfo.token}`
+                album_node.href = `/profile?id=${fivePlaylistInfo[i].playlistInfo.token}`
                 album_node.style.animationDelay = random(-6, 0) + "s";
 
                 let bg_url = `https://img.youtube.com/vi/${fivePlaylistInfo[i].playlistInfo.songList[j].url}/hqdefault.jpg`

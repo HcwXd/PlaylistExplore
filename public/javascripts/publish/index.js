@@ -115,11 +115,11 @@ function addSongToPlaylist() {
     playlist_status_wrap_node.style.display = "block";
     add_des_wrap_node.style.display = "none";
 
-    /** 
+    /**
     add_des_wrap_node.style.display = "flex";
 
     add_des_wrap_node.style.display = "none";
-    
+
         let des_input_node = document.querySelector('.des_input');
         this.des = des_input_node.value;
         des_input_node.value = "";
