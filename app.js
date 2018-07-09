@@ -44,7 +44,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(function (req, res, next) {
   res.locals.token = req.session.token;
-  next()
+  res.locals.userName = req.session.userName;
+  res.locals.avatar = req.session.avatar;
+  next();
 })
 
 app.use('/', indexRouter);
@@ -132,58 +134,58 @@ io.on('connect', async (socket) => {
   });
 
   socket.on('changeBio', async (bio) => {
-     bioInfo = {
-         content: bio,
-         token: socket.handshake.session.token
-     }
-     await userTable.updateBio(bioInfo);
-     socket.emit('changeBio', bio);
+    bioInfo = {
+      content: bio,
+      token: socket.handshake.session.token
+    }
+    await userTable.updateBio(bioInfo);
+    socket.emit('changeBio', bio);
   })
 
   socket.on('userSignUp', async (user) => {
 
-      console.log(user);
+    console.log(user);
 
-      if(await userTable.userExist(user.account)){
-          console.log('duplicateAccount');
-          socket.emit('duplicateAccount');
-          return;
-      }
+    if (await userTable.userExist(user.account)) {
+      console.log('duplicateAccount');
+      socket.emit('duplicateAccount');
+      return;
+    }
 
-      userInfo = {
-          userName: user.name,
-          avatar: user.avatar,
-          bio: '',
-          token: user.account,
-          password: user.password
-      }
+    userInfo = {
+      userName: user.name,
+      avatar: user.avatar,
+      bio: '',
+      token: user.account,
+      password: user.password
+    }
 
-      await userTable.createAccount(userInfo);
-      socket.emit('createAccountSuccess');
-/*
-      bcrypt.hash(userInfo.password, saltRounds, async function(err, hash) {
-          userInfo.password = hash;
-          await userTable.createAccount(userInfo);
-          socket.emit('createAccountSuccess');
-      });
-*/
+    await userTable.createAccount(userInfo);
+    socket.emit('createAccountSuccess');
+    /*
+          bcrypt.hash(userInfo.password, saltRounds, async function(err, hash) {
+              userInfo.password = hash;
+              await userTable.createAccount(userInfo);
+              socket.emit('createAccountSuccess');
+          });
+    */
   })
 
   socket.on('userSignIn', async (user) => {
-      if(! (ret = await userTable.userExist(user.account))){
-          console.log("accountNotExist");
-          socket.emit('accountNotExist');
-          return;
-      }
-      if(! (ret = await userTable.confirmUser(user))){
-          console.log("wrongPassword");
-          socket.emit('wrongPassword');
-          return;
-      }
+    if (!(ret = await userTable.userExist(user.account))) {
+      console.log("accountNotExist");
+      socket.emit('accountNotExist');
+      return;
+    }
+    if (!(ret = await userTable.confirmUser(user))) {
+      console.log("wrongPassword");
+      socket.emit('wrongPassword');
+      return;
+    }
 
-      socket.emit('signInSuccess');
-      socket.handshake.session.token = user.account;
-      console.log(socket.handshake.session);
+    socket.emit('signInSuccess');
+    socket.handshake.session.token = user.account;
+    console.log(socket.handshake.session);
   });
 
 })
