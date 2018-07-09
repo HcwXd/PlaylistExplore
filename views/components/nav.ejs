@@ -6,7 +6,8 @@
     <div class="left_nav">
         <% if (token) { %>
             <a class="nav_item" href="/profile?id=<%= token %>">
-                <%= userName ></a>
+                <%= userName %>
+            </a>
             <a class="nav_item" href="/publish?id=<%= token %>">發布歌單</a>
             <a class="nav_item" href="/signout">登出</a>
             <% } else { %>
