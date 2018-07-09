@@ -124,7 +124,6 @@ function addSongToPlaylist() {
         this.des = des_input_node.value;
         des_input_node.value = "";
     */
-
     let song_cover_node = document.createElement('img');
     song_cover_node.className = "song_cover";
     song_cover_node.src = `https://img.youtube.com/vi/${this.url}/hqdefault.jpg`;
@@ -172,6 +171,8 @@ function addSongToPlaylist() {
         comments: [],
     };
     songListState.push(singleSongInfo);
+    let playlist_status_wrap = document.querySelector('.playlist_status_wrap');
+    playlist_status_wrap.scrollTop = playlist_status_wrap.scrollHeight;
 
     let publish_btn_node = document.querySelector('.publish_btn');
     publish_btn_node.addEventListener('click', readyToPublish)
