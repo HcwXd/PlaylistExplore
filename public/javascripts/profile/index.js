@@ -23,6 +23,7 @@ function onYouTubePlayerAPIReady() {
         console.log("ownerInfo:");
         console.log(ownerInfo);
         renderOwnerInfo(ownerInfo);
+        renderPlayerInfo(ownerInfo);
         player = new YT.Player('video_placeholder', {
             width: '700',
             height: '400',
@@ -31,7 +32,6 @@ function onYouTubePlayerAPIReady() {
                 onStateChange: onPlayerStateChange
             }
         });
-        renderPlayerInfo(ownerInfo);
         renderPlaylist(ownerInfo);
     })
 }
