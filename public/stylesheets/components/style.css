@@ -29,7 +29,12 @@ a {
   .nav_wrap .right_nav {
     display: flex; }
   .nav_wrap .left_nav {
-    display: flex; }
+    display: flex;
+    align-items: center; }
+  .nav_wrap .nav_avatar {
+    height: 40px;
+    width: 40px;
+    border-radius: 100%; }
   .nav_wrap .nav_item {
     padding: 12px;
     margin-left: 12px;

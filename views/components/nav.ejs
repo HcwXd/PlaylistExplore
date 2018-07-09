@@ -5,6 +5,7 @@
     </div>
     <div class="left_nav">
         <% if (token) { %>
+            <img class="nav_avatar" src="<%= avatar %>">
             <a class="nav_item" href="/profile?id=<%= token %>">
                 <%= userName %>
             </a>
