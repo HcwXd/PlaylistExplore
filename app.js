@@ -144,7 +144,8 @@ io.on('connect', async (socket) => {
 
       console.log(user);
 
-      if(userTable.userExist(user.account)){
+      if(await userTable.userExist(user.account)){
+          console.log('duplicateAccount');
           socket.emit('duplicateAccount');
           return;
       }

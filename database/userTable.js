@@ -40,6 +40,9 @@ async function userExist(token) {
     insert = [token];
     query = mysql.format(sql, insert);
     let ret = await getData(query);
+    console.log("In userExist");
+    console.log(ret.length);
+    console.log(Boolean(ret.length));
     return Boolean(ret.length);
 }
 

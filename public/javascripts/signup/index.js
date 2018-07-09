@@ -9,6 +9,13 @@ const email_input = document.querySelector('.email_input');
 const signup_btn = document.querySelector('.signup_btn');
 let uploadCover;
 
+socket.on('duplicateAccount', () => {
+    alert("Account have been signed up")
+});
+socket.on('createAccountSuccess', () => {
+    window.location = "/explore";
+});
+
 function signUp() {
     var reg = new RegExp('^\\w+$');
     var avatar;
@@ -47,12 +54,7 @@ function signUp() {
         avatar: avatar
     }
     socket.emit("userSignUp", user);
-    socket.on('duplicateAccount', () => {
-        alert("Account have been signed up")
-    });
-    socket.on('createAccountSuccess', () => {
-        window.location = "/explore";
-    });
+
 
 
 
