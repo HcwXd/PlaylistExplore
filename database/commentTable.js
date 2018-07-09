@@ -37,7 +37,7 @@ function createComment(commentInfo){
 }
 
 function deleteComment(commentInfo){
-    let sql = "DELETE FROM comment WHERE ?? = ? AND ?? = ? AND ?? = ? AND ?? = ?";
+    let sql = "DELETE FROM comment WHERE ?? = ? AND ?? = ? AND ?? = ? AND ?? = ? AND ?? = ?";
     let condition = [
         'listOwnerToken', commentInfo.listOwnerToken,
         'listId', commentInfo.listId,
@@ -49,28 +49,30 @@ function deleteComment(commentInfo){
 }
 
 function modifyComment(commentInfo){
-    createComment(commentInfo);
-    let sql = "UPDATE comment SET ? WHERE ?? = ? AND ?? = ? AND ?? = ?";
+    let sql = "UPDATE comment SET ? WHERE ?? = ? AND ?? = ? AND ?? = ? AND ?? = ?";
     let setValue = {
         commentContent: commentInfo.commentContent
     }
     let insert = [
         setValue,
         'listOwnerToken', commentInfo.listOwnerToken,
-        'listId', commentInfo.listId,
+        'songIndex', commentInfo.songIndex,
         'commentIndex', commentInfo.commentIndex,
+        'listId', commentInfo.listID
     ];
     let query = mysql.format(sql, insert);
     applyQuery(query);
 }
 
+/* test
 commentInfo = {
     listOwnerToken: 1813929758691464,
-    listId: 1,
-    songIndex: 0,
+    url: 'https://www.youtube.com/watch?v=Omv3OFcocNM',
     commentToken: '1813929758691464',
-    commentContent: 'I like this song too!'
+    commentContent: 'I like this song!'
 }
+createComment(commentInfo);
+*/
 
 /* test
     modifyComment(commentInfo);

@@ -65,7 +65,13 @@ function deleteSongInList(songListInfo){
     let query = mysql.format(sql, condition);
     applyQuery(query);
 
+/* delete comment when song list delete */
     sql = "DELETE FROM comment WHERE ??=? and ?? = ?";
+    insert = [
+        'listOwnerToken', songListInfo.token,
+        'listId', songListInfo.listId
+    ]
+    query = mysql.format(sql, insert);
     applyQuery(query);
 }
 
@@ -108,11 +114,12 @@ async function updateLike(songInfo){
 }
 
 async function getCommentInfo(songInfo) {
+    console.log(songInfo);
     sql = "SELECT c.* ,u.userName, u.avatar \
            FROM comment c, user u \
-           WHERE c.listOwnerToken = ? AND c.songIndex = ? AND c.commentToken = u.token \
+           WHERE c.listOwnerToken = ? AND c.songIndex = ? AND c.commentToken = u.token AND c.listId = ? \
            ORDER BY c.commentIndex";
-    insert = [songInfo.token, songInfo.songIndex];
+    insert = [songInfo.token, songInfo.songIndex, songInfo.listId];
     query = mysql.format(sql, insert);
     result = await getData(query);
     let commentInfoArray = [];
@@ -131,11 +138,12 @@ async function getCommentInfo(songInfo) {
 /* test
 songInfo = {
     token: '1813929758691464',
-    listId: 1,
+    url: 'https://www.youtube.com/watch?v=Omv3OFcocNM',
     songIndex: 0
 }
 getCommentInfo(songInfo);
 */
+
 
 
 
