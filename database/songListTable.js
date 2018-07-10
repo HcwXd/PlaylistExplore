@@ -47,7 +47,7 @@ function createPlayList(playListInfo) {
         listId: playListInfo.listId,
         name: playListInfo.name,
         des: playListInfo.des,
-        date: playListInfo.date,
+        //date: playListInfo.date,
         cover: playListInfo.uploadCover
     }
     let query = mysql.format(sql, insertObject);

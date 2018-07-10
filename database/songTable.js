@@ -51,7 +51,7 @@ function createSong(songListInfo, singleSongInfo){
         url: singleSongInfo.url,
         songName: singleSongInfo.songName,
         cover: singleSongInfo.cover,
-        des: singleSongInfo.des || 'No description',
+        des: singleSongInfo.des || ' ',
         likeNum: singleSongInfo.like
     }
     let query = mysql.format(sql, insertObject);

@@ -214,7 +214,8 @@ io.on('connect', async (socket) => {
   });
 
   socket.on('editPlaylist', (ownerInfo) => {
-    socket.emit('editPlaylist', ownerInfo);  
+    console.log(ownerInfo);
+    socket.emit('editPlaylist', ownerInfo);
   })
 
 })
