@@ -115,15 +115,6 @@ function addSongToPlaylist() {
     playlist_status_wrap_node.style.display = "block";
     add_des_wrap_node.style.display = "none";
 
-    /**
-    add_des_wrap_node.style.display = "flex";
-
-    add_des_wrap_node.style.display = "none";
-
-        let des_input_node = document.querySelector('.des_input');
-        this.des = des_input_node.value;
-        des_input_node.value = "";
-    */
     let song_cover_node = document.createElement('img');
     song_cover_node.className = "song_cover";
     song_cover_node.src = `https://img.youtube.com/vi/${this.url}/hqdefault.jpg`;
@@ -224,6 +215,11 @@ function readyToPublish() {
     content_wrap_node.appendChild(publish_wrap_node);
 
     let avatar_input_node = document.querySelector('.avatar_input');
+    avatar_input_node.addEventListener('click', () => {
+        let loader_node = document.createElement('div');
+        loader_node.className = "loader";
+        document.body.appendChild(loader_node);
+    });
     avatar_input_node.addEventListener('change', uploadImgur);
 
     let cancel_node = document.querySelector('.cancel');
@@ -260,6 +256,7 @@ function readyToPublish() {
 }
 
 function publish() {
+
     try {
         if (!document.querySelector('.playlist_input_row').value) {
             throw new Error('Playlist must have name')
@@ -325,7 +322,7 @@ function uploadImgur() {
         $.ajax(settings).done(function (response) {
             responseData = JSON.parse(response);
             uploadCover = responseData.data.link;
-            // console.log(responseData.data.link);
+            document.querySelector('.loader').remove();
         });
     }
 }
