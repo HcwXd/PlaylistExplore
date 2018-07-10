@@ -5,6 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var session = require('express-session');
 var bcrypt = require('bcrypt');
+var sharedsession = require("express-socket.io-session");
 const saltRounds = 10;
 
 var indexRouter = require('./routes/index');
@@ -43,6 +44,7 @@ app.use(useSession);
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(function (req, res, next) {
+  console.log(req.session);
   res.locals.token = req.session.token;
   res.locals.userName = req.session.userName;
   res.locals.avatar = req.session.avatar;
@@ -69,9 +71,10 @@ app.use(function (err, req, res, next) {
   res.render('error');
 });
 
-io.use(function (socket, next) {
-  useSession(socket.handshake, {}, next);
-});
+io.use(sharedsession(useSession, {
+    autoSave:true
+}));
+
 
 io.on('connect', async (socket) => {
   socket.on('getSearchResults', async (URL) => {
@@ -175,6 +178,7 @@ io.on('connect', async (socket) => {
   })
 
   socket.on('userSignIn', async (user) => {
+    console.log(socket.handshake.session);
     if (!(ret = await userTable.userExist(user.account))) {
       console.log("accountNotExist");
       socket.emit('accountNotExist');
@@ -185,12 +189,15 @@ io.on('connect', async (socket) => {
       socket.emit('wrongPassword');
       return;
     }
-
-    socket.emit('signInSuccess');
-    socket.handshake.session.token = user.account;
-    socket.handshake.session.userName = user.userName;
-    socket.handshake.session.avatar = user.avatar;
+    let userInfo = await userTable.getUserInfo(user.account);
+    console.log(userInfo);
+    socket.handshake.session.token = userInfo.token;
+    socket.handshake.session.userName = userInfo.userName;
+    socket.handshake.session.avatar = userInfo.avatar;
+    socket.handshake.session.save();
     console.log(socket.handshake.session);
+    socket.emit('signInSuccess');
+
   });
 
   socket.on('getSongComment', async (songInfo) => {
