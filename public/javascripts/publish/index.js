@@ -289,7 +289,6 @@ function publish() {
     window.location = `/profile?id=${userToken}`;
 }
 
-
 function uploadImgur() {
     let files = this.files;
 

@@ -213,6 +213,10 @@ io.on('connect', async (socket) => {
     socket.emit('getSongComment', comments);
   });
 
+  socket.on('editPlaylist', (ownerInfo) => {
+    socket.emit('editPlaylist', ownerInfo);  
+  })
+
 })
 
 
