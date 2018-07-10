@@ -47,7 +47,7 @@ function createPlayList(playListInfo) {
         listId: playListInfo.listId,
         name: playListInfo.name,
         des: playListInfo.des,
-        //date: playListInfo.date,
+        date: playListInfo.date,
         cover: playListInfo.uploadCover
     }
     let query = mysql.format(sql, insertObject);
@@ -166,15 +166,21 @@ function makeLatestPlayLists(songListData, songData){
     return (latestSongPlaylists);
 }
 
+function min(a, b){
+    return a < b ? a : b ;
+}
+
 async function getLatestPlaylists(limitNum){
     sql = 'SELECT s.* ,u.userName, u.avatar FROM songList s, user u \
            where s.token = u.token \
            ORDER BY s.date DESC LIMIT ?';
     query = mysql.format(sql, [limitNum]);
     songListData = await getData(query);
-    //console.log(songListData);
+    console.log(songListData);
+    if(songListData.length == 0)
+        return [];
     sql = '';
-    for(index = 0 ; index < limitNum-1 ; index++){
+    for(index = 0 ; index < min(songListData.length - 1, limitNum-1) ; index++){
         sql += 'SELECT *  \
                FROM song \
                WHERE token = ? and listId = ?  \

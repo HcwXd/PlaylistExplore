@@ -17,6 +17,7 @@ function createAccount(userData) {
         if (error) {
             console.log(error);
         }
+        console.log(`Create ${userData.userName} successfully`);
         console.log(result);
     });
 }
