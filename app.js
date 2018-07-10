@@ -160,14 +160,19 @@ io.on('connect', async (socket) => {
 
     userInfo = {
       userName: user.name,
-      avatar: user.avatar,
+      avatar: user.avatar || 'https://i.imgur.com/9RXPWGu.png',
       bio: '',
       token: user.account,
       password: user.password
     }
 
     await userTable.createAccount(userInfo);
+    socket.handshake.session.token = userInfo.token;
+    socket.handshake.session.userName = userInfo.userName;
+    socket.handshake.session.avatar = userInfo.avatar;
+    socket.handshake.session.save();
     socket.emit('createAccountSuccess');
+
     /*
           bcrypt.hash(userInfo.password, saltRounds, async function(err, hash) {
               userInfo.password = hash;
