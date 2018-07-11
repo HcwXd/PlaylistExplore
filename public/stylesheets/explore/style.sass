@@ -132,13 +132,17 @@ html, body
           justify-content: space-between
           border-bottom: 1px solid $txt_white
           margin-bottom: 12px
+          overflow: hidden
           .song_name
             display: inline-block
             white-space: nowrap
-            overflow: hidden
+            // overflow: hidden
             padding-left: 15px
             padding-right: 15px
             height: 48px
+            animation: goLeft 10s infinite
+            animation-timing-function: linear
+
       .header
         display: flex
         justify-content: space-between
@@ -188,3 +192,9 @@ html, body
   100%
     transform: translateY(-100%)
     opacity: 0
+@keyframes goLeft
+  0%
+    transform: translateX(0%) 
+  100%
+    transform: translateX(-100%) 
+

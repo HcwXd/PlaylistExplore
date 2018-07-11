@@ -43,12 +43,12 @@ function renderLatestPlaylist() {
 
         let song_list_html = `<div class="song_list_des">播放清單</div>`;
         for (let songIndex = 0; songIndex < currentPlaylist.playlistInfo.songList.length; songIndex++) {
-
-            if (currentPlaylist.playlistInfo.songList[songIndex].songName.length > 11) {
-                renderSongName = currentPlaylist.playlistInfo.songList[songIndex].songName.substring(0, 11) + ' ...';
-            } else {
-                renderSongName = currentPlaylist.playlistInfo.songList[songIndex].songName;
-            }
+            // if (currentPlaylist.playlistInfo.songList[songIndex].songName.length > 11) {
+            //     renderSongName = currentPlaylist.playlistInfo.songList[songIndex].songName.substring(0, 11) + ' ...';
+            // } else {
+            //     renderSongName = currentPlaylist.playlistInfo.songList[songIndex].songName;
+            // }
+            renderSongName = currentPlaylist.playlistInfo.songList[songIndex].songName;
 
             song_list_html += `
             <div class="song_info">
@@ -93,8 +93,9 @@ function renderLatestPlaylist() {
     };
 
     let more_infos_node = document.querySelectorAll('.more_info');
-    more_infos_node.forEach(node => node.addEventListener('mouseout', hideSongList))
     more_infos_node.forEach(node => node.addEventListener('mouseenter', showSongList))
+    more_infos_node.forEach(node => node.addEventListener('mouseout', hideSongList))
+
 
     let playlist_covers_node = document.querySelectorAll('.playlist_cover');
     playlist_covers_node.forEach(node => node.addEventListener('click', goToTargetPlaylist))
@@ -167,7 +168,7 @@ function countInactivityTime() {
             document.querySelector('.idle_background-idling').remove();
         }
         clearTimeout(idleTime);
-        idleTime = setTimeout(idleRender, 5000)
+        idleTime = setTimeout(idleRender, 10000)
     }
 };
 
