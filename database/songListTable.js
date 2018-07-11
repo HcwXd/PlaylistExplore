@@ -1,99 +1,64 @@
-const db = require("./DB");
-const mysql = require("mysql");
+const { db, getData, applyQuery } = require('./DB');
+const mysql = require('mysql');
 const songTable = require('./songTable')
 const userTable = require('./userTable')
-const { map } = require('p-iteration');
 
+/* column in songListTable
+ *
+ * token
+ * listId
+ * name
+ * des
+ * date
+ * cover
+ */
 
-/*
-    PRIMARY KEY
-    token
-    listID
-
-    name
-    des
-    date
-*/
-
-function applyQuery(query) {
-    db.query(query, (error, result) => {
-        if (error) {
-            console.log(error);
-            return;
-        }
-        console.log(result);
-    })
-}
-
-function getData(query) {
-    return new Promise((resolve, reject) => {
-        try {
-            //console.log(query);
-            db.query(query, (error, result) => {
-                if(error)
-                    console.log(error);
-                resolve(result);
-            })
-        } catch (error) {
-            console.log(error);
-        }
-    })
-}
-
-function createPlayList(playListInfo) {
-    let sql = "INSERT INTO songList SET ?";
-    let insertObject = {
-        token: playListInfo.token,
-        listId: playListInfo.listId,
-        name: playListInfo.name,
-        des: playListInfo.des,
-        date: playListInfo.date,
-        cover: playListInfo.uploadCover
+function createPlayList(playlistInfo) {
+    const sql = 'INSERT INTO songList SET ?';
+    const insert = {
+        token: playlistInfo.token,
+        listId: playlistInfo.listId,
+        name: playlistInfo.name,
+        des: playlistInfo.des,
+        date: playlistInfo.date,
+        cover: playlistInfo.uploadCover
     }
-    let query = mysql.format(sql, insertObject);
+    const query = mysql.format(sql, insert);
     applyQuery(query);
 
     /* add song to database */
-    playListInfo.songList.map((element, index) => {
-        element['songIndex'] = index;
-        songTable.createSong(insertObject, element);
-    })
+    songTable.createMultipleSong(playlistInfo);
 }
 
-function deletePlayList(playListInfo) {
-    let sql = "DELETE FROM songList WHERE ?? = ? AND ?? = ?";
-    let condition = [
-        'token', playListInfo.token,
-        'listId', playListInfo.listId,
+function deletePlayList(playlistInfo) {
+    const sql = 'DELETE FROM songList WHERE ?? = ? AND ?? = ?';
+    const insert = [
+        'token', playlistInfo.token,
+        'listId', playlistInfo.listId,
     ]
-    let query = mysql.format(sql, condition);
-    console.log(query);
+    const query = mysql.format(sql, insert);
     applyQuery(query);
+
     /* delete song in database */
-    songTable.deleteSongInList(playListInfo);
+    songTable.deleteSongInList(playlistInfo);
 }
 
-async function modifyPlayList(playListInfo) {
-    await deletePlayList(playListInfo);
-    createPlayList(playListInfo);
+async function modifyPlayList(playlistInfo) {
+    await deletePlayList(playlistInfo);
+    createPlayList(playlistInfo);
 }
 
+async function getCompleteplaylistInfo(playlistInfo){
+    let sql = 'SELECT l.*, u.userName, u.avatar, u.bio \
+               FROM songList l, user u \
+               WHERE l.token = ? and l.listId = ? and l.token = u.token';
+    let insert = [playlistInfo.token, playlistInfo.listId];
+    let query = mysql.format(sql, insert);
+    let songListData = await getData(query);
 
-
-async function getCompletePlayListInfo(playListInfo){
-
-    sql = 'SELECT l.*, u.userName, u.avatar, u.bio \
-           FROM songList l, user u \
-           WHERE l.token = ? and l.listId = ? and l.token = u.token';
-    insert = [playListInfo.token, playListInfo.listId];
-    query = mysql.format(sql, insert);
-    songListData = await getData(query);
-    console.log("getCompletePlayListInfo");
-    console.log(songListData);
     if(songListData.length == 0){
-        console.log("no list");
-        userInfo = await userTable.getUserInfo(playListInfo.token);
-        console.log(userInfo);
+        console.log('no list');
+        const userInfo = await userTable.getUserInfo(playlistInfo.token);
         return {
             userName: userInfo.userName,
             avatar: userInfo.avatar,
@@ -111,32 +76,22 @@ async function getCompletePlayListInfo(playListInfo){
     }
 
     sql = 'SELECT *  \
-            FROM song \
-            WHERE token = ? and listId = ? ';
-    insert = [playListInfo.token, playListInfo.listId];
+           FROM song \
+           WHERE token = ? and listId = ? ';
+
+    insert = [playlistInfo.token, playlistInfo.listId];
     query = mysql.format(sql, insert);
-    //console.log(query);
-    songData = await getData(query);
-    //console.log(songData);
+    const songData = await getData(query);
+
     songData.map(element => {element['comments'] = []});
-    songData[0]['comments'] = await songTable.getCommentInfo(songData[0]);
-
-    result = makeLatestPlayLists(songListData, songData);
-    return result[0];
-}
-
-
-playListInfo = {
-    token: '2159235527438018',
-    listId: 1
+    ret = makeLatestPlayLists(songListData, songData);
+    return ret[0];
 }
 
 function makeLatestPlayLists(songListData, songData){
-    console.log("enter");
-    latestSongPlaylists = [];
+    let latestSongPlaylists = [];
     let global_index = 0;
     songListData.map((songList, listIndex) => {
-
         latestSongPlaylists.push({
             userName: songList.userName,
             avatar: songList.avatar,
@@ -150,20 +105,22 @@ function makeLatestPlayLists(songListData, songData){
                 listId: songList.listId,
                 uploadCover: songList.cover
             }
-        })
+        });
+
         for(index = global_index; index < songData.length; index++){
-            if(songData[index].listId == songList.listId &&
-               songData[index].token == songList.token){
-                   songData[index]['like'] = songData[index].likeNum;
-                   latestSongPlaylists[listIndex].playlistInfo.songList.push(songData[index]);
-               }
-               else{
-                   global_index = index;
-                   break;
-               }
+            if(songData[index].listId === songList.listId
+               && songData[index].token === songList.token){
+               songData[index]['like'] = songData[index].likeNum;
+               latestSongPlaylists[listIndex].playlistInfo.songList.push(songData[index]);
+               continue;
+            }
+
+            global_index = index;
+            break;
         }
-    })
-    return (latestSongPlaylists);
+    });
+
+    return latestSongPlaylists;
 }
 
 function min(a, b){
@@ -171,52 +128,42 @@ function min(a, b){
 }
 
 async function getLatestPlaylists(limitNum){
-    sql = 'SELECT s.* ,u.userName, u.avatar FROM songList s, user u \
-           where s.token = u.token \
-           ORDER BY s.date DESC LIMIT ?';
-    query = mysql.format(sql, [limitNum]);
-    songListData = await getData(query);
-    console.log(songListData);
+    let sql = 'SELECT s.* ,u.userName, u.avatar FROM songList s, user u \
+               where s.token = u.token \
+               ORDER BY s.date DESC LIMIT ?';
+    let query = mysql.format(sql, [limitNum]);
+    const songListData = await getData(query);
     if(songListData.length == 0)
         return [];
+
     sql = '';
     for(index = 0 ; index < min(songListData.length - 1, limitNum-1) ; index++){
         sql += 'SELECT *  \
-               FROM song \
-               WHERE token = ? and listId = ?  \
-               Union ';
+                FROM song \
+                WHERE token = ? and listId = ?  \
+                Union ';
     }
     sql += 'SELECT *  \
             FROM song \
             WHERE token = ? and listId = ? ';
+
     /* get whole song list */
-    insert = [];
+    let insert = [];
     songListData.map((element) => {
         insert.push(element.token);
         insert.push(element.listId);
     })
     query = mysql.format(sql, insert);
-    //console.log(query);
-    songData = await getData(query);
-    //console.log(songData);
+    const songData = await getData(query);
+
     return makeLatestPlayLists(songListData, songData);
 }
 
-
-/* test
-    playListInfo = {
-        token: '2159235527438018',
-        listId: 1
-    }
-    getCompletePlayListInfo_(playListInfo);
-*/
-    //getLatestPlaylists();
-
 module.exports = {
-    createPlayList: createPlayList,
-    deletePlayList: deletePlayList,
-    modifyPlayList: modifyPlayList,
-    getCompletePlayListInfo: getCompletePlayListInfo,
-    getLatestPlaylists: getLatestPlaylists,
-    makeLatestPlayLists
-}
+    createPlayList,
+    deletePlayList,
+    modifyPlayList,
+    getCompleteplaylistInfo,
+    getLatestPlaylists,
+    makeLatestPlayLists,
+};
