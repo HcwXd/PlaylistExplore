@@ -12,7 +12,6 @@ router.use(passport.initialize());
 router.use(passport.session());
 
 router.get('/facebook', passport.authenticate('facebook'));
-
 router.get('/facebook/return',
     passport.authenticate('facebook', {
         failureRedirect: '/login'
@@ -24,7 +23,6 @@ router.get('/facebook/return',
             avatar: getAvatarURL(req.user._json.id),
             bio: ''
         }
-        console.log(req.session.token);
         req.session.token = userInfo.token;
         req.session.userName = userInfo.userName;
         req.session.avatar = userInfo.avatar;

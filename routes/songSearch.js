@@ -1,15 +1,11 @@
-const cheerio = require('cheerio');
-const axios = require('axios');
-const fs = require('fs');
+
 const config = require('./config');
-const {
-    google
-} = require('googleapis');
+const { google } = require('googleapis');
 
 // initialize the Youtube API library
 const youtube = google.youtube({
     version: 'v3',
-    auth: config.key // specify your API key here
+    auth: config.key, // specify your API key here
 });
 
 function urlToId(url) {
@@ -24,11 +20,8 @@ function getCoverImage(id) {
     return url;
 }
 
-URL = 'https://www.youtube.com/watch?v=djACkCHl3JA'
-
 async function getSingleURLInfo(URL) {
     let videoId = urlToId(URL);
-    console.log(videoId);
     const body = await youtube.videos.list({
         id: videoId,
         part: 'snippet'
@@ -38,50 +31,33 @@ async function getSingleURLInfo(URL) {
         songName: body.data.items[0].snippet.title,
         url: videoId,
         cover: getCoverImage(videoId),
-        des: '',
-        like: 0,
-        comments: []
     }];
     return songInfoArray;
 }
 
 // a very simple example of searching for youtube videos
 async function getSingleSongInfoArray(URL) {
-    console.log(URL);
     if (/^'https'/.test(URL)) {
-        console.log("simple url");
         return await getSingleURLInfo(URL);
     }
+
     const res = await youtube.search.list({
         part: 'id,snippet',
         q: URL,
         maxResults: 5,
-        type: 'video'
+        type: 'video',
     });
+
     let songInfoArray = [];
     res.data.items.map((element) => {
         songInfoArray.push({
             songName: element.snippet.title,
             url: element.id.videoId,
             cover: (getCoverImage(element.id.videoId)),
-            des: '',
-            like: 0,
-            comments: []
-        })
-    })
+        });
+    });
+
     return songInfoArray;
 }
 
-
-
 module.exports = getSingleSongInfoArray;
-/*
-
-async function test(){
-    body = await getSingleSongInfoArray(URL);
-    console.log(body);
-}
-
-test();
-
-*/

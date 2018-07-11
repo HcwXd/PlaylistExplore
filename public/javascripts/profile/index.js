@@ -9,11 +9,12 @@ let nowPlayingIndex = 0;
 let player;
 let ownerInfo;
 
-socket.on('newComment', (commentArray) => {
-    console.log("newComments");
+socket.on('getSongComment', (commentArray) => {
+    console.log("getSongComment");
     ownerInfo.playlistInfo.songList[nowPlayingIndex].comments = commentArray;
     renderNewComment();
 })
+
 
 function onYouTubePlayerAPIReady() {
     socket.emit('getOwnerInfo', listOwnerToken);
@@ -61,12 +62,13 @@ function renderPlayerInfo(ownerInfo) {
         comment_submit.style.fontSize = "24px";
     }
     renderNewSongStatsAndDes();
-    let commentInfo = {
-        listOwnerToken: ownerInfo.playlistInfo.token,
+    let songInfo = {
+        token: ownerInfo.playlistInfo.token,
         listId: ownerInfo.playlistInfo.listId,
         songIndex: nowPlayingIndex
     }
-    socket.emit('newComment', commentInfo);
+    console.log(songInfo);
+    socket.emit('getSongComment', songInfo);
 }
 
 function renderPlaylist(ownerInfo) {
@@ -121,12 +123,13 @@ function renderNextSongPlayer() {
     player.loadVideoById(playlistInfo.songList[nowPlayingIndex].url)
 
     renderNewSongStatsAndDes();
-    let commentInfo = {
-        listOwnerToken: ownerInfo.playlistInfo.token,
+    let songInfo = {
+        token: ownerInfo.playlistInfo.token,
         listId: ownerInfo.playlistInfo.listId,
         songIndex: nowPlayingIndex
     }
-    socket.emit('newComment', commentInfo);
+    socket.emit('getSongComment', songInfo);
+
 }
 
 function renderClickSongPlayer() {
@@ -136,12 +139,12 @@ function renderClickSongPlayer() {
     player.loadVideoById(playlistInfo.songList[nowPlayingIndex].url)
 
     renderNewSongStatsAndDes();
-    let commentInfo = {
-        listOwnerToken: ownerInfo.playlistInfo.token,
+    let songInfo = {
+        token: ownerInfo.playlistInfo.token,
         listId: ownerInfo.playlistInfo.listId,
         songIndex: nowPlayingIndex
     }
-    socket.emit('newComment', commentInfo);
+    socket.emit('getSongComment', songInfo);
 }
 
 function renderNewSongStatsAndDes() {
@@ -194,10 +197,6 @@ function addComment() {
     }
 
     socket.emit("newComment", commentInfo);
-    socket.on("newComment", (newCommentInfo) => {
-        ownerInfo.playlistInfo.songList[nowPlayingIndex].comments = newCommentInfo;
-        renderNewComment();
-    });
 }
 
 function renderNewLike(ownerInfo, newLikeNumber) {

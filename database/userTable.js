@@ -1,100 +1,62 @@
-const db = require("./DB");
-const mysql = require("mysql");
-
-function applyQuery(query){
-    db.query(query, (error, result) => {
-        if(error){
-            console.log(error);
-            return;
-        }
-        console.log(result);
-    })
-}
-
+const { db, getData, applyQuery } = require('./DB');
+const mysql = require('mysql');
 
 function createAccount(userData) {
-    db.query('INSERT INTO user SET ?', userData, (error, result) => {
-        if (error) {
-            console.log(error);
-        }
-        console.log(`Create ${userData.userName} successfully`);
-        console.log(result);
-    });
-}
-
-function getData(query){
-    return new Promise((resolve, reject) => {
-        try{
-            console.log(query);
-            db.query(query, (error, result) => {
-                resolve(result);
-            })
-        }
-        catch(error){
-            console.log(error);
-        }
-    })
+    const sql = 'INSERT INTO user SET ?';
+    const insert = userData;
+    const query = mysql.format(sql, insert);
+    applyQuery(query);
 }
 
 async function userExist(token) {
-    sql = "SELECT token FROM user WHERE token =  ?";
-    insert = [token];
-    query = mysql.format(sql, insert);
-    let ret = await getData(query);
-    console.log("In userExist");
-    console.log(ret.length);
-    console.log(Boolean(ret.length));
+    const sql = "SELECT token FROM user WHERE token =  ?";
+    const insert = [token];
+    const query = mysql.format(sql, insert);
+    const ret = await getData(query);
     return Boolean(ret.length);
 }
 
 async function getUserInfo(token){
-    let sql = 'SELECT * FROM user WHERE token = ?';
-    let query = mysql.format(sql, token);
-    let userInfo = await getData(query);
+    const sql = 'SELECT * FROM user WHERE token = ?';
+    const query = mysql.format(sql, token);
+    const userInfo = await getData(query);
     console.log(userInfo);
     return userInfo[0];
 }
 
 async function updateBio(bioInfo){
-    let sql = 'UPDATE user SET ? WHERE token = ?';
-    let insert = [{bio: bioInfo.content}, bioInfo.token];
-    let query = mysql.format(sql, insert);
+    const sql = 'UPDATE user SET ? WHERE token = ?';
+    const insert = [{bio: bioInfo.content}, bioInfo.token];
+    const query = mysql.format(sql, insert);
     applyQuery(query);
 }
 
 async function confirmUser(userInfo){
-    console.log(userInfo);
-    let sql = "SELECT password from user where token = ?";
-    let insert = [userInfo.account];
-    let query = mysql.format(sql, insert);
-    let result = await getData(query);
-    console.log(result);
+    const sql = "SELECT password from user where token = ?";
+    const insert = [userInfo.account];
+    const query = mysql.format(sql, insert);
+    const result = await getData(query);
     if(result[0].password == userInfo.password){
         console.log("sign in success");
         return true;
     }
-    else {
-        return false;
-    }
+
+    return false;
 }
 
 async function searchUser(userName){
-    let sql = 'SELECT * FROM user WHERE userName = ?';
-    let insert = [userName];
-    let query = mysql.format(sql, insert);
-    let result = await getData(query);
-    console.log(result);
-    return result;
+    const sql = 'SELECT * FROM user WHERE userName = ?';
+    const insert = [userName];
+    const query = mysql.format(sql, insert);
+    const ret = await getData(query);
+    return ret;
 }
-
-searchUser('loginTest1');
-
-
 
 module.exports = {
-    userExist: userExist,
-    createAccount: createAccount,
-    getUserInfo: getUserInfo,
-    updateBio: updateBio,
-    confirmUser: confirmUser
-}
+    userExist,
+    createAccount,
+    getUserInfo,
+    updateBio,
+    confirmUser,
+    searchUser,
+};

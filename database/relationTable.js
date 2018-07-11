@@ -1,46 +1,22 @@
-const db = require("./DB");
-const mysql = require("mysql");
-const { map } = require('p-iteration');
+const { db, getData, applyQuery } = require('./DB');
+const mysql = require('mysql');
 const userTable = require('./userTable');
 const songListTable = require('./songListTable');
-/*
-    Primary Key
-    token
-    followToken
-*/
-
-function getData(query) {
-    return new Promise((resolve, reject) => {
-        try {
-            console.log(query);
-            db.query(query, (error, result) => {
-                if(error)
-                    console.log(error);
-                resolve(result);
-            })
-        } catch (error) {
-            console.log(error);
-        }
-    })
-}
-
-function applyQuery(query){
-    db.query(query, (error, result) => {
-        if(error){
-            console.log(error);
-            return;
-        }
-        console.log(result);
-    })
-}
 
 async function createRelation(token, followToken){
-    let sql = 'INSERT relation SET ?';
-    let insert = {
+    const sql = 'INSERT relation SET ?';
+    const insert = {
         token,
-        followToken
+        followToken,
     }
-    let query = mysql.format(sql, insert);
+    const query = mysql.format(sql, insert);
+    applyQuery(query);
+}
+
+async function deleteRelation(token, followToken){
+    const sql = 'DELETE FROM relation WHERE token = ? AND followToken = ?';
+    const insert = [token, followToken];
+    const query = mysql.format(sql, insert);
     applyQuery(query);
 }
 
@@ -49,44 +25,45 @@ function min(a, b){
 }
 
 async function getFriendsLatest(token, limitNum){
+    /* get friends' latest songlist infomation */
     let sql = 'SELECT s.*, u.userName, u.avatar from songList s, user u \
                WHERE s.token in (SELECT followToken FROM relation WHERE token = ?) \
                AND s.token = u.token \
                ORDER BY date DESC LIMIT ?';
     let insert = [token, limitNum];
     let query = mysql.format(sql, insert);
-    let songListData = await getData(query);
-    console.log(songListData);
+    const songListData = await getData(query);
+
     if(songListData.length == 0)
         return [];
+
+    /* get the song batch in the list we get */
     sql = '';
     for(index = 0 ; index < min(songListData.length - 1, limitNum-1) ; index++){
         sql += 'SELECT *  \
-               FROM song \
-               WHERE token = ? and listId = ?  \
-               Union ';
+                FROM song \
+                WHERE token = ? and listId = ?  \
+                Union ';
     }
     sql += 'SELECT *  \
             FROM song \
             WHERE token = ? and listId = ? ';
+
     /* get whole song list */
     insert = [];
     songListData.map((element) => {
         insert.push(element.token);
         insert.push(element.listId);
-    })
-    query = mysql.format(sql, insert);
-    //console.log(query);
-    songData = await getData(query);
-    //console.log(songData);
-    result = songListTable.makeLatestPlayLists(songListData, songData);
-    console.log(result);
-}
+    });
 
-//getFriendsLatest('B04703002', 5);
-//createRelation('B04703002', 'B04703004');
+    query = mysql.format(sql, insert);
+    const songData = await getData(query);
+
+    /* merge the songlist and song information */
+    result = songListTable.makeLatestPlayLists(songListData, songData);
+}
 
 module.exports = {
     createRelation,
-    getFriendsLatest
+    getFriendsLatest,
 }
