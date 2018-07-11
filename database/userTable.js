@@ -78,6 +78,17 @@ async function confirmUser(userInfo){
     }
 }
 
+async function searchUser(userName){
+    let sql = 'SELECT * FROM user WHERE userName = ?';
+    let insert = [userName];
+    let query = mysql.format(sql, insert);
+    let result = await getData(query);
+    console.log(result);
+    return result;
+}
+
+searchUser('loginTest1');
+
 
 
 module.exports = {

@@ -217,5 +217,6 @@ module.exports = {
     deletePlayList: deletePlayList,
     modifyPlayList: modifyPlayList,
     getCompletePlayListInfo: getCompletePlayListInfo,
-    getLatestPlaylists: getLatestPlaylists
+    getLatestPlaylists: getLatestPlaylists,
+    makeLatestPlayLists
 }

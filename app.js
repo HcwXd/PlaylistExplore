@@ -17,6 +17,7 @@ var songListTable = require('./database/songListTable');
 var userTable = require('./database/userTable');
 var commentTable = require('./database/commentTable');
 var songTable = require('./database/songTable');
+var relationTable = require('./database/relationTable');
 
 var app = express();
 const server = require('http').Server(app);
@@ -218,6 +219,18 @@ io.on('connect', async (socket) => {
     socket.emit('editPlaylist', ownerInfo);
   })
 
+  socket.on('searchUser', async (userName) => {
+      return await userTable.searchUser;
+  })
+
+  socket.on('issueFollow', async (relation) => {
+      relationTable.createRelation(relation.token, relation.followToken);
+  })
+
+  socket.on('getFriendsLatest', async() => {
+      const latestFriendPlaylistArray = await relationTable.getFriendsLatest(socket.handshake.session.token, 5)
+      socket.emit('getFriendLatest', latestFriendPlaylistArray);
+  })
 })
 
 
