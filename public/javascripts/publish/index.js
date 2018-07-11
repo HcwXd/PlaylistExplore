@@ -204,7 +204,7 @@ function readyToPublish() {
             <label>Cover</label>
             <input class="avatar_input" type="file" name="avatar" data-maxSize="5000">
         </div>
-        <a data="/profile">
+        <a class="publish_loader_wrap">
             <div class="real_publish_btn">Publish</div>
         </a>
     </div>
@@ -213,14 +213,6 @@ function readyToPublish() {
 
     let content_wrap_node = document.querySelector('.content_wrap');
     content_wrap_node.appendChild(publish_wrap_node);
-
-    let avatar_input_node = document.querySelector('.avatar_input');
-    avatar_input_node.addEventListener('click', () => {
-        let loader_node = document.createElement('div');
-        loader_node.className = "loader";
-        document.body.appendChild(loader_node);
-    });
-    avatar_input_node.addEventListener('change', uploadImgur);
 
     let cancel_node = document.querySelector('.cancel');
     cancel_node.addEventListener('click', () => {
@@ -268,7 +260,10 @@ function publish() {
         alert(e);
         return;
     }
+    uploadImgur();
+}
 
+function redirectToProfile() {
     let date = new Date();
     let playlistInfo = {
         name: document.querySelector('.playlist_input_row').value,
@@ -287,11 +282,15 @@ function publish() {
 }
 
 function uploadImgur() {
-    let files = this.files;
+    let avatar_input_node = document.querySelector('.avatar_input');
 
-    if (files.length) {
+    let files = avatar_input_node.files;
 
-        if (files[0].size > this.dataset.maxSize * 1024) {
+    if (!files.length) {
+        redirectToProfile();
+    } else {
+
+        if (files[0].size > avatar_input_node.dataset.maxSize * 1024) {
             alert("Please select a smaller file")
             return false;
         }
@@ -301,6 +300,47 @@ function uploadImgur() {
         let apiUrl = 'https://api.imgur.com/3/image';
         let apiKey = "50db29122a23727";
 
+        function getData3() {
+            var defer = $.Deferred();
+
+            let formData = new FormData();
+            formData.append("image", files[0]);
+
+            $.ajax({
+                // async: false,
+                crossDomain: true,
+                processData: false,
+                contentType: false,
+                type: 'POST',
+                url: apiUrl,
+                headers: {
+                    Authorization: 'Client-ID ' + apiKey,
+                    Accept: 'application/json'
+                },
+                mimeType: 'multipart/form-data',
+                data: formData,
+                success: function (response) {
+                    defer.resolve(response)
+                }
+            });
+
+
+            return defer.promise();
+        };
+        document.querySelector('.loader').classList.remove("loader_hide");
+
+        $.when(getData3()).done(function (response) {
+            responseData = JSON.parse(response);
+            uploadCover = responseData.data.link;
+            console.log(uploadCover);
+            console.log("Remove");
+            document.querySelector('.loader').classList.add('loader_hide');
+            redirectToProfile();
+        });
+
+
+
+        /*
         let settings = {
             async: false,
             crossDomain: true,
@@ -322,8 +362,8 @@ function uploadImgur() {
         $.ajax(settings).done(function (response) {
             responseData = JSON.parse(response);
             uploadCover = responseData.data.link;
-            document.querySelector('.loader').remove();
         });
+        */
     }
 }
 
