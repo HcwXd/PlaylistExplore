@@ -286,7 +286,9 @@ function uploadImgur() {
 
     let files = avatar_input_node.files;
 
-    if (files.length) {
+    if (!files.length) {
+        redirectToProfile();
+    } else {
 
         if (files[0].size > avatar_input_node.dataset.maxSize * 1024) {
             alert("Please select a smaller file")
