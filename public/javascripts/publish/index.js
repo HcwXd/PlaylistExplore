@@ -214,24 +214,6 @@ function readyToPublish() {
     let content_wrap_node = document.querySelector('.content_wrap');
     content_wrap_node.appendChild(publish_wrap_node);
 
-    let publish_loader_wrap_node = document.querySelector('.publish_loader_wrap');
-    publish_loader_wrap_node.addEventListener('click', () => {
-        console.log("Add");
-        // let loader_node = document.createElement('div');
-        // loader_node.className = "loader";
-        document.querySelector('.loader').classList.remove("loader_hide");
-        // document.querySelector('.content_wrap').appendChild(loader_node);
-    }, true);
-
-    let avatar_input_node = document.querySelector('.avatar_input');
-    // avatar_input_node.addEventListener('click', () => {
-    //     let loader_node = document.createElement('div');
-    //     loader_node.className = "loader";
-    //     document.body.appendChild(loader_node);
-    // });
-
-    // avatar_input_node.addEventListener('change', uploadImgur);
-
     let cancel_node = document.querySelector('.cancel');
     cancel_node.addEventListener('click', () => {
         publish_wrap_node.remove()
