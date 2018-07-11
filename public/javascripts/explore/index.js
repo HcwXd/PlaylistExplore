@@ -6,6 +6,21 @@ socket.on('getLatestPlaylists', (socketOn_fivePlaylistInfo) => {
     fivePlaylistInfo = socketOn_fivePlaylistInfo;
     console.log(fivePlaylistInfo);
     renderLatestPlaylist();
+
+    const toggle_background_btn_node = document.createElement('div');
+    toggle_background_btn_node.className = "btn";
+
+    const toggle_background_switch_node = document.createElement('div');
+    toggle_background_switch_node.className = "toggle_background_switch";
+    toggle_background_switch_node.appendChild(toggle_background_btn_node);
+
+
+    const toggle_background_wrap_node = document.createElement('div');
+    toggle_background_wrap_node.className = "toggle_background_wrap";
+    toggle_background_wrap_node.appendChild(toggle_background_switch_node);
+
+    toggle_background_switch_node.addEventListener('click', changeBackground);
+    document.body.appendChild(toggle_background_wrap_node);
 })
 
 function renderLatestPlaylist() {
@@ -117,7 +132,8 @@ function countInactivityTime() {
 
     function idleRender() {
         let idle_background_node = document.createElement('div');
-        idle_background_node.className = "idle_background";
+        idle_background_node.className = "idle_background idle_background-idling";
+        idle_background_node.style.zIndex = "100";
 
         let content_wrap_node = document.querySelector('.content_wrap');
         content_wrap_node.parentNode.appendChild(idle_background_node);
@@ -147,14 +163,54 @@ function countInactivityTime() {
     }
 
     function resetTimer() {
-        if (document.querySelector('.idle_background')) {
-            document.querySelector('.idle_background').remove();
+        if (document.querySelector('.idle_background-idling')) {
+            document.querySelector('.idle_background-idling').remove();
         }
         clearTimeout(idleTime);
         idleTime = setTimeout(idleRender, 5000)
-
     }
 };
+
+
+function changeBackground() {
+    if (document.querySelector('.toggle_background_switch-on')) {
+        document.querySelector('.idle_background').remove();
+        document.querySelector('.toggle_background_switch-on').classList.remove('toggle_background_switch-on');
+    } else {
+        document.querySelector('.toggle_background_switch').classList.add('toggle_background_switch-on');
+        let idle_background_node = document.createElement('div');
+        idle_background_node.className = "idle_background";
+
+        let content_wrap_node = document.querySelector('.content_wrap');
+        content_wrap_node.parentNode.appendChild(idle_background_node);
+
+        function random(min, max) {
+            let num = Math.floor(Math.random() * (max - min)) + min;
+            return num;
+        }
+        for (let i = 0; i < fivePlaylistInfo.length; i++) {
+            for (let j = 0; j < fivePlaylistInfo[i].playlistInfo.songList.length; j++) {
+
+                let album_node = document.createElement("A");
+                album_node.className = "album";
+
+                album_node.style.top = random(0, 80) + "%";
+                album_node.style.right = random(0, 80) + "%";
+                album_node.href = `/profile?id=${fivePlaylistInfo[i].playlistInfo.token}`
+                album_node.style.animationDelay = random(-6, 0) + "s";
+
+                let bg_url = `https://img.youtube.com/vi/${fivePlaylistInfo[i].playlistInfo.songList[j].url}/hqdefault.jpg`
+                album_node.style.backgroundImage = `url(${bg_url})`
+
+                idle_background_node.appendChild(album_node);
+            }
+
+        }
+
+    }
+
+
+}
 
 countInactivityTime();
 

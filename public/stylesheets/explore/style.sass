@@ -18,7 +18,8 @@ html, body
   width: 100%
   height: 100%
   position: relative
-  color: $txt_black
+  color: $txt_black  
+  z-index: -1
 
 .nav_wrap
   top: 0px
@@ -46,7 +47,7 @@ html, body
   width: 100%
   top: 0%
   position: fixed
-  z-index: 100
+  z-index: 0
   background-color: $bg_deep_black
   transition-duration: 1s
   .album
@@ -65,6 +66,30 @@ html, body
       animation-play-state: paused
       z-index: 100
       opacity: 1
+
+.toggle_background_wrap
+  position: fixed
+  z-index: 5
+  top: 47px
+  left: 0%
+  border: 3px solid $bg_grey
+  background-color: $bg_white
+  padding: 15px
+  .toggle_background_switch
+    width: 60px
+    height: 30px 
+    background-color: #dddddd
+    border-radius: 15px
+    .btn
+      width: 30px
+      height: 30px
+      background-color: #444444
+      border-radius: 15px
+  .toggle_background_switch-on
+    background-color: #ddffdd
+    .btn
+      background-color: #448844
+      margin-left: 30px
   
 
 .content_wrap
@@ -78,6 +103,7 @@ html, body
   position: relative
   justify-content: space-around
   height: 100%
+  z-index: 2
   .posts_wrap
     width: 60%
     .post
