@@ -15,6 +15,10 @@ router.get('/login', function (req, res, next) {
   res.render('login');
 });
 
+router.get('/landing', function (req, res, next) {
+  res.render('landing');
+});
+
 router.get('/profile', function (req, res, next) {
   let queryId = {
     id: req.query.id
