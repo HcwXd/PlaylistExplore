@@ -1,0 +1,301 @@
+*
+//   border: 1px solid white
+  letter-spacing: 2px
+
+$txt_black: rgb(60, 60, 60)
+$bg_white: rgb(242, 242, 242)
+
+$bg_orange: #FF6700
+$bg_blue: #0A2463
+
+$bg_deep_black: rgb(15, 15, 15)
+$bg_black: rgb(26, 26, 26)
+$bg_grey: rgb(40, 40, 40)
+$txt_white: rgb(190, 190, 190)
+a
+  text-decoration: none
+  color: $txt_white
+
+html, body
+  margin: 0px
+  padding: 0px
+  box-sizing: border-box
+  width: 100%
+  height: 100%
+  position: relative
+
+.nav_wrap
+  top: 0px
+  width: 100%
+  display: flex
+  position: fixed
+  color: $txt_white
+  background: rgba(0, 0, 0, 0.6)
+  justify-content: space-between
+  .right_nav
+    display: flex
+  .left_nav
+    display: flex
+  .nav_item
+    padding: 24px
+    margin-left: 12px
+    &:hover
+      opacity: 0.7
+      cursor: pointer
+
+
+
+.header#home
+  width: 100%
+  height: 100%
+  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8)), url(https://scontent-tpe1-1.xx.fbcdn.net/v/t31.0-8/22051315_1829894783705429_4886891333327965999_o.jpg?_nc_cat=0&oh=eea5f9b2a5e5886f23d872493d1e0e56&oe=5B6E9F42)
+  background-size: cover
+  background-attachment: fixed
+  display: flex
+  justify-content: space-around
+  align-items: center
+  color: $txt_white
+  .background_wrap
+    width: 80%
+    height: 70%
+    display: flex
+    flex-direction: column
+    align-items: center
+    h1
+      font-size: 96px
+      margin-bottom: 0px
+      letter-spacing: 2px
+    h2
+      font-size: 48px
+      letter-spacing: 2px
+
+    .btn_wrap
+      .trial_btn
+        display: inline-block
+        padding: 15px 30px
+        border-radius: 15px
+        margin: 0 15px
+        background-color: $bg_orange
+        cursor: pointer
+        letter-spacing: 2px
+      .signup_btn
+        display: inline-block
+        // border: 1px solid $txt_white
+        background-color: $bg_blue
+        padding: 15px 30px
+        border-radius: 15px
+        margin: 0 15px
+        cursor: pointer
+        letter-spacing: 2px
+
+.section
+  width: 100%
+  height: 100%
+#explore
+  background-color: $bg_black
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.idle_background
+  height: 100%
+  width: 100%
+  top: 0%
+  position: fixed
+  z-index: 0
+  background-color: $bg_deep_black
+  transition-duration: 1s
+  .album
+    position: absolute
+    opacity: 0.7
+    width: 200px
+    height: 200px
+    border-radius: 5px
+    // border: 1px solid #fff
+    background-size: cover
+    animation: goUp 10s infinite
+    animation-timing-function: linear
+    transition-duration: 1s
+    cursor: pointer
+    &:hover
+      animation-play-state: paused
+      z-index: 100
+      opacity: 1
+
+.toggle_background_wrap
+  position: fixed
+  z-index: 5
+  top: 47px
+  left: 0%
+  border: 3px solid $bg_grey
+  background-color: $bg_white
+  padding: 15px
+  .toggle_background_switch
+    width: 60px
+    height: 30px 
+    background-color: #dddddd
+    border-radius: 15px
+    .btn
+      width: 30px
+      height: 30px
+      background-color: #444444
+      border-radius: 15px
+  .toggle_background_switch-on
+    background-color: #ddffdd
+    .btn
+      background-color: #448844
+      margin-left: 30px
+  
+
+.content_wrap
+  width: 70%
+  // background-color: $bg_black
+  color: $txt_white
+  margin-top: 5%
+  margin-left: 50%
+  transform: translateX(-50%)
+  display: flex
+  position: relative
+  justify-content: space-around
+  height: 100%
+  z-index: 2
+  .posts_wrap
+    width: 60%
+    .post
+      background-color: $bg_grey
+      margin-bottom: 15px
+      padding: 15px 30px
+      position: relative
+      .song_list
+        position: absolute
+        top: 0%
+        left: 100%
+        background-color: $bg_grey
+        width: 225px
+        transform: rotate(90deg)
+        transform-origin: 0 0
+        z-index: -1
+        opacity: 0
+        transition-duration: 1s
+        .song_list_des
+          padding: 15px
+          padding-bottom: 5px
+          border-bottom: 1px solid $txt_white
+          margin-bottom: 12px
+        .song_info
+          display: flex
+          justify-content: space-between
+          border-bottom: 1px solid $txt_white
+          margin-bottom: 12px
+          overflow: hidden
+          .song_name
+            display: inline-block
+            white-space: nowrap
+            // overflow: hidden
+            padding-left: 15px
+            padding-right: 15px
+            height: 48px
+            animation: goLeft 10s infinite
+            animation-timing-function: linear
+
+      .header
+        display: flex
+        justify-content: space-between
+        .owner_info
+          display: flex
+          align-items: center
+          margin-bottom: 15px
+          .owner_avatar
+            width: 50px
+            height: 50px
+            border-radius: 100%
+          .owner_name
+            padding-left: 15px
+        .more_info
+          display: flex
+          // align-items: center
+          line-height: 50px
+          font-size: 30px
+          cursor: pointer
+      .playlist_cover
+        margin-left: 50%
+        transform: translateX(-50%)
+        width: 100%
+        max-height: 540px
+        margin-bottom: 15px
+      .playlist_stats
+        display: flex
+        justify-content: space-between
+        margin-bottom: 15px
+      .playlist_title
+        font-size: 18px
+        font-weight: 600
+        margin-bottom: 15px
+      .playlist_des
+        margin-bottom: 15px
+
+
+@keyframes goUp
+  0%
+    transform: translateY(0%)  
+    opacity: 0
+
+  50%
+    transform: translateY(-50%)  
+    opacity: 1
+  
+  100%
+    transform: translateY(-100%)
+    opacity: 0
+@keyframes goLeft
+  0%
+    transform: translateX(0%) 
+  100%
+    transform: translateX(-100%) 
+
