@@ -13,6 +13,13 @@ async function createRelation(token, followToken){
     applyQuery(query);
 }
 
+async function deleteRelation(token, followToken){
+    const sql = 'DELETE FROM relation WHERE token = ? AND followToken = ?';
+    const insert = [token, followToken];
+    const query = mysql.format(sql, insert);
+    applyQuery(query);
+}
+
 function min(a, b){
     return a < b ? a : b ;
 }

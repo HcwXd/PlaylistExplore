@@ -5,9 +5,13 @@ const { userTable,
         songListTable, } = require('./database');
 
 function relationService(socket){
-    socket.on('issueFollow', async (relation) => {
+    socket.on('follow', async (relation) => {
         relationTable.createRelation(relation.token, relation.followToken);
     });
+
+    socket.on('unfollow', async (relation) => {
+        relationTable.deleteRelation(relation.token, relation.followToken);
+    })
 
     socket.on('getFriendsLatest', async() => {
         const latestFriendPlaylistArray = await relationTable.getFriendsLatest(socket.handshake.session.token, 5)
