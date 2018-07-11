@@ -54,8 +54,10 @@ a {
   width: 60px;
   height: 60px;
   animation: spin 2s linear infinite;
-  transition-delay: 1s;
   z-index: 100; }
+
+.loader_hide {
+  z-index: -100; }
 
 @keyframes spin {
   0% {
