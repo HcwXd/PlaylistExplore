@@ -44,8 +44,12 @@ function renderOwnerInfo(ownerInfo) {
         <div class="owner_bio">${ownerInfo.bio?ownerInfo.bio:""}</div>`
     owner_info_wrap_node.innerHTML = owner_info_wrap_html;
 
-    if (userInfo && (userInfo.token === listOwnerToken)) {
-        addEditBioBtn();
+    if (userInfo) {
+        if (userInfo.token === listOwnerToken) {
+            addEditBioBtn();
+        } else {
+            addFollowBtn();
+        }
     }
 }
 
@@ -293,6 +297,23 @@ function addEditBioBtn() {
 
             addEditBio_btn_node.addEventListener('click', addEditBio)
         }
+    }
+}
+
+function addFollowBtn() {
+    let follow_btn_node = document.createElement('div');
+    follow_btn_node.className = 'follow_btn';
+    follow_btn_node.innerHTML = "Follow";
+    follow_btn_node.addEventListener('click', changeFollowStatus)
+    let owner_info_wrap = document.querySelector('.owner_info_wrap');
+    owner_info_wrap.appendChild(follow_btn_node);
+}
+
+function changeFollowStatus() {
+    if (this.innerHTML === "Follow") {
+        this.innerHTML = "Following";
+    } else {
+        this.innerHTML = "Follow";
     }
 }
 
