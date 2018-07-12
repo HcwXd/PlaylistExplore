@@ -34,6 +34,10 @@ router.get('/publish', checkLogin, function (req, res, next) {
   res.render('publish');
 });
 
+router.get('/edit', checkLogin, function (req, res, next) {
+  res.render('edit');
+});
+
 router.get('/signout', checkLogin, function (req, res, next) {
   req.session.token = null;
   return res.redirect('/explore');
