@@ -172,12 +172,24 @@ function renderNewSongStatsAndDes() {
 function renderNewComment() {
     let comment_wrap = document.querySelector('.comment_content_wrap');
     let comment_wrap_html = "";
+
+
+
     for (let i = 0; i < ownerInfo.playlistInfo.songList[nowPlayingIndex].comments.length; i++) {
+
+        commentInfo = ownerInfo.playlistInfo.songList[nowPlayingIndex].comments[i];
+        console.log(commentInfo);
+        let delete_comment_btn_html = "";
+        if (commentInfo.commentToken === userInfo.token) {
+            delete_comment_btn_html = `<div class="delete_comment_btn">X</div>`
+        }
+
         comment_wrap_html += `
         <div class="comment_info">
-            <img class="comment_avatar" src="${ownerInfo.playlistInfo.songList[nowPlayingIndex].comments[i].avatar}" alt="gg">
-            <div class="comment_name">${ownerInfo.playlistInfo.songList[nowPlayingIndex].comments[i].userName}</div>
-            <div class="comment_content">${ownerInfo.playlistInfo.songList[nowPlayingIndex].comments[i].content}</div>
+            <img class="comment_avatar" src="${commentInfo.avatar}" alt="gg">
+            <div class="comment_name">${commentInfo.userName}</div>
+            <div class="comment_content">${commentInfo.content}</div>
+            ${delete_comment_btn_html}
         </div>`;
     }
     comment_wrap.innerHTML = comment_wrap_html;

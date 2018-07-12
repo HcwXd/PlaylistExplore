@@ -21,8 +21,9 @@ let playlistInfo;
 let uploadCover;
 
 socket.emit("getEditInfo", userToken);
-socket.on("getEditInfo", (socketOn_playlistInfo) => {
-    playlistInfo = socketOn_playlistInfo;
+socket.on("getEditInfo", (socketOn_ownerInfo) => {
+    playlistInfo = socketOn_ownerInfo.playlistInfo;
+    console.log(playlistInfo);
     renderOldPlaylist(playlistInfo);
 })
 
@@ -31,6 +32,8 @@ function renderOldPlaylist(playlistInfo) {
         appendToPlaylist(playlistInfo.songList[songIndex].songName, playlistInfo.songList[songIndex].url);
     }
     addDragHandler();
+    let publish_btn_node = document.querySelector('.publish_btn');
+    publish_btn_node.addEventListener('click', readyToPublish);
 }
 
 
@@ -157,7 +160,7 @@ function addSongToPlaylist() {
     playlist_status_wrap.scrollTop = playlist_status_wrap.scrollHeight;
 
     let publish_btn_node = document.querySelector('.publish_btn');
-    publish_btn_node.addEventListener('click', readyToPublish)
+    publish_btn_node.addEventListener('click', readyToPublish);
 }
 
 function appendToPlaylist(songName, songUrl) {
