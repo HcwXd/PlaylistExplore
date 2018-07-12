@@ -159,6 +159,14 @@ async function getLatestPlaylists(limitNum){
     return makeLatestPlayLists(songListData, songData);
 }
 
+async function getOwnerHistory(token){
+    const sql = 'SELECT * FROM songList WHERE token = ? ORDER BY date DESC';
+    const insert = [token];
+    const query = mysql.format(sql, insert);
+    const ownerHistory = await getData(query);
+    return ownerHistory;
+}
+
 module.exports = {
     createPlayList,
     deletePlayList,

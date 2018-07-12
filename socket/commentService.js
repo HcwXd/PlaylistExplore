@@ -23,6 +23,10 @@ function commentService(socket){
         comments = await songTable.getCommentInfo(songInfo);
         socket.emit('getSongComment', comments);
     });
+
+    socket.on('deleteComment', async (commentIndex) => {
+        commentTable.deleteComment(commentIndex);
+    })
 };
 
 module.exports = commentService;

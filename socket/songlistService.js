@@ -22,6 +22,9 @@ function songlistService(socket){
         }
         let ownerInfo = await songListTable.getCompleteplaylistInfo(playlistInfo, true);
         socket.emit('getOwnerInfo', ownerInfo);
+        
+        let ownerHistory = await songListTable.getOwnerHistory(pageToken);
+        socket.emit('getOwnerHistory', ownerHistory);
     })
 
     socket.on('newLike', async (songInfo) => {
@@ -30,6 +33,7 @@ function songlistService(socket){
 
     socket.on('editPlaylist', (ownerInfo) => {
         socket.emit('editPlaylist', ownerInfo);
+        socket.emit('redirect', `edit?id=${ownerInfo.token}`);
     })
 }
 
