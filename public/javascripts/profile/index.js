@@ -208,8 +208,17 @@ function renderNewComment() {
             ${delete_comment_btn_html}
         </div>`;
     }
+    let delete_comment_btn_node_collection = document.querySelector('.delete_comment_btn');
+    delete_comment_btn_node_collection.forEach(node => {
+        node.addEventListener('click', deleteComment);
+    });
     comment_wrap.innerHTML = comment_wrap_html;
     document.querySelector('.comment_text').value = "";
+}
+
+// TODO
+function deleteComment() {
+    socket.emit("deleteComment", commentInfo);
 }
 
 function addComment() {
@@ -218,7 +227,7 @@ function addComment() {
         return
     }
 
-    let listId = 1;
+    let listId = ownerInfo.playlistInfo.listId;
     let songIndex = nowPlayingIndex;
 
     let commentInfo = {
@@ -248,7 +257,7 @@ function addLike() {
         return
     }
     let likeId = userInfo.token;
-    let listId = 1;
+    let listId = ownerInfo.playlistInfo.listId;
     let songIndex = nowPlayingIndex;
 
     let likeInfo = {
