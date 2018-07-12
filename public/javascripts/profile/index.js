@@ -194,9 +194,10 @@ function renderNewComment() {
     for (let i = 0; i < ownerInfo.playlistInfo.songList[nowPlayingIndex].comments.length; i++) {
 
         commentInfo = ownerInfo.playlistInfo.songList[nowPlayingIndex].comments[i];
+        commentInfo['content'] = commentInfo.commentContent;
         console.log(commentInfo);
         let delete_comment_btn_html = "";
-        if (commentInfo.commentToken === userInfo.token) {
+        if (userInfo && commentInfo.commentToken === userInfo.token) {
             delete_comment_btn_html = `<div class="delete_comment_btn">X</div>`
         }
 
@@ -208,7 +209,7 @@ function renderNewComment() {
             ${delete_comment_btn_html}
         </div>`;
     }
-    let delete_comment_btn_node_collection = document.querySelector('.delete_comment_btn');
+    let delete_comment_btn_node_collection = document.querySelector('.delete_comment_btn') || [];
     delete_comment_btn_node_collection.forEach(node => {
         node.addEventListener('click', deleteComment);
     });
