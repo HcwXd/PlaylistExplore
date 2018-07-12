@@ -19,8 +19,8 @@ con.connect((error) => {
 function getData(query) {
     return new Promise((resolve, reject) => {
         try {
-            console.log(query);
             db.query(query, (error, result) => {
+                console.log(query);
                 if(error)
                     console.log(error);
                 console.log(result);
@@ -33,12 +33,20 @@ function getData(query) {
 }
 
 function applyQuery(query){
-    db.query(query, (error, result) => {
-        if(error){
+    return new Promise((resolve, reject) => {
+        try{
+            db.query(query, (error, result) => {
+                if(error){
+                    console.log(error);
+                    return;
+                }
+                console.log(query);
+                console.log(result);
+                resolve(result);
+            });
+        } catch (error){
             console.log(error);
-            return;
         }
-        console.log(result);
     });
 }
 
