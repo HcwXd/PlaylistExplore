@@ -13,7 +13,7 @@ const userTable = require('./userTable')
  * cover
  */
 
-function createPlayList(playlistInfo) {
+async function createPlayList(playlistInfo) {
     const sql = 'INSERT INTO songList SET ?';
     const insert = {
         token: playlistInfo.token,
@@ -23,13 +23,14 @@ function createPlayList(playlistInfo) {
         cover: playlistInfo.uploadCover
     }
     const query = mysql.format(sql, insert);
-    applyQuery(query);
+    const ret = await applyQuery(query);
 
     /* add song to database */
-    songTable.createMultipleSong(playlistInfo);
+    playlistInfo['listId'] = ret.insertId;
+    await songTable.createMultipleSong(playlistInfo);
 }
 
-function deletePlayList(playlistInfo) {
+async function deletePlayList(playlistInfo) {
     const sql = 'DELETE FROM songList WHERE ?? = ? AND ?? = ?';
     const insert = [
         'token', playlistInfo.token,
@@ -43,11 +44,12 @@ function deletePlayList(playlistInfo) {
 }
 
 async function modifyPlayList(playlistInfo) {
-    if(playlistInfo.listId == 0){
-        createPlayList(playlistInfo);
+    if(playlistInfo.listId == -1){
+        await createPlayList(playlistInfo);
+        return;
     }
     await deletePlayList(playlistInfo);
-    createPlayList(playlistInfo);
+    await createPlayList(playlistInfo);
 }
 
 async function getCompleteplaylistInfo(playlistInfo){
@@ -60,21 +62,6 @@ async function getCompleteplaylistInfo(playlistInfo){
 
     if(songListData.length == 0){
         console.log('no list');
-        const userInfo = await userTable.getUserInfo(playlistInfo.token);
-        return {
-            userName: userInfo.userName,
-            avatar: userInfo.avatar,
-            bio: userInfo.bio,
-            playlistInfo: {
-                songList: [],
-                name: '',
-                des: '',
-                date: '',
-                token: '',
-                listId: '',
-                uploadCover: ''
-            }
-        }
     }
 
     sql = 'SELECT *  \
@@ -176,4 +163,5 @@ module.exports = {
     getCompleteplaylistInfo,
     getLatestPlaylists,
     makeLatestPlayLists,
+    getOwnerHistory,
 };

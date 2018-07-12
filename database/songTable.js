@@ -19,7 +19,7 @@ function createSong(songListInfo, singleSongInfo){
     applyQuery(query);
 }
 
-function createMultipleSong(playlistInfo){
+async function createMultipleSong(playlistInfo){
     const sql = 'INSERT INTO song \
                (token, listId, songIndex, url, songName, cover, des, likeNum) \
                VALUES ?';
@@ -32,7 +32,7 @@ function createMultipleSong(playlistInfo){
         ]);
     });
     const query = mysql.format(sql, [insert]);
-    applyQuery(query);
+    await applyQuery(query);
 }
 
 function deleteSongInList(songListInfo){

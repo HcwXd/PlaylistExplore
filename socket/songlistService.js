@@ -9,9 +9,9 @@ const {
 let ownerInfoMap = {};
 
 function songlistService(socket) {
-    socket.on('publishNewPlaylist', (playlistInfo) => {
+    socket.on('publishNewPlaylist', async (playlistInfo) => {
         playlistInfo['token'] = socket.handshake.session.token;
-        songListTable.modifyPlayList(playlistInfo);
+        await songListTable.modifyPlayList(playlistInfo);
     });
 
     socket.on('getLatestPlaylists', async () => {
@@ -19,16 +19,37 @@ function songlistService(socket) {
         socket.emit('getLatestPlaylists', latestplaylistInfo);
     })
 
-    socket.on('getOwnerInfo', async (pageToken) => {
-        let playlistInfo = {
-            token: pageToken,
-            listId: 1,
+    socket.on('getOwnerInfo', async (pageInfo) => {
+        let ownerHistory = await songListTable.getOwnerHistory(pageInfo.token);
+        socket.emit('getOwnerHistory', ownerHistory);
+
+        if(ownerHistory.length === 0){
+            const userInfo = await userTable.getUserInfo(pageInfo.token);
+            const ret = {
+                userName: userInfo.userName,
+                avatar: userInfo.avatar,
+                bio: userInfo.bio,
+                playlistInfo: {
+                    songList: [],
+                    name: '',
+                    des: '',
+                    date: '',
+                    token: '',
+                    listId: '',
+                    uploadCover: ''
+                }
+            };
+            socket.emit('getOwnerInfo');
+            return;
         }
+
+        let playlistInfo = {
+            token: pageInfo.token,
+            listId: pageInfo.listId === -1 ? ownerHistory[0].listId : pageInfo.listId,
+        }
+
         let ownerInfo = await songListTable.getCompleteplaylistInfo(playlistInfo, true);
         socket.emit('getOwnerInfo', ownerInfo);
-
-        let ownerHistory = await songListTable.getOwnerHistory(pageToken);
-        socket.emit('getOwnerHistory', ownerHistory);
     })
 
     socket.on('newLike', async (songInfo) => {
@@ -37,7 +58,7 @@ function songlistService(socket) {
 
     socket.on('editPlaylist', (ownerInfo) => {
         const token = ownerInfo.playlistInfo.token;
-        ownerInfoMap[`${token}`] = ownerInfo;
+        ownerInfoMap[token] = ownerInfo;
         socket.emit('redirect', `edit?id=${token}`);
     })
 
