@@ -309,10 +309,16 @@ function addFollowBtn() {
 }
 
 function changeFollowStatus() {
+    let followInfo = {
+        listOwnerToken,
+        userToken: userInfo.token,
+    }
     if (this.innerHTML === "Follow") {
         this.innerHTML = "Following";
+        socket.emit("followUser", followInfo);
     } else {
         this.innerHTML = "Follow";
+        socket.emit("unfollowUser", followInfo);
     }
 }
 
