@@ -66,4 +66,5 @@ async function getFriendsLatest(token, limitNum){
 module.exports = {
     createRelation,
     getFriendsLatest,
+    deleteRelation,
 }

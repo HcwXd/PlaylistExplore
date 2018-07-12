@@ -18,14 +18,9 @@ function createComment(commentInfo){
     applyQuery(query);
 }
 
-function deleteComment(commentInfo){
-    const sql = 'DELETE FROM comment WHERE ?? = ? AND ?? = ? AND ?? = ? AND ?? = ? AND ?? = ?';
-    const insert = [
-        'listOwnerToken', commentInfo.listOwnerToken,
-        'listId', commentInfo.listId,
-        'songIndex', commentInfo.songIndex,
-        'commentIndex', commentInfo.commentIndex,
-    ];
+function deleteComment(commentIndex){
+    const sql = 'DELETE FROM comment WHERE commentIndex = ?';
+    const insert = [commentIndex];
     const query = mysql.format(sql, condition);
     applyQuery(query);
 }
