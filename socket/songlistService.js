@@ -1,10 +1,12 @@
-const { userTable,
-        commentTable,
-        songTable,
-        relationTable,
-        songListTable, } = require('./database');
+const {
+    userTable,
+    commentTable,
+    songTable,
+    relationTable,
+    songListTable,
+} = require('./database');
 
-function songlistService(socket){
+function songlistService(socket) {
     socket.on('publishNewPlaylist', (playlistInfo) => {
         playlistInfo['token'] = socket.handshake.session.token;
         songListTable.modifyPlayList(playlistInfo);
@@ -22,7 +24,7 @@ function songlistService(socket){
         }
         let ownerInfo = await songListTable.getCompleteplaylistInfo(playlistInfo, true);
         socket.emit('getOwnerInfo', ownerInfo);
-        
+
         let ownerHistory = await songListTable.getOwnerHistory(pageToken);
         socket.emit('getOwnerHistory', ownerHistory);
     })
@@ -33,7 +35,7 @@ function songlistService(socket){
 
     socket.on('editPlaylist', (ownerInfo) => {
         socket.emit('editPlaylist', ownerInfo);
-        socket.emit('redirect', `edit?id=${ownerInfo.token}`);
+        socket.emit('redirect', `edit?id=${ownerInfo.playlistInfo.token}`);
     })
 }
 
