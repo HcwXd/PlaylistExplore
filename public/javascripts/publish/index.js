@@ -270,7 +270,7 @@ function redirectToProfile() {
         des: document.querySelector('.playlist_des_input').value,
         date: date,
         songList: songListState,
-        listId: 1,
+        listId: -1,
         uploadCover: uploadCover
     };
     console.log(playlistInfo);
