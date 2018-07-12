@@ -76,7 +76,7 @@ function renderLatestPlaylist() {
                 </div>
                 <div class="more_info">=</div>
             </div>
-            <img class="playlist_cover" data-token="${currentPlaylist.playlistInfo.token}"
+            <img class="playlist_cover" data-token="${currentPlaylist.playlistInfo.token}" data-listid="${currentPlaylist.playlistInfo.listId}"
             src="${coverPhoto}">
             <div class="playlist_stats">
                 <div class="like">♥${totalLike}</div>
@@ -102,7 +102,7 @@ function renderLatestPlaylist() {
 }
 
 function goToTargetPlaylist() {
-    window.location = `/profile?id=${this.dataset.token}`;
+    window.location = `/profile?id=${this.dataset.token}&list=${this.dataset.listid}`;
 }
 
 function showSongList() {
