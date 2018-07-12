@@ -6,7 +6,6 @@ const { userTable,
 
 function relationService(socket){
     socket.on('followUser', async (relation) => {
-
         relationTable.createRelation(relation.userToken, relation.listOwnerToken);
     });
 

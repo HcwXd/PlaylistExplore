@@ -17,7 +17,6 @@ function createPlayList(playlistInfo) {
     const sql = 'INSERT INTO songList SET ?';
     const insert = {
         token: playlistInfo.token,
-        listId: playlistInfo.listId,
         name: playlistInfo.name,
         des: playlistInfo.des,
         date: playlistInfo.date,
@@ -44,6 +43,9 @@ function deletePlayList(playlistInfo) {
 }
 
 async function modifyPlayList(playlistInfo) {
+    if(playlistInfo.listId == 0){
+        createPlayList(playlistInfo);
+    }
     await deletePlayList(playlistInfo);
     createPlayList(playlistInfo);
 }

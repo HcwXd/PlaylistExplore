@@ -6,6 +6,8 @@ const {
     songListTable,
 } = require('./database');
 
+let ownerInfoMap = {};
+
 function songlistService(socket) {
     socket.on('publishNewPlaylist', (playlistInfo) => {
         playlistInfo['token'] = socket.handshake.session.token;
@@ -34,8 +36,14 @@ function songlistService(socket) {
     });
 
     socket.on('editPlaylist', (ownerInfo) => {
-        socket.emit('editPlaylist', ownerInfo);
-        socket.emit('redirect', `edit?id=${ownerInfo.playlistInfo.token}`);
+        const token = ownerInfo.playlistInfo.token;
+        ownerInfoMap[`${token}`] = ownerInfo;
+        socket.emit('redirect', `edit?id=${token}`);
+    })
+
+    socket.on('getEditInfo', (token = {}) => {
+        console.log(ownerInfoMap[token]);
+        socket.emit('getEditInfo', ownerInfoMap[token]);
     })
 }
 
