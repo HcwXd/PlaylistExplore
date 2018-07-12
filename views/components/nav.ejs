@@ -6,7 +6,7 @@
     <div class="left_nav">
         <% if (token) { %>
             <img class="nav_avatar" src="<%= avatar %>">
-            <a class="nav_item" href="/profile?id=<%= token %>">
+            <a class="nav_item" href="/profile?id=<%= token %>&list=-1">
                 <%= userName %>
             </a>
             <a class="nav_item" href="/publish?id=<%= token %>">發布歌單</a>
