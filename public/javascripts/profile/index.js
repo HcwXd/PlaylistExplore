@@ -4,6 +4,10 @@ socket.on('getUserInfo', (socketOn_userInfo) => {
     userInfo = socketOn_userInfo;
 });
 
+socket.on('redirect', (url) => {
+    window.location = url;
+})
+
 const listOwnerToken = window.location.href.split('?id=')[1];
 let nowPlayingIndex = 0;
 let player;

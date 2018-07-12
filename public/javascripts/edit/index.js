@@ -1,329 +1,469 @@
-let userInfo;
-socket.emit('getUserInfo');
-socket.on('getUserInfo', (socketOn_userInfo) => {
-    userInfo = socketOn_userInfo;
-});
+const search_result_wrap_node = document.querySelector('.search_result_wrap');
+const add_des_wrap_node = document.querySelector('.add_des_wrap');
+const playlist_status_wrap_node = document.querySelector('.hidden_block');
 
-const listOwnerToken = window.location.href.split('?id=')[1];
-let nowPlayingIndex = 0;
-let player;
-let ownerInfo;
+// search_result_wrap_node.style.display = "none";
+add_des_wrap_node.style.display = "none";
+// playlist_status_wrap_node.style.display = "none";
 
-socket.on('getSongComment', (commentArray) => {
-    console.log("getSongComment");
-    ownerInfo.playlistInfo.songList[nowPlayingIndex].comments = commentArray;
-    renderNewComment();
+const userToken = window.location.href.split('?id=')[1];
+/*
+let playlistInfo = {
+    name: document.querySelector('.playlist_input_row').value,
+    des: document.querySelector('.playlist_des_input').value,
+    date: date,
+    songList: playlistInfo.songList,
+    listId: 1,
+    uploadCover: uploadCover
+};
+*/
+let playlistInfo;
+let uploadCover;
+
+socket.emit("getEditInfo", userToken);
+socket.on("getEditInfo", (socketOn_playlistInfo) => {
+    playlistInfo = socketOn_playlistInfo;
+    renderOldPlaylist(playlistInfo);
 })
 
+function renderOldPlaylist(playlistInfo) {
+    for (let songIndex = 0; songIndex < playlistInfo.songList.length; songIndex++) {
+        appendToPlaylist(playlistInfo.songList[songIndex].songName, playlistInfo.songList[songIndex].url);
+    }
+    addDragHandler();
+}
 
-function onYouTubePlayerAPIReady() {
-    socket.emit('getOwnerInfo', listOwnerToken);
-    socket.on('getOwnerInfo', (socketOn_ownerInfo) => {
-        document.querySelector('.loader').remove();
-        ownerInfo = socketOn_ownerInfo;
-        console.log("ownerInfo:");
-        console.log(ownerInfo);
-        renderOwnerInfo(ownerInfo);
-        renderPlayerInfo(ownerInfo);
-        player = new YT.Player('video_placeholder', {
-            width: '700',
-            height: '400',
-            videoId: ownerInfo.playlistInfo.songList[0].url,
-            events: {
-                onStateChange: onPlayerStateChange
+
+const search_input_node = document.querySelector('.search_input');
+search_input_node.addEventListener('keydown', (e) => {
+    if (e.keyCode === 13) {
+        getSearchResults();
+    }
+});
+
+const search_btn_node = document.querySelector('.search_btn');
+search_btn_node.addEventListener('click', getSearchResults)
+
+function getSearchResults() {
+    let searchQuery = search_input_node.value;
+
+    try {
+        if (!searchQuery) {
+            throw new Error("You must input song's name or url");
+        }
+    } catch (e) {
+        alert(e);
+        return;
+    }
+
+    search_input_node.value = "";
+
+    socket.emit('getSearchResults', searchQuery);
+    socket.on('getSearchResults', (socketOn_singleSongInfos) => {
+        let singleSongInfos = socketOn_singleSongInfos;
+        appendSearchResults(singleSongInfos, search_result_wrap_node)
+    });
+}
+
+function appendSearchResults(singleSongInfos, root_node) {
+    root_node.style.display = "block";
+    root_node.innerHTML = '<div class="pick_des">請選擇你要加入的歌曲</div>';
+
+    for (let i = 0; i < singleSongInfos.length; i++) {
+        let singleSongInfo = singleSongInfos[i];
+
+        let song_cover_node = document.createElement('img');
+        song_cover_node.className = "song_cover"
+        song_cover_node.src = `https://img.youtube.com/vi/${singleSongInfo.url}/hqdefault.jpg`
+
+        let song_name_node = document.createElement('div');
+        song_name_node.className = "song_name"
+        song_name_node.innerHTML = singleSongInfo.songName;
+
+        let result_song_info_node = document.createElement('div');
+        result_song_info_node.className = "result_song_info";
+
+        result_song_info_node.songName = singleSongInfo.songName;
+        result_song_info_node.cover = singleSongInfo.cover;
+        result_song_info_node.url = singleSongInfo.url;
+        result_song_info_node.addEventListener('click', addSongToPlaylist);
+
+        result_song_info_node.appendChild(song_cover_node);
+        result_song_info_node.appendChild(song_name_node);
+        root_node.appendChild(result_song_info_node);
+    }
+}
+
+function showDesAddingWrap() {
+    add_des_wrap_node.style.display = "flex";
+    let add_btn_node = document.querySelector('.add_btn');
+    let des_input_node = document.querySelector('.des_input');
+
+    playlistInfo.songList.some(item => {
+        if (item.url === this.dataset.url) {
+            if (item.des) {
+                des_input_node.value = item.des;
+            } else {
+                des_input_node.value = "";
+            }
+            return;
+        }
+    });
+    add_btn_node.url = this.dataset.url;
+    add_btn_node.addEventListener('click', addDesToSong);
+}
+
+function addDesToSong() {
+    let songUrl = this.url;
+    let des_input_node = document.querySelector('.des_input');
+
+    playlistInfo.songList.some(item => {
+        if (item.url === songUrl) {
+            item.des = des_input_node.value;
+            return;
+        }
+    });
+    console.log("Update playlistInfo.songList");
+
+    console.log(playlistInfo.songList);
+    add_des_wrap_node.style.display = "none";
+    des_input_node.value = "";
+}
+
+function addSongToPlaylist() {
+    let result_song_info_node_collection = document.querySelectorAll('.result_song_info');
+    result_song_info_node_collection.forEach(node => {
+        node.style.boxShadow = "0 0"
+    })
+    this.style.boxShadow = "0px 0px 0px 2px yellow inset"
+    playlist_status_wrap_node.style.display = "block";
+    add_des_wrap_node.style.display = "none";
+
+    appendToPlaylist(this.songName, this.url)
+
+    addDragHandler();
+
+    let singleSongInfo = {
+        url: this.url,
+        songName: this.songName,
+        cover: this.cover,
+        des: this.des,
+        like: 0,
+        comments: [],
+    };
+    playlistInfo.songList.push(singleSongInfo);
+
+    let playlist_status_wrap = document.querySelector('.playlist_status_wrap');
+    playlist_status_wrap.scrollTop = playlist_status_wrap.scrollHeight;
+
+    let publish_btn_node = document.querySelector('.publish_btn');
+    publish_btn_node.addEventListener('click', readyToPublish)
+}
+
+function appendToPlaylist(songName, songUrl) {
+    let song_cover_node = document.createElement('img');
+    song_cover_node.className = "song_cover";
+    song_cover_node.src = `https://img.youtube.com/vi/${songUrl}/hqdefault.jpg`;
+
+    let song_name_node = document.createElement('div');
+    song_name_node.className = "song_name";
+    song_name_node.innerHTML = songName;
+
+    let song_edit_node = document.createElement('div');
+    song_edit_node.className = "song_edit";
+    song_edit_node.innerHTML = "X";
+    song_edit_node.url = songUrl;
+    song_edit_node.dataset.url = songUrl;
+    song_edit_node.addEventListener('click', deleteSongFromPlaylist);
+
+    let song_add_des_node = document.createElement('div');
+    song_add_des_node.className = "song_add_des";
+    song_add_des_node.innerHTML = "+";
+    song_add_des_node.url = songUrl;
+    song_add_des_node.dataset.url = songUrl;
+    song_add_des_node.addEventListener('click', showDesAddingWrap);
+
+    let song_info_node = document.createElement('div');
+    song_info_node.className = "song_info";
+    song_info_node.songName = songName;
+    song_info_node.cover = `https://img.youtube.com/vi/${songUrl}/hqdefault.jpg`;
+    song_info_node.url = songUrl;
+    song_info_node.draggable = true;
+
+    song_info_node.appendChild(song_add_des_node);
+    song_info_node.appendChild(song_cover_node);
+    song_info_node.appendChild(song_name_node);
+    song_info_node.appendChild(song_edit_node);
+
+    let song_list_node = document.querySelector('.song_list');
+    song_list_node.appendChild(song_info_node);
+}
+
+function deleteSongFromPlaylist() {
+    let deleteUrlIndex = playlistInfo.songList.filter(function (el) {
+        return el.url == this.url;
+    });
+    playlistInfo.songList.splice(deleteUrlIndex, 1);
+    this.parentNode.parentNode.removeChild(this.parentNode);
+}
+
+function readyToPublish() {
+    try {
+        if (playlistInfo.songList.length < 1) {
+            throw new Error('Playlist must contain at least one song')
+        }
+    } catch (e) {
+        alert(e);
+        return;
+    }
+
+    let publish_wrap_node = document.createElement('div');
+    publish_wrap_node.className = "publish_wrap";
+    publish_wrap_node.innerHTML = `
+    <div class="container">
+        <div class="cancel">X</div>
+        <div class="field">
+            <label>播放清單名稱</label>
+            <input class="playlist_input_row"  type="text">
+        </div>
+        <div class="field">
+            <label>播放清單描述</label>
+            <textarea rows="15" cols="20" class="playlist_des_input" placeholder="Write something about the playlist..."></textarea>
+        </div>
+        <div class="field">
+            <label>播放清單封面照片（若不更改則不需上傳）</label>
+            <input class="avatar_input" type="file" name="avatar" data-maxSize="5000">
+        </div>
+        <a class="publish_loader_wrap">
+            <div class="real_publish_btn">發布</div>
+        </a>
+    </div>
+  `;
+
+
+    let content_wrap_node = document.querySelector('.content_wrap');
+    content_wrap_node.appendChild(publish_wrap_node);
+
+    document.querySelector('.playlist_input_row').value = playlistInfo.name;
+    document.querySelector('.playlist_des_input').value = playlistInfo.des;
+    let cancel_node = document.querySelector('.cancel');
+    cancel_node.addEventListener('click', () => {
+        publish_wrap_node.remove()
+    })
+
+    let real_publish_btn_node = document.querySelector('.real_publish_btn');
+    real_publish_btn_node.addEventListener('click', publish);
+}
+
+function publish() {
+    try {
+        if (!document.querySelector('.playlist_input_row').value) {
+            throw new Error('Playlist must have name')
+        }
+        if (!document.querySelector('.playlist_des_input').value) {
+            throw new Error('Playlist must have description')
+        }
+    } catch (e) {
+        alert(e);
+        return;
+    }
+    uploadImgur();
+}
+
+
+
+function uploadImgur() {
+    let avatar_input_node = document.querySelector('.avatar_input');
+
+    let files = avatar_input_node.files;
+
+    if (!files.length) {
+        redirectToProfile();
+    } else {
+
+        if (files[0].size > avatar_input_node.dataset.maxSize * 1024) {
+            alert("Please select a smaller file")
+            return false;
+        }
+
+        console.log("Uploading file to Imgur..");
+
+        let apiUrl = 'https://api.imgur.com/3/image';
+        let apiKey = "50db29122a23727";
+
+        function getData3() {
+            var defer = $.Deferred();
+
+            let formData = new FormData();
+            formData.append("image", files[0]);
+
+            $.ajax({
+                // async: false,
+                crossDomain: true,
+                processData: false,
+                contentType: false,
+                type: 'POST',
+                url: apiUrl,
+                headers: {
+                    Authorization: 'Client-ID ' + apiKey,
+                    Accept: 'application/json'
+                },
+                mimeType: 'multipart/form-data',
+                data: formData,
+                success: function (response) {
+                    defer.resolve(response)
+                }
+            });
+
+
+            return defer.promise();
+        };
+        document.querySelector('.loader').classList.remove("loader_hide");
+
+        $.when(getData3()).done(function (response) {
+            responseData = JSON.parse(response);
+            uploadCover = responseData.data.link;
+            console.log(uploadCover);
+            console.log("Remove");
+            document.querySelector('.loader').classList.add('loader_hide');
+            redirectToProfile();
+        });
+
+
+
+        /*
+        let settings = {
+            async: false,
+            crossDomain: true,
+            processData: false,
+            contentType: false,
+            type: 'POST',
+            url: apiUrl,
+            headers: {
+                Authorization: 'Client-ID ' + apiKey,
+                Accept: 'application/json'
+            },
+            mimeType: 'multipart/form-data'
+        };
+
+        let formData = new FormData();
+        formData.append("image", files[0]);
+        settings.data = formData;
+
+        $.ajax(settings).done(function (response) {
+            responseData = JSON.parse(response);
+            uploadCover = responseData.data.link;
+        });
+        */
+    }
+}
+
+function redirectToProfile() {
+    let date = new Date();
+    let editPlaylistInfo = {
+        name: document.querySelector('.playlist_input_row').value,
+        des: document.querySelector('.playlist_des_input').value,
+        date: date,
+        songList: changeDragOrderSonglist(),
+        listId: playlistInfo,
+        uploadCover: uploadCover || playlistInfo.uploadCover,
+    };
+    console.log(editPlaylistInfo);
+
+    socket.emit('publishNewPlaylist', editPlaylistInfo);
+
+    const userToken = window.location.href.split('?id=')[1];
+    window.location = `/profile?id=${userToken}`;
+}
+
+function changeDragOrderSonglist() {
+    let song_name_node_collection = document.querySelectorAll('.song_info > .song_name');
+    let readySongNames = [];
+    song_name_node_collection.forEach((node) => {
+        readySongNames.push(node.innerText)
+    });
+
+    let newSongListState = [];
+    let oldSongListState = [...playlistInfo.songList];
+
+    for (let newIndex = 0; newIndex < readySongNames.length; newIndex++) {
+        let popIndex;
+        oldSongListState = oldSongListState.map((item) => {
+            if (item.songName === readySongNames[newIndex]) {
+                newSongListState.push(item);
+                popIndex = oldSongListState.indexOf(item);
+            } else {
+                return item;
             }
         });
-        renderPlaylist(ownerInfo);
-    })
-}
-
-function renderOwnerInfo(ownerInfo) {
-    const owner_info_wrap_node = document.querySelector('.owner_info_wrap');
-    const owner_info_wrap_html = `
-        <img class="owner_avatar" src="${ownerInfo.avatar}" alt="gg">
-        <div class="owner_name">${ownerInfo.userName}</div>
-        <div class="owner_bio">${ownerInfo.bio?ownerInfo.bio:""}</div>`
-    owner_info_wrap_node.innerHTML = owner_info_wrap_html;
-
-    if (userInfo) {
-        if (userInfo.token === listOwnerToken) {
-            addEditBioBtn();
-        } else {
-            addFollowBtn();
+        if (popIndex > -1) {
+            oldSongListState.splice(popIndex, 1);
         }
-    }
+    };
+    return newSongListState;
 }
 
-function renderPlayerInfo(ownerInfo) {
-    if (ownerInfo.playlistInfo.songList.length === 0) {
-        let comment_submit = document.querySelector('.comment_submit');
-        comment_submit.innerHTML = "目前還沒有任何播放清單";
-        comment_submit.style.justifyContent = "space-around";
-        comment_submit.style.fontSize = "24px";
-    }
-    renderNewSongStatsAndDes();
-    let songInfo = {
-        token: ownerInfo.playlistInfo.token,
-        listId: ownerInfo.playlistInfo.listId,
-        songIndex: nowPlayingIndex
-    }
-    console.log(songInfo);
-    socket.emit('getSongComment', songInfo);
+let dragItem = null;
+
+function addDragHandler() {
+    let song_info_node_collection = document.querySelectorAll('.song_info');
+    song_info_node_collection.forEach(item => {
+        item.addEventListener('dragstart', handleDragStart);
+        item.addEventListener('dragover', handleDragOver);
+        item.addEventListener('dragleave', handleDragLeave);
+        item.addEventListener('drop', handleDrop);
+        item.addEventListener('dragend', handleDragEnd);
+        item.lastChild.addEventListener('click', deleteSongFromPlaylist);
+        item.firstChild.addEventListener('click', showDesAddingWrap);
+
+    });
 }
 
-function renderPlaylist(ownerInfo) {
-    const playlist_info_node = document.querySelector('.playlist_info');
-    const playlist_info_html = `
-    <div class="playlist_name">${ownerInfo.playlistInfo.name}</div>
-    <div class="playlist_des">${ownerInfo.playlistInfo.des}</div>`
-    playlist_info_node.innerHTML = playlist_info_html;
-    if (userInfo && (userInfo.token === listOwnerToken)) {
-        addEditPlaylistBtn();
-    }
+function handleDragStart(e) {
+    dragItem = this;
 
-    const song_list_node = document.querySelector('.song_list');
-    for (let i = 0; i < ownerInfo.playlistInfo.songList.length; i++) {
-        let song_info_node = document.createElement('div');
-        song_info_node.className = "song_info";
-        song_info_node.innerHTML = `
-        <div class="song_name">${ownerInfo.playlistInfo.songList[i].songName}</div>
-        <div class="song_like">♥ ${ownerInfo.playlistInfo.songList[i].like}</div>`;
-
-        song_info_node.index = i;
-        song_info_node.ownerInfo = ownerInfo;
-        song_info_node.addEventListener('click', renderClickSongPlayer);
-        song_list_node.appendChild(song_info_node);
-    }
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/html', this.outerHTML);
 }
 
-function addEditPlaylistBtn() {
-    let edit_playlist_btn_node = document.createElement('div');
-    edit_playlist_btn_node.className = "edit_playlist_btn";
-    edit_playlist_btn_node.innerHTML = "Edit"
-    document.querySelector('.playlist_info').appendChild(edit_playlist_btn_node);
-    edit_playlist_btn_node.addEventListener('click', editPlaylist)
-}
-
-function editPlaylist() {
-    socket.emit('editPlaylist', ownerInfo);
-}
-
-function onPlayerStateChange(event) {
-    if (event.data === 0) {
-        if (nowPlayingIndex + 1 < ownerInfo.playlistInfo.songList.length) {
-            renderNextSongPlayer()
-        }
+function handleDragOver(e) {
+    if (e.preventDefault) {
+        e.preventDefault();
     }
+    this.classList.add('overTop');
+    this.style.borderTop = "2px solid yellow";
+
+    e.dataTransfer.dropEffect = 'move';
+    return false;
 }
 
-function renderNextSongPlayer() {
-    let playlistInfo = ownerInfo.playlistInfo;
-    nowPlayingIndex += 1;
-
-    player.loadVideoById(playlistInfo.songList[nowPlayingIndex].url)
-
-    renderNewSongStatsAndDes();
-    let songInfo = {
-        token: ownerInfo.playlistInfo.token,
-        listId: ownerInfo.playlistInfo.listId,
-        songIndex: nowPlayingIndex
-    }
-    socket.emit('getSongComment', songInfo);
+function handleDragLeave(e) {
+    this.style.borderTop = "0px solid yellow";
 
 }
 
-function renderClickSongPlayer() {
-    let playlistInfo = this.ownerInfo.playlistInfo;
-    nowPlayingIndex = this.index;
-
-    player.loadVideoById(playlistInfo.songList[nowPlayingIndex].url)
-
-    renderNewSongStatsAndDes();
-    let songInfo = {
-        token: ownerInfo.playlistInfo.token,
-        listId: ownerInfo.playlistInfo.listId,
-        songIndex: nowPlayingIndex
+function handleDrop(e) {
+    if (e.stopPropagation) {
+        e.stopPropagation();
     }
-    socket.emit('getSongComment', songInfo);
+    console.log("handleDrop", this);
+
+    if (dragItem != this) {
+        this.parentNode.removeChild(dragItem);
+        let dropHTML = e.dataTransfer.getData('text/html');
+        this.insertAdjacentHTML('beforebegin', dropHTML);
+        let dropElem = this.previousSibling;
+        addDragHandler(dropElem);
+    }
+    this.style.borderTop = "0px solid yellow";
+    return false;
 }
 
-function renderNewSongStatsAndDes() {
-    let song_stats_node = document.querySelector('.song_stats');
-    let song_stats_html = `
-    <div class="like_btn">♥</div>
-    <div class="like_number">${ownerInfo.playlistInfo.songList[nowPlayingIndex].like}</div>`
-    song_stats_node.innerHTML = song_stats_html;
-
-    let like_btn_node = document.querySelector('.like_btn');
-    like_btn_node.addEventListener('click', addLike);
-
-    let song_des_node = document.querySelector('.song_des');
-    let song_des_html = `
-    <div class="song_date">${ownerInfo.playlistInfo.date.substr(0,10)}</div>
-    <div class="song_text">${ownerInfo.playlistInfo.songList[nowPlayingIndex].des}</div>`
-    song_des_node.innerHTML = song_des_html;
+function handleDragEnd(e) {
+    this.style.borderTop = "0px solid yellow";
 }
 
 
-function renderNewComment() {
-    let comment_wrap = document.querySelector('.comment_content_wrap');
-    let comment_wrap_html = "";
-    for (let i = 0; i < ownerInfo.playlistInfo.songList[nowPlayingIndex].comments.length; i++) {
-        comment_wrap_html += `
-        <div class="comment_info">
-            <img class="comment_avatar" src="${ownerInfo.playlistInfo.songList[nowPlayingIndex].comments[i].avatar}" alt="gg">
-            <div class="comment_name">${ownerInfo.playlistInfo.songList[nowPlayingIndex].comments[i].userName}</div>
-            <div class="comment_content">${ownerInfo.playlistInfo.songList[nowPlayingIndex].comments[i].content}</div>
-        </div>`;
-    }
-    comment_wrap.innerHTML = comment_wrap_html;
-    document.querySelector('.comment_text').value = "";
-}
-
-function addComment() {
-    if (!userInfo) {
-        alert("Please log in to add your comment");
-        return
-    }
-
-    let listId = 1;
-    let songIndex = nowPlayingIndex;
-
-    let commentInfo = {
-        listOwnerToken,
-        listId,
-        songIndex,
-        commentContent: document.querySelector('.comment_text').value,
-    }
-
-    socket.emit("newComment", commentInfo);
-}
-
-function renderNewLike(ownerInfo, newLikeNumber) {
-    let song_stats = document.querySelector('.song_stats');
-    let song_stats_html = `
-    <div class="like_btn">♥</div>
-    <div class="like_number">${ownerInfo.playlistInfo.songList[nowPlayingIndex].like}</div>`
-    song_stats.innerHTML = song_stats_html;
-
-    let song_list_child = document.querySelector('.song_list').childNodes;
-    song_list_child[nowPlayingIndex + 1].lastChild.innerHTML = `♥ ${newLikeNumber}`;
-}
-
-function addLike() {
-    if (!userInfo) {
-        alert("Please log in to express your love");
-        return
-    }
-    let likeId = userInfo.token;
-    let listId = 1;
-    let songIndex = nowPlayingIndex;
-
-    let likeInfo = {
-        listOwnerToken,
-        listId,
-        songIndex,
-        likeId,
-    }
-    socket.emit("newLike", likeInfo);
-
-    ownerInfo.playlistInfo.songList[nowPlayingIndex].like += 1;
-    let newLikeNumber = ownerInfo.playlistInfo.songList[nowPlayingIndex].like;
-    renderNewLike(ownerInfo, newLikeNumber);
-}
-
-function addEditBioBtn() {
-    let addEditBio_btn_node = document.createElement('div');
-    addEditBio_btn_node.className = 'bio_btn';
-    addEditBio_btn_node.innerHTML = "add/edit your bio"
-    addEditBio_btn_node.addEventListener('click', addEditBio)
-
-    let addEditBio_wrap_node = document.createElement('div');
-    addEditBio_wrap_node.className = 'addEditBio_wrap';
-    addEditBio_wrap_node.appendChild(addEditBio_btn_node);
-
-    let owner_info_wrap = document.querySelector('.owner_info_wrap');
-    owner_info_wrap.appendChild(addEditBio_wrap_node);
-
-    function addEditBio() {
-        let addEditBio_input = document.createElement('input');
-        addEditBio_input.className = 'addEditBio_input';
-
-        let changeBio_btn = document.createElement('div');
-        changeBio_btn.innerHTML = "add/edit";
-        changeBio_btn.className = 'bio_btn small_btn';
-        changeBio_btn.addEventListener('click', changeBio);
-
-        let changeBio_cancel = document.createElement('div');
-        changeBio_cancel.innerHTML = "cancel";
-        changeBio_cancel.className = 'bio_btn small_btn';
-        changeBio_cancel.addEventListener('click', cancelBio);
-
-        addEditBio_wrap_node.appendChild(addEditBio_input);
-        addEditBio_wrap_node.appendChild(changeBio_btn);
-        addEditBio_wrap_node.appendChild(changeBio_cancel);
-
-        let addEditBio_btn_node = document.querySelector('.bio_btn');
-        addEditBio_btn_node.remove();
-
-        function changeBio() {
-            socket.emit("changeBio", addEditBio_input.value);
-            socket.on("changeBio", (newBio) => {
-                let owner_bio = document.querySelector('.owner_bio');
-                owner_bio.innerHTML = newBio;
-            })
-            addEditBio_input.remove();
-            changeBio_btn.remove();
-            changeBio_cancel.remove();
-
-            let addEditBio_btn_node = document.createElement('div');
-            addEditBio_btn_node.className = 'bio_btn';
-            addEditBio_btn_node.innerHTML = "add/edit your bio";
-            addEditBio_wrap_node.appendChild(addEditBio_btn_node);
-
-            addEditBio_btn_node.addEventListener('click', addEditBio)
-        }
-
-        function cancelBio() {
-            addEditBio_input.remove();
-            changeBio_btn.remove();
-            changeBio_cancel.remove();
-
-            let addEditBio_btn_node = document.createElement('div');
-            addEditBio_btn_node.className = 'bio_btn';
-            addEditBio_btn_node.innerHTML = "add/edit your bio";
-            addEditBio_wrap_node.appendChild(addEditBio_btn_node);
-
-            addEditBio_btn_node.addEventListener('click', addEditBio)
-        }
-    }
-}
-
-function addFollowBtn() {
-    let follow_btn_node = document.createElement('div');
-    follow_btn_node.className = 'follow_btn';
-    follow_btn_node.innerHTML = "Follow";
-    follow_btn_node.addEventListener('click', changeFollowStatus)
-    let owner_info_wrap = document.querySelector('.owner_info_wrap');
-    owner_info_wrap.appendChild(follow_btn_node);
-}
-
-function changeFollowStatus() {
-    let followInfo = {
-        listOwnerToken,
-        userToken: userInfo.token,
-    }
-    if (this.innerHTML === "Follow") {
-        this.innerHTML = "Following";
-        socket.emit("followUser", followInfo);
-    } else {
-        this.innerHTML = "Follow";
-        socket.emit("unfollowUser", followInfo);
-    }
-}
-
-let submit_btn = document.querySelector('.submit_btn');
-submit_btn.addEventListener('click', addComment);
 
 
 
@@ -331,107 +471,46 @@ submit_btn.addEventListener('click', addComment);
 
 
 
-const _ownerInfo = {
-    userName: "HorseMin",
-    avatar: "http://junkee.com/wp-content/uploads/2017/09/Bojack-Horseman-2.jpg",
-    bio: "我是馬小明，很小的小，很明的明，這是為了要湊到換行所以才加的一堆字，想看看超過第三行的效果所以又有一些字。",
-    playlistInfo: {
-        songList: []
-    }
-}
-const __ownerInfo = {
-    userName: "HorseMin",
-    avatar: "http://junkee.com/wp-content/uploads/2017/09/Bojack-Horseman-2.jpg",
-    bio: "我是馬小明，很小的小，很明的明，這是為了要湊到換行所以才加的一堆字，想看看超過第三行的效果所以又有一些字。",
-    playlistInfo: {
-        songList: [{
-            url: "x3bDhtuC5yk",
-            songName: "既視感 - 不規則鐘擺",
-            cover: "https://www.billboard.com/files/styles/900_wide/public/media/Green-Day-American-Idiot-album-covers-billboard-1000x1000.jpg",
-            des: "這是一首不規則的歌",
-            like: 81,
-            comments: [{
-                    userName: 'Penguin',
-                    avatar: 'https://www.ienglishstatus.com/wp-content/uploads/2018/04/Anonymous-Whatsapp-profile-picture.jpg',
-                    content: '這首歌真不規則'
-                },
-                {
-                    userName: 'Apple',
-                    avatar: 'https://i.pinimg.com/736x/2c/9d/07/2c9d0704ae49dfde914e2b477bf9279c--stick-figure-profile-pictures.jpg',
-                    content: '真不規則的一首歌'
-                }
-            ],
-        }, {
-            url: "x3bDhtuC5yk",
-            songName: "既視感 - 不規則鐘擺",
-            cover: "https://www.billboard.com/files/styles/900_wide/public/media/Green-Day-American-Idiot-album-covers-billboard-1000x1000.jpg",
-            des: "這是一首不規則的歌",
-            like: 81,
-            comments: [{
-                    userName: 'Penguin',
-                    avatar: 'https://www.ienglishstatus.com/wp-content/uploads/2018/04/Anonymous-Whatsapp-profile-picture.jpg',
-                    content: '這首歌真不規則'
-                },
-                {
-                    userName: 'Apple',
-                    avatar: 'https://i.pinimg.com/736x/2c/9d/07/2c9d0704ae49dfde914e2b477bf9279c--stick-figure-profile-pictures.jpg',
-                    content: '真不規則的一首歌'
-                }
-            ],
-        }, {
-            url: "x3bDhtuC5yk",
-            songName: "Soft Lipa 蛋堡-回到過去",
-            cover: "https://www.billboard.com/files/styles/900_wide/public/media/Green-Day-American-Idiot-album-covers-billboard-1000x1000.jpg",
-            des: "這是一首不規則的歌",
-            like: 71,
-            comments: [{
-                    userName: 'Penguin',
-                    avatar: 'https://www.ienglishstatus.com/wp-content/uploads/2018/04/Anonymous-Whatsapp-profile-picture.jpg',
-                    content: '這首歌真不規則'
-                },
-                {
-                    userName: 'Apple',
-                    avatar: 'https://i.pinimg.com/736x/2c/9d/07/2c9d0704ae49dfde914e2b477bf9279c--stick-figure-profile-pictures.jpg',
-                    content: '真不規則的一首歌'
-                }
-            ],
-        }, {
-            url: "x3bDhtuC5yk",
-            songName: "既視感 - 不規則鐘擺",
-            cover: "https://www.billboard.com/files/styles/900_wide/public/media/Green-Day-American-Idiot-album-covers-billboard-1000x1000.jpg",
-            des: "這是一首不規則的歌",
-            like: 81,
-            comments: [{
-                    userName: 'Penguin',
-                    avatar: 'https://www.ienglishstatus.com/wp-content/uploads/2018/04/Anonymous-Whatsapp-profile-picture.jpg',
-                    content: '這首歌真不規則'
-                },
-                {
-                    userName: 'Apple',
-                    avatar: 'https://i.pinimg.com/736x/2c/9d/07/2c9d0704ae49dfde914e2b477bf9279c--stick-figure-profile-pictures.jpg',
-                    content: '真不規則的一首歌'
-                }
-            ],
-        }, {
-            url: "x3bDhtuC5yk",
-            songName: "既視感 - 不規則鐘擺",
-            cover: "https://www.billboard.com/files/styles/900_wide/public/media/Green-Day-American-Idiot-album-covers-billboard-1000x1000.jpg",
-            des: "這是一首規則的歌",
-            like: 81,
-            comments: [{
-                    userName: 'Penguin',
-                    avatar: 'https://www.ienglishstatus.com/wp-content/uploads/2018/04/Anonymous-Whatsapp-profile-picture.jpg',
-                    content: '這首歌真規則'
-                },
-                {
-                    userName: 'Apple',
-                    avatar: 'https://i.pinimg.com/736x/2c/9d/07/2c9d0704ae49dfde914e2b477bf9279c--stick-figure-profile-pictures.jpg',
-                    content: '真規則的一首歌'
-                }
-            ],
-        }],
-        name: 'HMM Playlist',
-        des: "這是一個讓人頭昏腦脹的歌單",
-        date: "2012/12/12"
-    }
-};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+let __singleSongInfos = [{
+    url: 'https://www.youtube.com/watch?v=YisGZ_Yl-A8',
+    songName: 'SmashRegz/違法 - 搭便車 ft. Triple T / 三小湯 (Music Video)',
+    cover: 'https://i.ytimg.com/vi/_PmHj0EP6I8/hqdefault.jpg?sqp=-oaymwEYCKgBEF5IVfKriqkDCwgBFQAAiEIYAXAB&rs=AOn4CLDnEUnGLF16aSZnbx2bzSZRxSa6mQ',
+    des: '',
+    like: 0,
+    comments: []
+}, {
+    url: 'https://www.youtube.com/watch?v=YisGZ_Yl-A8',
+    songName: 'SmashRegz/違法 - 搭便車 ft. Triple T / 三小湯 (Music Video)',
+    cover: 'https://i.ytimg.com/vi/_PmHj0EP6I8/hqdefault.jpg?sqp=-oaymwEYCKgBEF5IVfKriqkDCwgBFQAAiEIYAXAB&rs=AOn4CLDnEUnGLF16aSZnbx2bzSZRxSa6mQ',
+    des: '',
+    like: 0,
+    comments: []
+}, {
+    url: 'https://www.youtube.com/watch?v=YisGZ_Yl-A8',
+    songName: 'SmashRegz/違法 - 搭便車 ft. Triple T / 三小湯 (Music Video)',
+    cover: 'https://i.ytimg.com/vi/_PmHj0EP6I8/hqdefault.jpg?sqp=-oaymwEYCKgBEF5IVfKriqkDCwgBFQAAiEIYAXAB&rs=AOn4CLDnEUnGLF16aSZnbx2bzSZRxSa6mQ',
+    des: '',
+    like: 0,
+    comments: []
+}, {
+    url: 'https://www.youtube.com/watch?v=YisGZ_Yl-A8',
+    songName: 'SmashRegz/違法 - 搭便車 ft. Triple T / 三小湯 (Music Video)',
+    cover: 'https://i.ytimg.com/vi/_PmHj0EP6I8/hqdefault.jpg?sqp=-oaymwEYCKgBEF5IVfKriqkDCwgBFQAAiEIYAXAB&rs=AOn4CLDnEUnGLF16aSZnbx2bzSZRxSa6mQ',
+    des: '',
+    like: 0,
+    comments: []
+}];
