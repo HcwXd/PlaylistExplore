@@ -8,10 +8,13 @@ socket.on('redirect', (url) => {
     window.location = url;
 })
 
-const listOwnerToken = window.location.href.split('?id=')[1];
+const queryString = window.location.href.split('?id=')[1];
+let [listOwnerToken, listId] = queryString.split('&list=');
+
 let nowPlayingIndex = 0;
 let player;
 let ownerInfo;
+let ownerHistory;
 
 socket.on('getSongComment', (commentArray) => {
     console.log("getSongComment");
@@ -21,7 +24,10 @@ socket.on('getSongComment', (commentArray) => {
 
 
 function onYouTubePlayerAPIReady() {
-    socket.emit('getOwnerInfo', listOwnerToken);
+    socket.emit('getOwnerInfo', {
+        listOwnerToken,
+        listId,
+    });
     socket.on('getOwnerInfo', (socketOn_ownerInfo) => {
         document.querySelector('.loader').remove();
         ownerInfo = socketOn_ownerInfo;
@@ -39,6 +45,16 @@ function onYouTubePlayerAPIReady() {
         });
         renderPlaylist(ownerInfo);
     })
+    socket.emit('getOwnerHistory', listOwnerToken);
+}
+
+socket.on('getOwnerHistory', (socketOn_ownerHistory) => {
+    ownerHistory = socketOn_ownerHistory;
+    // renderOwnerHistory();
+})
+
+function renderOwnerHistory() {
+    console.log("renderOwnerHistory");
 }
 
 function renderOwnerInfo(ownerInfo) {
