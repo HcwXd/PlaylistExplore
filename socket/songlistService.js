@@ -20,11 +20,12 @@ function songlistService(socket) {
     })
 
     socket.on('getOwnerInfo', async (pageInfo) => {
-        let ownerHistory = await songListTable.getOwnerHistory(pageInfo.token);
+        const token = pageInfo.listOwnerToken;
+        let ownerHistory = await songListTable.getOwnerHistory(token);
         socket.emit('getOwnerHistory', ownerHistory);
 
         if(ownerHistory.length === 0){
-            const userInfo = await userTable.getUserInfo(pageInfo.token);
+            const userInfo = await userTable.getUserInfo(token);
             const ret = {
                 userName: userInfo.userName,
                 avatar: userInfo.avatar,
@@ -44,7 +45,7 @@ function songlistService(socket) {
         }
 
         let playlistInfo = {
-            token: pageInfo.token,
+            token: token,
             listId: pageInfo.listId === -1 ? ownerHistory[0].listId : pageInfo.listId,
         }
 
