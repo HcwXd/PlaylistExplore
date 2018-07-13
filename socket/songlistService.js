@@ -1,10 +1,4 @@
-const {
-    userTable,
-    commentTable,
-    songTable,
-    relationTable,
-    songListTable,
-} = require('./database');
+const { userTable, commentTable, songTable, relationTable, songListTable } = require('./database');
 
 let ownerInfoMap = {};
 
@@ -17,14 +11,14 @@ function songlistService(socket) {
     socket.on('getLatestPlaylists', async () => {
         let latestplaylistInfo = await songListTable.getLatestPlaylists(5);
         socket.emit('getLatestPlaylists', latestplaylistInfo);
-    })
+    });
 
     socket.on('getOwnerInfo', async (pageInfo) => {
         const token = pageInfo.listOwnerToken;
         let ownerHistory = await songListTable.getOwnerHistory(token);
         socket.emit('getOwnerHistory', ownerHistory);
 
-        if(ownerHistory.length === 0){
+        if (ownerHistory.length === 0) {
             const userInfo = await userTable.getUserInfo(token);
             const ret = {
                 userName: userInfo.userName,
@@ -37,8 +31,8 @@ function songlistService(socket) {
                     date: '',
                     token: '',
                     listId: '',
-                    uploadCover: ''
-                }
+                    uploadCover: '',
+                },
             };
             socket.emit('getOwnerInfo');
             return;
@@ -46,12 +40,12 @@ function songlistService(socket) {
 
         let playlistInfo = {
             token: token,
-            listId: pageInfo.listId === -1 ? ownerHistory[0].listId : pageInfo.listId,
-        }
+            listId: Number(pageInfo.listId) === -1 ? ownerHistory[0].listId : pageInfo.listId,
+        };
 
         let ownerInfo = await songListTable.getCompleteplaylistInfo(playlistInfo, true);
         socket.emit('getOwnerInfo', ownerInfo);
-    })
+    });
 
     socket.on('newLike', async (songInfo) => {
         songTable.updateLike(songInfo);
@@ -61,12 +55,12 @@ function songlistService(socket) {
         const token = ownerInfo.playlistInfo.token;
         ownerInfoMap[token] = ownerInfo;
         socket.emit('redirect', `edit?id=${token}`);
-    })
+    });
 
     socket.on('getEditInfo', (token = {}) => {
         console.log(ownerInfoMap[token]);
         socket.emit('getEditInfo', ownerInfoMap[token]);
-    })
+    });
 }
 
 module.exports = songlistService;
