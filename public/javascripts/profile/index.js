@@ -49,11 +49,28 @@ function onYouTubePlayerAPIReady() {
 
 socket.on('getOwnerHistory', (socketOn_ownerHistory) => {
     ownerHistory = socketOn_ownerHistory;
-    // renderOwnerHistory();
+    console.log('ownerHistory');
+    console.log(ownerHistory);
+    renderOwnerHistory();
 });
 
 function renderOwnerHistory() {
     console.log('renderOwnerHistory');
+    for (let recordIndex = 0; recordIndex < ownerHistory.length; recordIndex++) {
+        let record_wrap_node = document.createElement('div');
+        record_wrap_node.className = 'record_wrap';
+        record_wrap_node.innerHTML = `
+        <img src="${ownerHistory[recordIndex].cover}" alt="cover" class="record_cover">
+        <div class="record_name">${ownerHistory[recordIndex].name}</div>`;
+        record_wrap_node.listId = ownerHistory[recordIndex].listId;
+
+        record_wrap_node.addEventListener('click', redirectToClickList);
+        document.querySelector('.history_wrap').appendChild(record_wrap_node);
+    }
+}
+
+function redirectToClickList() {
+    window.location = `/profile?id=${listOwnerToken}&list=${this.listId}`;
 }
 
 function renderOwnerInfo(ownerInfo) {
@@ -188,31 +205,36 @@ function renderNewComment() {
 
     for (let i = 0; i < ownerInfo.playlistInfo.songList[nowPlayingIndex].comments.length; i++) {
         commentInfo = ownerInfo.playlistInfo.songList[nowPlayingIndex].comments[i];
+        let comment_info_wrap_node = renderSingleComment(commentInfo);
 
-        let comment_info_wrap_node = document.createElement('div');
-        comment_info_wrap_node.className = 'comment_info';
-        comment_info_wrap_node.innerHTML = `
-            <img class="comment_avatar" src="${commentInfo.avatar}" alt="gg">
-            <div class="comment_name">${commentInfo.userName}</div>
-            <div class="comment_content">${commentInfo.commentContent}</div>`;
-
-        if (userInfo && commentInfo.commentToken === userInfo.token) {
-            let delete_comment_btn_node = document.createElement('div');
-            delete_comment_btn_node.className = 'delete_comment_btn';
-            delete_comment_btn_node.innerHTML = 'X';
-            delete_comment_btn_node.commentInfo = commentInfo;
-            delete_comment_btn_node.addEventListener('click', deleteComment);
-            comment_info_wrap_node.appendChild(delete_comment_btn_node);
-        }
         comment_wrap_node.appendChild(comment_info_wrap_node);
     }
 
     document.querySelector('.comment_text').value = '';
 }
 
-// TODO
+function renderSingleComment(commentInfo) {
+    let comment_info_wrap_node = document.createElement('div');
+    comment_info_wrap_node.className = 'comment_info';
+    comment_info_wrap_node.innerHTML = `
+            <img class="comment_avatar" src="${commentInfo.avatar}" alt="gg">
+            <div class="comment_name">${commentInfo.userName}</div>
+            <div class="comment_content">${commentInfo.commentContent}</div>`;
+
+    if (userInfo && commentInfo.commentToken === userInfo.token) {
+        let delete_comment_btn_node = document.createElement('div');
+        delete_comment_btn_node.className = 'delete_comment_btn';
+        delete_comment_btn_node.innerHTML = 'X';
+        delete_comment_btn_node.commentInfo = commentInfo;
+        delete_comment_btn_node.addEventListener('click', deleteComment);
+        comment_info_wrap_node.appendChild(delete_comment_btn_node);
+    }
+    return comment_info_wrap_node;
+}
+
 function deleteComment() {
     console.log(this.commentInfo);
+    this.parentNode.remove();
     socket.emit('deleteComment', this.commentInfo);
 }
 
@@ -224,14 +246,20 @@ function addComment() {
 
     let listId = ownerInfo.playlistInfo.listId;
     let songIndex = nowPlayingIndex;
+    let commentContent = document.querySelector('.comment_text').value;
 
     let commentInfo = {
         listOwnerToken,
         listId,
         songIndex,
-        commentContent: document.querySelector('.comment_text').value,
+        commentContent,
     };
-
+    let newCommentNode = renderSingleComment({
+        commentContent,
+        avatar: userInfo.avatar,
+        userName: userInfo.userName,
+    });
+    document.querySelector('.comment_content_wrap').appendChild(newCommentNode);
     socket.emit('newComment', commentInfo);
 }
 
