@@ -203,12 +203,13 @@ function renderNewComment() {
             ${delete_comment_btn_html}
         </div>`;
     }
-    let delete_comment_btn_node_collection = document.querySelector('.delete_comment_btn') || [];
-    delete_comment_btn_node_collection.forEach((node) => {
-        node.addEventListener('click', deleteComment);
-    });
     comment_wrap.innerHTML = comment_wrap_html;
     document.querySelector('.comment_text').value = '';
+
+    let delete_comment_btn_node_collection = document.querySelectorAll('.delete_comment_btn');
+    if (delete_comment_btn_node_collection) {
+        delete_comment_btn_node_collection.forEach((node) => node.addEventListener('click', deleteComment));
+    }
 }
 
 // TODO
