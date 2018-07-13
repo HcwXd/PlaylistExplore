@@ -4,6 +4,16 @@ const { userTable,
         relationTable,
         songListTable, } = require('./database');
 
+function emitLatestComment(listOwnerToken, songIndex, listId){
+    songInfo = {
+        token: listOwnerToken,
+        songIndex: songIndex,
+        listId: listId,
+    };
+    comments = await songTable.getCommentInfo(songInfo);
+    socket.emit('getSongComment', comments);
+}
+
 function commentService(socket){
     socket.on('getSongComment', async (songInfo) => {
         comments = await songTable.getCommentInfo(songInfo);
@@ -15,17 +25,12 @@ function commentService(socket){
             commentInfo['commentToken'] = socket.handshake.session.token;
             await commentTable.createComment(commentInfo);
         }
-        songInfo = {
-            token: commentInfo.listOwnerToken,
-            songIndex: commentInfo.songIndex,
-            listId: commentInfo.listId
-        }
-        comments = await songTable.getCommentInfo(songInfo);
-        socket.emit('getSongComment', comments);
+        emitLatestComment(commentInfo.listOwnerToken, commentInfo.songIndex, commentInfo.listId);
     });
 
-    socket.on('deleteComment', async (commentIndex) => {
-        commentTable.deleteComment(commentIndex);
+    socket.on('deleteComment', async (commentInfo) => {
+        commentTable.deleteComment(commentInfo.commentIndex);
+        emitLatestComment(commentInfo.listOwnerToken, commentInfo.songIndex, commentInfo.listId);
     })
 };
 
