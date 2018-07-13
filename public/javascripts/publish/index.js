@@ -257,7 +257,7 @@ function redirectToProfile() {
     socket.emit('publishNewPlaylist', playlistInfo);
 
     const userToken = window.location.href.split('?id=')[1];
-    window.location = `/profile?id=${userToken}`;
+    window.location = `/profile?id=${userToken}&list=-1`;
 }
 
 function changeDragOrderSonglist() {
