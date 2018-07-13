@@ -1,8 +1,4 @@
-const { userTable,
-        commentTable,
-        songTable,
-        relationTable,
-        songListTable, } = require('./database');
+const { userTable, commentTable, songTable, relationTable, songListTable } = require('./database');
 
 /* crypt password
  * const bcrypt = require('bcrypt');
@@ -11,7 +7,7 @@ const { userTable,
 
 const defalutAvatar = 'https://i.imgur.com/9RXPWGu.png';
 
-function userService(socket){
+function userService(socket) {
     socket.on('getUserInfo', async (token) => {
         let userInfo = await userTable.getUserInfo(socket.handshake.session.token);
         socket.emit('getUserInfo', userInfo);
@@ -21,7 +17,7 @@ function userService(socket){
         bioInfo = {
             content: bio,
             token: socket.handshake.session.token,
-        }
+        };
         await userTable.updateBio(bioInfo);
         socket.emit('changeBio', bio);
     });
@@ -38,8 +34,8 @@ function userService(socket){
             avatar: user.avatar || defalutAvatar,
             bio: '',
             token: user.account,
-            password: user.password
-        }
+            password: user.password,
+        };
 
         await userTable.createAccount(userInfo);
         socket.handshake.session.token = userInfo.token;
@@ -56,16 +52,16 @@ function userService(socket){
                 socket.emit('createAccountSuccess');
             });
         */
-    })
+    });
 
     socket.on('userSignIn', async (user) => {
-        if(!await userTable.userExist(user.account)) {
-            console.log("accountNotExist");
+        if (!(await userTable.userExist(user.account))) {
+            console.log('accountNotExist');
             socket.emit('accountNotExist');
             return;
         }
-        if(!await userTable.confirmUser(user)){
-            console.log("wrongPassword");
+        if (!(await userTable.confirmUser(user))) {
+            console.log('wrongPassword');
             socket.emit('wrongPassword');
             return;
         }
@@ -79,7 +75,15 @@ function userService(socket){
 
     socket.on('searchUser', async (userName) => {
         return await userTable.searchUser;
-    })
+    });
+
+    socket.on('getFollowState', async (token, listOwnerToken) => {
+        if (await relationTable.isFriend(token, listOwnerToken)) {
+            socket.on('getFollowState', true);
+            return;
+        }
+        socket.on('getFollowState', false);
+    });
 }
 
 module.exports = userService;
