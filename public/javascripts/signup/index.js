@@ -10,10 +10,10 @@ const signup_btn = document.querySelector('.signup_btn');
 let uploadCover;
 
 socket.on('duplicateAccount', () => {
-    alert("Account have been signed up")
+    alert('Account have been signed up');
 });
 socket.on('createAccountSuccess', () => {
-    window.location = "/explore";
+    window.location = '/explore';
 });
 
 function signUp() {
@@ -51,13 +51,9 @@ function signUp() {
         name: username_input.value,
         account: email_input.value,
         password: Crypto.SHA1(password_input.value),
-        avatar: avatar
-    }
-    socket.emit("userSignUp", user);
-
-
-
-
+        avatar: avatar,
+    };
+    socket.emit('userSignUp', user);
 }
 
 avatar_input.addEventListener('change', uploadImgur);
@@ -66,16 +62,15 @@ function uploadImgur() {
     let files = avatar_input.files;
 
     if (files.length) {
-
         if (files[0].size > this.dataset.maxSize * 1024) {
-            alert("Please select a smaller file")
+            alert('Please select a smaller file');
             return false;
         }
 
-        console.log("Uploading file to Imgur..");
+        console.log('Uploading file to Imgur..');
 
         let apiUrl = 'https://api.imgur.com/3/image';
-        let apiKey = "50db29122a23727";
+        let apiKey = '50db29122a23727';
 
         let settings = {
             async: false,
@@ -86,26 +81,24 @@ function uploadImgur() {
             url: apiUrl,
             headers: {
                 Authorization: 'Client-ID ' + apiKey,
-                Accept: 'application/json'
+                Accept: 'application/json',
             },
-            mimeType: 'multipart/form-data'
+            mimeType: 'multipart/form-data',
         };
 
         let formData = new FormData();
-        formData.append("image", files[0]);
+        formData.append('image', files[0]);
         settings.data = formData;
 
         // Response contains stringified JSON
         // Image URL available at response.data.link
 
-        $.ajax(settings).done(function (response) {
+        $.ajax(settings).done(function(response) {
             responseData = JSON.parse(response);
             uploadCover = responseData.data.link;
         });
     }
 }
 
-
-
-signup_btn.addEventListener('click', signUp)
+signup_btn.addEventListener('click', signUp);
 // fb_signup_btn.addEventListener('click', fbSignUp)

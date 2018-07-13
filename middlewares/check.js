@@ -3,6 +3,6 @@ module.exports = {
         if (!req.session.token) {
             return res.redirect('/login');
         }
-        next()
-    }
-}
+        next();
+    },
+};

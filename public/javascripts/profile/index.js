@@ -6,7 +6,7 @@ socket.on('getUserInfo', (socketOn_userInfo) => {
 
 socket.on('redirect', (url) => {
     window.location = url;
-})
+});
 
 const queryString = window.location.href.split('?id=')[1];
 let [listOwnerToken, listId] = queryString.split('&list=');
@@ -17,11 +17,10 @@ let ownerInfo;
 let ownerHistory;
 
 socket.on('getSongComment', (commentArray) => {
-    console.log("getSongComment");
+    console.log('getSongComment');
     ownerInfo.playlistInfo.songList[nowPlayingIndex].comments = commentArray;
     renderNewComment();
-})
-
+});
 
 function onYouTubePlayerAPIReady() {
     socket.emit('getOwnerInfo', {
@@ -31,7 +30,7 @@ function onYouTubePlayerAPIReady() {
     socket.on('getOwnerInfo', (socketOn_ownerInfo) => {
         document.querySelector('.loader').remove();
         ownerInfo = socketOn_ownerInfo;
-        console.log("ownerInfo:");
+        console.log('ownerInfo:');
         console.log(ownerInfo);
         renderOwnerInfo(ownerInfo);
         renderPlayerInfo(ownerInfo);
@@ -40,21 +39,21 @@ function onYouTubePlayerAPIReady() {
             height: '400',
             videoId: ownerInfo.playlistInfo.songList[0].url,
             events: {
-                onStateChange: onPlayerStateChange
-            }
+                onStateChange: onPlayerStateChange,
+            },
         });
         renderPlaylist(ownerInfo);
-    })
+    });
     socket.emit('getOwnerHistory', listOwnerToken);
 }
 
 socket.on('getOwnerHistory', (socketOn_ownerHistory) => {
     ownerHistory = socketOn_ownerHistory;
     // renderOwnerHistory();
-})
+});
 
 function renderOwnerHistory() {
-    console.log("renderOwnerHistory");
+    console.log('renderOwnerHistory');
 }
 
 function renderOwnerInfo(ownerInfo) {
@@ -62,7 +61,7 @@ function renderOwnerInfo(ownerInfo) {
     const owner_info_wrap_html = `
         <img class="owner_avatar" src="${ownerInfo.avatar}" alt="gg">
         <div class="owner_name">${ownerInfo.userName}</div>
-        <div class="owner_bio">${ownerInfo.bio?ownerInfo.bio:""}</div>`
+        <div class="owner_bio">${ownerInfo.bio ? ownerInfo.bio : ''}</div>`;
     owner_info_wrap_node.innerHTML = owner_info_wrap_html;
 
     if (userInfo) {
@@ -77,16 +76,16 @@ function renderOwnerInfo(ownerInfo) {
 function renderPlayerInfo(ownerInfo) {
     if (ownerInfo.playlistInfo.songList.length === 0) {
         let comment_submit = document.querySelector('.comment_submit');
-        comment_submit.innerHTML = "目前還沒有任何播放清單";
-        comment_submit.style.justifyContent = "space-around";
-        comment_submit.style.fontSize = "24px";
+        comment_submit.innerHTML = '目前還沒有任何播放清單';
+        comment_submit.style.justifyContent = 'space-around';
+        comment_submit.style.fontSize = '24px';
     }
     renderNewSongStatsAndDes();
     let songInfo = {
         token: ownerInfo.playlistInfo.token,
         listId: ownerInfo.playlistInfo.listId,
-        songIndex: nowPlayingIndex
-    }
+        songIndex: nowPlayingIndex,
+    };
     console.log(songInfo);
     socket.emit('getSongComment', songInfo);
 }
@@ -95,16 +94,16 @@ function renderPlaylist(ownerInfo) {
     const playlist_info_node = document.querySelector('.playlist_info');
     const playlist_info_html = `
     <div class="playlist_name">${ownerInfo.playlistInfo.name}</div>
-    <div class="playlist_des">${ownerInfo.playlistInfo.des}</div>`
+    <div class="playlist_des">${ownerInfo.playlistInfo.des}</div>`;
     playlist_info_node.innerHTML = playlist_info_html;
-    if (userInfo && (userInfo.token === listOwnerToken)) {
+    if (userInfo && userInfo.token === listOwnerToken) {
         addEditPlaylistBtn();
     }
 
     const song_list_node = document.querySelector('.song_list');
     for (let i = 0; i < ownerInfo.playlistInfo.songList.length; i++) {
         let song_info_node = document.createElement('div');
-        song_info_node.className = "song_info";
+        song_info_node.className = 'song_info';
         song_info_node.innerHTML = `
         <div class="song_name">${ownerInfo.playlistInfo.songList[i].songName}</div>
         <div class="song_like">♥ ${ownerInfo.playlistInfo.songList[i].like}</div>`;
@@ -118,10 +117,10 @@ function renderPlaylist(ownerInfo) {
 
 function addEditPlaylistBtn() {
     let edit_playlist_btn_node = document.createElement('div');
-    edit_playlist_btn_node.className = "edit_playlist_btn";
-    edit_playlist_btn_node.innerHTML = "Edit"
+    edit_playlist_btn_node.className = 'edit_playlist_btn';
+    edit_playlist_btn_node.innerHTML = 'Edit';
     document.querySelector('.playlist_info').appendChild(edit_playlist_btn_node);
-    edit_playlist_btn_node.addEventListener('click', editPlaylist)
+    edit_playlist_btn_node.addEventListener('click', editPlaylist);
 }
 
 function editPlaylist() {
@@ -131,7 +130,7 @@ function editPlaylist() {
 function onPlayerStateChange(event) {
     if (event.data === 0) {
         if (nowPlayingIndex + 1 < ownerInfo.playlistInfo.songList.length) {
-            renderNextSongPlayer()
+            renderNextSongPlayer();
         }
     }
 }
@@ -140,30 +139,29 @@ function renderNextSongPlayer() {
     let playlistInfo = ownerInfo.playlistInfo;
     nowPlayingIndex += 1;
 
-    player.loadVideoById(playlistInfo.songList[nowPlayingIndex].url)
+    player.loadVideoById(playlistInfo.songList[nowPlayingIndex].url);
 
     renderNewSongStatsAndDes();
     let songInfo = {
         token: ownerInfo.playlistInfo.token,
         listId: ownerInfo.playlistInfo.listId,
-        songIndex: nowPlayingIndex
-    }
+        songIndex: nowPlayingIndex,
+    };
     socket.emit('getSongComment', songInfo);
-
 }
 
 function renderClickSongPlayer() {
     let playlistInfo = this.ownerInfo.playlistInfo;
     nowPlayingIndex = this.index;
 
-    player.loadVideoById(playlistInfo.songList[nowPlayingIndex].url)
+    player.loadVideoById(playlistInfo.songList[nowPlayingIndex].url);
 
     renderNewSongStatsAndDes();
     let songInfo = {
         token: ownerInfo.playlistInfo.token,
         listId: ownerInfo.playlistInfo.listId,
-        songIndex: nowPlayingIndex
-    }
+        songIndex: nowPlayingIndex,
+    };
     socket.emit('getSongComment', songInfo);
 }
 
@@ -171,7 +169,7 @@ function renderNewSongStatsAndDes() {
     let song_stats_node = document.querySelector('.song_stats');
     let song_stats_html = `
     <div class="like_btn">♥</div>
-    <div class="like_number">${ownerInfo.playlistInfo.songList[nowPlayingIndex].like}</div>`
+    <div class="like_number">${ownerInfo.playlistInfo.songList[nowPlayingIndex].like}</div>`;
     song_stats_node.innerHTML = song_stats_html;
 
     let like_btn_node = document.querySelector('.like_btn');
@@ -179,26 +177,22 @@ function renderNewSongStatsAndDes() {
 
     let song_des_node = document.querySelector('.song_des');
     let song_des_html = `
-    <div class="song_date">${ownerInfo.playlistInfo.date.substr(0,10)}</div>
-    <div class="song_text">${ownerInfo.playlistInfo.songList[nowPlayingIndex].des}</div>`
+    <div class="song_date">${ownerInfo.playlistInfo.date.substr(0, 10)}</div>
+    <div class="song_text">${ownerInfo.playlistInfo.songList[nowPlayingIndex].des}</div>`;
     song_des_node.innerHTML = song_des_html;
 }
 
-
 function renderNewComment() {
     let comment_wrap = document.querySelector('.comment_content_wrap');
-    let comment_wrap_html = "";
-
-
+    let comment_wrap_html = '';
 
     for (let i = 0; i < ownerInfo.playlistInfo.songList[nowPlayingIndex].comments.length; i++) {
-
         commentInfo = ownerInfo.playlistInfo.songList[nowPlayingIndex].comments[i];
         commentInfo['content'] = commentInfo.commentContent;
         console.log(commentInfo);
-        let delete_comment_btn_html = "";
+        let delete_comment_btn_html = '';
         if (userInfo && commentInfo.commentToken === userInfo.token) {
-            delete_comment_btn_html = `<div class="delete_comment_btn">X</div>`
+            delete_comment_btn_html = `<div class="delete_comment_btn">X</div>`;
         }
 
         comment_wrap_html += `
@@ -210,22 +204,22 @@ function renderNewComment() {
         </div>`;
     }
     let delete_comment_btn_node_collection = document.querySelector('.delete_comment_btn') || [];
-    delete_comment_btn_node_collection.forEach(node => {
+    delete_comment_btn_node_collection.forEach((node) => {
         node.addEventListener('click', deleteComment);
     });
     comment_wrap.innerHTML = comment_wrap_html;
-    document.querySelector('.comment_text').value = "";
+    document.querySelector('.comment_text').value = '';
 }
 
 // TODO
 function deleteComment() {
-    socket.emit("deleteComment", commentInfo);
+    socket.emit('deleteComment', commentInfo);
 }
 
 function addComment() {
     if (!userInfo) {
-        alert("Please log in to add your comment");
-        return
+        alert('Please log in to add your comment');
+        return;
     }
 
     let listId = ownerInfo.playlistInfo.listId;
@@ -236,16 +230,16 @@ function addComment() {
         listId,
         songIndex,
         commentContent: document.querySelector('.comment_text').value,
-    }
+    };
 
-    socket.emit("newComment", commentInfo);
+    socket.emit('newComment', commentInfo);
 }
 
 function renderNewLike(ownerInfo, newLikeNumber) {
     let song_stats = document.querySelector('.song_stats');
     let song_stats_html = `
     <div class="like_btn">♥</div>
-    <div class="like_number">${ownerInfo.playlistInfo.songList[nowPlayingIndex].like}</div>`
+    <div class="like_number">${ownerInfo.playlistInfo.songList[nowPlayingIndex].like}</div>`;
     song_stats.innerHTML = song_stats_html;
 
     let song_list_child = document.querySelector('.song_list').childNodes;
@@ -254,8 +248,8 @@ function renderNewLike(ownerInfo, newLikeNumber) {
 
 function addLike() {
     if (!userInfo) {
-        alert("Please log in to express your love");
-        return
+        alert('Please log in to express your love');
+        return;
     }
     let likeId = userInfo.token;
     let listId = ownerInfo.playlistInfo.listId;
@@ -266,8 +260,8 @@ function addLike() {
         listId,
         songIndex,
         likeId,
-    }
-    socket.emit("newLike", likeInfo);
+    };
+    socket.emit('newLike', likeInfo);
 
     ownerInfo.playlistInfo.songList[nowPlayingIndex].like += 1;
     let newLikeNumber = ownerInfo.playlistInfo.songList[nowPlayingIndex].like;
@@ -277,8 +271,8 @@ function addLike() {
 function addEditBioBtn() {
     let addEditBio_btn_node = document.createElement('div');
     addEditBio_btn_node.className = 'bio_btn';
-    addEditBio_btn_node.innerHTML = "add/edit your bio"
-    addEditBio_btn_node.addEventListener('click', addEditBio)
+    addEditBio_btn_node.innerHTML = 'add/edit your bio';
+    addEditBio_btn_node.addEventListener('click', addEditBio);
 
     let addEditBio_wrap_node = document.createElement('div');
     addEditBio_wrap_node.className = 'addEditBio_wrap';
@@ -292,12 +286,12 @@ function addEditBioBtn() {
         addEditBio_input.className = 'addEditBio_input';
 
         let changeBio_btn = document.createElement('div');
-        changeBio_btn.innerHTML = "add/edit";
+        changeBio_btn.innerHTML = 'add/edit';
         changeBio_btn.className = 'bio_btn small_btn';
         changeBio_btn.addEventListener('click', changeBio);
 
         let changeBio_cancel = document.createElement('div');
-        changeBio_cancel.innerHTML = "cancel";
+        changeBio_cancel.innerHTML = 'cancel';
         changeBio_cancel.className = 'bio_btn small_btn';
         changeBio_cancel.addEventListener('click', cancelBio);
 
@@ -309,21 +303,21 @@ function addEditBioBtn() {
         addEditBio_btn_node.remove();
 
         function changeBio() {
-            socket.emit("changeBio", addEditBio_input.value);
-            socket.on("changeBio", (newBio) => {
+            socket.emit('changeBio', addEditBio_input.value);
+            socket.on('changeBio', (newBio) => {
                 let owner_bio = document.querySelector('.owner_bio');
                 owner_bio.innerHTML = newBio;
-            })
+            });
             addEditBio_input.remove();
             changeBio_btn.remove();
             changeBio_cancel.remove();
 
             let addEditBio_btn_node = document.createElement('div');
             addEditBio_btn_node.className = 'bio_btn';
-            addEditBio_btn_node.innerHTML = "add/edit your bio";
+            addEditBio_btn_node.innerHTML = 'add/edit your bio';
             addEditBio_wrap_node.appendChild(addEditBio_btn_node);
 
-            addEditBio_btn_node.addEventListener('click', addEditBio)
+            addEditBio_btn_node.addEventListener('click', addEditBio);
         }
 
         function cancelBio() {
@@ -333,10 +327,10 @@ function addEditBioBtn() {
 
             let addEditBio_btn_node = document.createElement('div');
             addEditBio_btn_node.className = 'bio_btn';
-            addEditBio_btn_node.innerHTML = "add/edit your bio";
+            addEditBio_btn_node.innerHTML = 'add/edit your bio';
             addEditBio_wrap_node.appendChild(addEditBio_btn_node);
 
-            addEditBio_btn_node.addEventListener('click', addEditBio)
+            addEditBio_btn_node.addEventListener('click', addEditBio);
         }
     }
 }
@@ -344,8 +338,8 @@ function addEditBioBtn() {
 function addFollowBtn() {
     let follow_btn_node = document.createElement('div');
     follow_btn_node.className = 'follow_btn';
-    follow_btn_node.innerHTML = "Follow";
-    follow_btn_node.addEventListener('click', changeFollowStatus)
+    follow_btn_node.innerHTML = 'Follow';
+    follow_btn_node.addEventListener('click', changeFollowStatus);
     let owner_info_wrap = document.querySelector('.owner_info_wrap');
     owner_info_wrap.appendChild(follow_btn_node);
 }
@@ -354,126 +348,131 @@ function changeFollowStatus() {
     let followInfo = {
         listOwnerToken,
         userToken: userInfo.token,
-    }
-    if (this.innerHTML === "Follow") {
-        this.innerHTML = "Following";
-        socket.emit("followUser", followInfo);
+    };
+    if (this.innerHTML === 'Follow') {
+        this.innerHTML = 'Following';
+        socket.emit('followUser', followInfo);
     } else {
-        this.innerHTML = "Follow";
-        socket.emit("unfollowUser", followInfo);
+        this.innerHTML = 'Follow';
+        socket.emit('unfollowUser', followInfo);
     }
 }
 
 let submit_btn = document.querySelector('.submit_btn');
 submit_btn.addEventListener('click', addComment);
 
-
-
-
-
-
-
 const _ownerInfo = {
-    userName: "HorseMin",
-    avatar: "http://junkee.com/wp-content/uploads/2017/09/Bojack-Horseman-2.jpg",
-    bio: "我是馬小明，很小的小，很明的明，這是為了要湊到換行所以才加的一堆字，想看看超過第三行的效果所以又有一些字。",
+    userName: 'HorseMin',
+    avatar: 'http://junkee.com/wp-content/uploads/2017/09/Bojack-Horseman-2.jpg',
+    bio: '我是馬小明，很小的小，很明的明，這是為了要湊到換行所以才加的一堆字，想看看超過第三行的效果所以又有一些字。',
     playlistInfo: {
-        songList: []
-    }
-}
+        songList: [],
+    },
+};
 const __ownerInfo = {
-    userName: "HorseMin",
-    avatar: "http://junkee.com/wp-content/uploads/2017/09/Bojack-Horseman-2.jpg",
-    bio: "我是馬小明，很小的小，很明的明，這是為了要湊到換行所以才加的一堆字，想看看超過第三行的效果所以又有一些字。",
+    userName: 'HorseMin',
+    avatar: 'http://junkee.com/wp-content/uploads/2017/09/Bojack-Horseman-2.jpg',
+    bio: '我是馬小明，很小的小，很明的明，這是為了要湊到換行所以才加的一堆字，想看看超過第三行的效果所以又有一些字。',
     playlistInfo: {
-        songList: [{
-            url: "x3bDhtuC5yk",
-            songName: "既視感 - 不規則鐘擺",
-            cover: "https://www.billboard.com/files/styles/900_wide/public/media/Green-Day-American-Idiot-album-covers-billboard-1000x1000.jpg",
-            des: "這是一首不規則的歌",
-            like: 81,
-            comments: [{
-                    userName: 'Penguin',
-                    avatar: 'https://www.ienglishstatus.com/wp-content/uploads/2018/04/Anonymous-Whatsapp-profile-picture.jpg',
-                    content: '這首歌真不規則'
-                },
-                {
-                    userName: 'Apple',
-                    avatar: 'https://i.pinimg.com/736x/2c/9d/07/2c9d0704ae49dfde914e2b477bf9279c--stick-figure-profile-pictures.jpg',
-                    content: '真不規則的一首歌'
-                }
-            ],
-        }, {
-            url: "x3bDhtuC5yk",
-            songName: "既視感 - 不規則鐘擺",
-            cover: "https://www.billboard.com/files/styles/900_wide/public/media/Green-Day-American-Idiot-album-covers-billboard-1000x1000.jpg",
-            des: "這是一首不規則的歌",
-            like: 81,
-            comments: [{
-                    userName: 'Penguin',
-                    avatar: 'https://www.ienglishstatus.com/wp-content/uploads/2018/04/Anonymous-Whatsapp-profile-picture.jpg',
-                    content: '這首歌真不規則'
-                },
-                {
-                    userName: 'Apple',
-                    avatar: 'https://i.pinimg.com/736x/2c/9d/07/2c9d0704ae49dfde914e2b477bf9279c--stick-figure-profile-pictures.jpg',
-                    content: '真不規則的一首歌'
-                }
-            ],
-        }, {
-            url: "x3bDhtuC5yk",
-            songName: "Soft Lipa 蛋堡-回到過去",
-            cover: "https://www.billboard.com/files/styles/900_wide/public/media/Green-Day-American-Idiot-album-covers-billboard-1000x1000.jpg",
-            des: "這是一首不規則的歌",
-            like: 71,
-            comments: [{
-                    userName: 'Penguin',
-                    avatar: 'https://www.ienglishstatus.com/wp-content/uploads/2018/04/Anonymous-Whatsapp-profile-picture.jpg',
-                    content: '這首歌真不規則'
-                },
-                {
-                    userName: 'Apple',
-                    avatar: 'https://i.pinimg.com/736x/2c/9d/07/2c9d0704ae49dfde914e2b477bf9279c--stick-figure-profile-pictures.jpg',
-                    content: '真不規則的一首歌'
-                }
-            ],
-        }, {
-            url: "x3bDhtuC5yk",
-            songName: "既視感 - 不規則鐘擺",
-            cover: "https://www.billboard.com/files/styles/900_wide/public/media/Green-Day-American-Idiot-album-covers-billboard-1000x1000.jpg",
-            des: "這是一首不規則的歌",
-            like: 81,
-            comments: [{
-                    userName: 'Penguin',
-                    avatar: 'https://www.ienglishstatus.com/wp-content/uploads/2018/04/Anonymous-Whatsapp-profile-picture.jpg',
-                    content: '這首歌真不規則'
-                },
-                {
-                    userName: 'Apple',
-                    avatar: 'https://i.pinimg.com/736x/2c/9d/07/2c9d0704ae49dfde914e2b477bf9279c--stick-figure-profile-pictures.jpg',
-                    content: '真不規則的一首歌'
-                }
-            ],
-        }, {
-            url: "x3bDhtuC5yk",
-            songName: "既視感 - 不規則鐘擺",
-            cover: "https://www.billboard.com/files/styles/900_wide/public/media/Green-Day-American-Idiot-album-covers-billboard-1000x1000.jpg",
-            des: "這是一首規則的歌",
-            like: 81,
-            comments: [{
-                    userName: 'Penguin',
-                    avatar: 'https://www.ienglishstatus.com/wp-content/uploads/2018/04/Anonymous-Whatsapp-profile-picture.jpg',
-                    content: '這首歌真規則'
-                },
-                {
-                    userName: 'Apple',
-                    avatar: 'https://i.pinimg.com/736x/2c/9d/07/2c9d0704ae49dfde914e2b477bf9279c--stick-figure-profile-pictures.jpg',
-                    content: '真規則的一首歌'
-                }
-            ],
-        }],
+        songList: [
+            {
+                url: 'x3bDhtuC5yk',
+                songName: '既視感 - 不規則鐘擺',
+                cover: 'https://www.billboard.com/files/styles/900_wide/public/media/Green-Day-American-Idiot-album-covers-billboard-1000x1000.jpg',
+                des: '這是一首不規則的歌',
+                like: 81,
+                comments: [
+                    {
+                        userName: 'Penguin',
+                        avatar: 'https://www.ienglishstatus.com/wp-content/uploads/2018/04/Anonymous-Whatsapp-profile-picture.jpg',
+                        content: '這首歌真不規則',
+                    },
+                    {
+                        userName: 'Apple',
+                        avatar: 'https://i.pinimg.com/736x/2c/9d/07/2c9d0704ae49dfde914e2b477bf9279c--stick-figure-profile-pictures.jpg',
+                        content: '真不規則的一首歌',
+                    },
+                ],
+            },
+            {
+                url: 'x3bDhtuC5yk',
+                songName: '既視感 - 不規則鐘擺',
+                cover: 'https://www.billboard.com/files/styles/900_wide/public/media/Green-Day-American-Idiot-album-covers-billboard-1000x1000.jpg',
+                des: '這是一首不規則的歌',
+                like: 81,
+                comments: [
+                    {
+                        userName: 'Penguin',
+                        avatar: 'https://www.ienglishstatus.com/wp-content/uploads/2018/04/Anonymous-Whatsapp-profile-picture.jpg',
+                        content: '這首歌真不規則',
+                    },
+                    {
+                        userName: 'Apple',
+                        avatar: 'https://i.pinimg.com/736x/2c/9d/07/2c9d0704ae49dfde914e2b477bf9279c--stick-figure-profile-pictures.jpg',
+                        content: '真不規則的一首歌',
+                    },
+                ],
+            },
+            {
+                url: 'x3bDhtuC5yk',
+                songName: 'Soft Lipa 蛋堡-回到過去',
+                cover: 'https://www.billboard.com/files/styles/900_wide/public/media/Green-Day-American-Idiot-album-covers-billboard-1000x1000.jpg',
+                des: '這是一首不規則的歌',
+                like: 71,
+                comments: [
+                    {
+                        userName: 'Penguin',
+                        avatar: 'https://www.ienglishstatus.com/wp-content/uploads/2018/04/Anonymous-Whatsapp-profile-picture.jpg',
+                        content: '這首歌真不規則',
+                    },
+                    {
+                        userName: 'Apple',
+                        avatar: 'https://i.pinimg.com/736x/2c/9d/07/2c9d0704ae49dfde914e2b477bf9279c--stick-figure-profile-pictures.jpg',
+                        content: '真不規則的一首歌',
+                    },
+                ],
+            },
+            {
+                url: 'x3bDhtuC5yk',
+                songName: '既視感 - 不規則鐘擺',
+                cover: 'https://www.billboard.com/files/styles/900_wide/public/media/Green-Day-American-Idiot-album-covers-billboard-1000x1000.jpg',
+                des: '這是一首不規則的歌',
+                like: 81,
+                comments: [
+                    {
+                        userName: 'Penguin',
+                        avatar: 'https://www.ienglishstatus.com/wp-content/uploads/2018/04/Anonymous-Whatsapp-profile-picture.jpg',
+                        content: '這首歌真不規則',
+                    },
+                    {
+                        userName: 'Apple',
+                        avatar: 'https://i.pinimg.com/736x/2c/9d/07/2c9d0704ae49dfde914e2b477bf9279c--stick-figure-profile-pictures.jpg',
+                        content: '真不規則的一首歌',
+                    },
+                ],
+            },
+            {
+                url: 'x3bDhtuC5yk',
+                songName: '既視感 - 不規則鐘擺',
+                cover: 'https://www.billboard.com/files/styles/900_wide/public/media/Green-Day-American-Idiot-album-covers-billboard-1000x1000.jpg',
+                des: '這是一首規則的歌',
+                like: 81,
+                comments: [
+                    {
+                        userName: 'Penguin',
+                        avatar: 'https://www.ienglishstatus.com/wp-content/uploads/2018/04/Anonymous-Whatsapp-profile-picture.jpg',
+                        content: '這首歌真規則',
+                    },
+                    {
+                        userName: 'Apple',
+                        avatar: 'https://i.pinimg.com/736x/2c/9d/07/2c9d0704ae49dfde914e2b477bf9279c--stick-figure-profile-pictures.jpg',
+                        content: '真規則的一首歌',
+                    },
+                ],
+            },
+        ],
         name: 'HMM Playlist',
-        des: "這是一個讓人頭昏腦脹的歌單",
-        date: "2012/12/12"
-    }
+        des: '這是一個讓人頭昏腦脹的歌單',
+        date: '2012/12/12',
+    },
 };
