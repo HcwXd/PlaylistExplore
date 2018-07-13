@@ -49,11 +49,28 @@ function onYouTubePlayerAPIReady() {
 
 socket.on('getOwnerHistory', (socketOn_ownerHistory) => {
     ownerHistory = socketOn_ownerHistory;
-    // renderOwnerHistory();
+    console.log('ownerHistory');
+    console.log(ownerHistory);
+    renderOwnerHistory();
 });
 
 function renderOwnerHistory() {
     console.log('renderOwnerHistory');
+    for (let recordIndex = 0; recordIndex < ownerHistory.length; recordIndex++) {
+        let record_wrap_node = document.createElement('div');
+        record_wrap_node.className = 'record_wrap';
+        record_wrap_node.innerHTML = `
+        <img src="${ownerHistory[recordIndex].cover}" alt="cover" class="record_cover">
+        <div class="record_name">${ownerHistory[recordIndex].name}</div>`;
+        record_wrap_node.listId = ownerHistory[recordIndex].listId;
+
+        record_wrap_node.addEventListener('click', redirectToClickList);
+        document.querySelector('.history_wrap').appendChild(record_wrap_node);
+    }
+}
+
+function redirectToClickList() {
+    window.location = `/profile?id=${listOwnerToken}&list=${this.listId}`;
 }
 
 function renderOwnerInfo(ownerInfo) {
