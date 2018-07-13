@@ -11,32 +11,26 @@ const mysql = require('mysql');
  * commentContent
  */
 
-function createComment(commentInfo){
+function createComment(commentInfo) {
     const sql = 'INSERT INTO comment SET ?';
     const insert = commentInfo;
     const query = mysql.format(sql, insert);
     applyQuery(query);
 }
 
-function deleteComment(commentIndex){
+function deleteComment(commentIndex) {
     const sql = 'DELETE FROM comment WHERE commentIndex = ?';
     const insert = [commentIndex];
-    const query = mysql.format(sql, condition);
+    const query = mysql.format(sql, insert);
     applyQuery(query);
 }
 
-function modifyComment(commentInfo){
+function modifyComment(commentInfo) {
     const sql = 'UPDATE comment SET ? WHERE ?? = ? AND ?? = ? AND ?? = ? AND ?? = ?';
     const setValue = {
-        commentContent: commentInfo.commentContent
+        commentContent: commentInfo.commentContent,
     };
-    const insert = [
-        setValue,
-        'listOwnerToken', commentInfo.listOwnerToken,
-        'songIndex', commentInfo.songIndex,
-        'commentIndex', commentInfo.commentIndex,
-        'listId', commentInfo.listID
-    ];
+    const insert = [setValue, 'listOwnerToken', commentInfo.listOwnerToken, 'songIndex', commentInfo.songIndex, 'commentIndex', commentInfo.commentIndex, 'listId', commentInfo.listID];
     const query = mysql.format(sql, insert);
     applyQuery(query);
 }
