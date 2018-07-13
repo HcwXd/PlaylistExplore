@@ -236,4 +236,23 @@ input {
         width: 15%;
         white-space: nowrap; }
 
+.history_wrap {
+  margin-top: 15px;
+  width: 100%;
+  margin-left: 50%;
+  transform: translateX(-50%);
+  font-size: 0px; }
+  .history_wrap .record_wrap {
+    width: 28%;
+    margin: 2.5%;
+    margin-bottom: 0;
+    text-align: center;
+    display: inline-block;
+    overflow: hidden; }
+    .history_wrap .record_wrap .record_cover {
+      width: 100%; }
+    .history_wrap .record_wrap .record_name {
+      padding: 5px;
+      font-size: 24px; }
+
 /*# sourceMappingURL=style.css.map */
