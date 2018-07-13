@@ -183,38 +183,37 @@ function renderNewSongStatsAndDes() {
 }
 
 function renderNewComment() {
-    let comment_wrap = document.querySelector('.comment_content_wrap');
-    let comment_wrap_html = '';
+    let comment_wrap_node = document.querySelector('.comment_content_wrap');
+    comment_wrap_node.innerHTML = '';
 
     for (let i = 0; i < ownerInfo.playlistInfo.songList[nowPlayingIndex].comments.length; i++) {
         commentInfo = ownerInfo.playlistInfo.songList[nowPlayingIndex].comments[i];
-        commentInfo['content'] = commentInfo.commentContent;
-        console.log(commentInfo);
-        let delete_comment_btn_html = '';
-        if (userInfo && commentInfo.commentToken === userInfo.token) {
-            delete_comment_btn_html = `<div class="delete_comment_btn">X</div>`;
-        }
 
-        comment_wrap_html += `
-        <div class="comment_info">
+        let comment_info_wrap_node = document.createElement('div');
+        comment_info_wrap_node.className = 'comment_info';
+        comment_info_wrap_node.innerHTML = `
             <img class="comment_avatar" src="${commentInfo.avatar}" alt="gg">
             <div class="comment_name">${commentInfo.userName}</div>
-            <div class="comment_content">${commentInfo.content}</div>
-            ${delete_comment_btn_html}
-        </div>`;
-    }
-    comment_wrap.innerHTML = comment_wrap_html;
-    document.querySelector('.comment_text').value = '';
+            <div class="comment_content">${commentInfo.commentContent}</div>`;
 
-    let delete_comment_btn_node_collection = document.querySelectorAll('.delete_comment_btn');
-    if (delete_comment_btn_node_collection) {
-        delete_comment_btn_node_collection.forEach((node) => node.addEventListener('click', deleteComment));
+        if (userInfo && commentInfo.commentToken === userInfo.token) {
+            let delete_comment_btn_node = document.createElement('div');
+            delete_comment_btn_node.className = 'delete_comment_btn';
+            delete_comment_btn_node.innerHTML = 'X';
+            delete_comment_btn_node.commentInfo = commentInfo;
+            delete_comment_btn_node.addEventListener('click', deleteComment);
+            comment_info_wrap_node.appendChild(delete_comment_btn_node);
+        }
+        comment_wrap_node.appendChild(comment_info_wrap_node);
     }
+
+    document.querySelector('.comment_text').value = '';
 }
 
 // TODO
 function deleteComment() {
-    socket.emit('deleteComment', commentInfo);
+    console.log(this.commentInfo);
+    socket.emit('deleteComment', this.commentInfo);
 }
 
 function addComment() {
