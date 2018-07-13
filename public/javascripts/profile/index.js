@@ -210,9 +210,9 @@ function renderNewComment() {
     document.querySelector('.comment_text').value = '';
 }
 
-// TODO
 function deleteComment() {
     console.log(this.commentInfo);
+    this.parentNode.remove();
     socket.emit('deleteComment', this.commentInfo);
 }
 
