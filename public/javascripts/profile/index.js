@@ -2,7 +2,10 @@ console.log('GOGOGO');
 
 let userInfo;
 socket.emit('getUserInfo');
+
 socket.on('getUserInfo', (socketOn_userInfo) => {
+    console.log('get user info');
+    console.log(socketOn_userInfo);
     userInfo = socketOn_userInfo;
 });
 
@@ -25,10 +28,12 @@ socket.on('getSongComment', (commentArray) => {
 });
 
 function onYouTubePlayerAPIReady() {
+    console.log('Before Emit');
     socket.emit('getOwnerInfo', {
         listOwnerToken,
         listId,
     });
+    console.log('Emit');
     socket.on('getOwnerInfo', (socketOn_ownerInfo) => {
         document.querySelector('.loader').remove();
         ownerInfo = socketOn_ownerInfo;

@@ -9,8 +9,12 @@ const defalutAvatar = 'https://i.imgur.com/9RXPWGu.png';
 
 function userService(socket) {
     socket.on('getUserInfo', async (token) => {
-        let userInfo = await userTable.getUserInfo(socket.handshake.session.token);
-        socket.emit('getUserInfo', userInfo);
+        if (token) {
+            let userInfo = await userTable.getUserInfo(socket.handshake.session.token);
+            socket.emit('getUserInfo', userInfo);
+            return;
+        }
+        socket.emit('getUserInfo', {});
     });
 
     socket.on('changeBio', async (bio) => {
@@ -75,14 +79,6 @@ function userService(socket) {
 
     socket.on('searchUser', async (userName) => {
         return await userTable.searchUser;
-    });
-
-    socket.on('getFollowState', async (token, listOwnerToken) => {
-        if (await relationTable.isFriend(token, listOwnerToken)) {
-            socket.on('getFollowState', true);
-            return;
-        }
-        socket.on('getFollowState', false);
     });
 }
 
