@@ -42,11 +42,6 @@ function renderLatestPlaylist() {
 
         let song_list_html = `<div class="song_list_des">播放清單</div>`;
         for (let songIndex = 0; songIndex < currentPlaylist.playlistInfo.songList.length; songIndex++) {
-            // if (currentPlaylist.playlistInfo.songList[songIndex].songName.length > 11) {
-            //     renderSongName = currentPlaylist.playlistInfo.songList[songIndex].songName.substring(0, 11) + ' ...';
-            // } else {
-            //     renderSongName = currentPlaylist.playlistInfo.songList[songIndex].songName;
-            // }
             renderSongName = currentPlaylist.playlistInfo.songList[songIndex].songName;
 
             song_list_html += `
@@ -93,7 +88,7 @@ function renderLatestPlaylist() {
 
     let more_infos_node = document.querySelectorAll('.more_info');
     more_infos_node.forEach((node) => node.addEventListener('mouseenter', showSongList));
-    more_infos_node.forEach((node) => node.addEventListener('mouseout', hideSongList));
+    // more_infos_node.forEach((node) => node.addEventListener('mouseout', hideSongList));
 
     let playlist_covers_node = document.querySelectorAll('.playlist_cover');
     playlist_covers_node.forEach((node) => node.addEventListener('click', goToTargetPlaylist));
@@ -108,13 +103,19 @@ function showSongList() {
     song_list_node.style.transform = 'rotate(0)';
     song_list_node.style.left = '101%';
     song_list_node.style.opacity = '1';
+    song_list_node.addEventListener('mouseout', hideSongListAfterTwoSeconds);
 }
 
-function hideSongList() {
-    let song_list_node = this.parentNode.parentNode.previousSibling;
-    song_list_node.style.transform = 'rotate(90deg)';
-    song_list_node.style.left = '100%';
-    song_list_node.style.opacity = '0';
+function hideSongListAfterTwoSeconds() {
+    let leftSonglistTime;
+    this.addEventListener('mouseover', () => {
+        clearTimeout(leftSonglistTime);
+    });
+    leftSonglistTime = setTimeout(() => {
+        this.style.transform = 'rotate(90deg)';
+        this.style.left = '100%';
+        this.style.opacity = '0';
+    }, 2000);
 }
 
 function countInactivityTime() {
@@ -204,11 +205,6 @@ function changeBackground() {
 }
 
 countInactivityTime();
-
-let a = {
-    a: 1,
-    b: 2,
-};
 
 var __fivePlaylistInfo = [
     {
