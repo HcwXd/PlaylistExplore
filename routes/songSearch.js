@@ -1,4 +1,3 @@
-
 const config = require('./config');
 const { google } = require('googleapis');
 
@@ -20,18 +19,38 @@ function getCoverImage(id) {
     return url;
 }
 
+async function getPlaylistInfo(playlistId) {
+    const body = await youtube.playlistItems.list({
+        playlistId: playlistId,
+        part: 'snippet, contentDetails',
+        maxResults: 50,
+    });
+    const songlist = body.data.items;
+    let songlistInfo = [];
+    songlist.map((song) => {
+        songlistInfo.push({
+            songName: song.snippet.tittle,
+            url: song.contentDetails.videoId,
+            cover: getCoverImage(song.contentDetails.videoId),
+        });
+    });
+    console.log(songlistInfo);
+}
+
 async function getSingleURLInfo(URL) {
     let videoId = urlToId(URL);
     const body = await youtube.videos.list({
         id: videoId,
-        part: 'snippet'
+        part: 'snippet',
     });
 
-    let songInfoArray = [{
-        songName: body.data.items[0].snippet.title,
-        url: videoId,
-        cover: getCoverImage(videoId),
-    }];
+    let songInfoArray = [
+        {
+            songName: body.data.items[0].snippet.title,
+            url: videoId,
+            cover: getCoverImage(videoId),
+        },
+    ];
     return songInfoArray;
 }
 
@@ -53,7 +72,7 @@ async function getSingleSongInfoArray(URL) {
         songInfoArray.push({
             songName: element.snippet.title,
             url: element.id.videoId,
-            cover: (getCoverImage(element.id.videoId)),
+            cover: getCoverImage(element.id.videoId),
         });
     });
 
@@ -61,3 +80,7 @@ async function getSingleSongInfoArray(URL) {
 }
 
 module.exports = getSingleSongInfoArray;
+
+/* test */
+playlistId = 'PLvLCR4OHWKxc8v_7pRFLAkaxjRrM_QBA6';
+getPlaylistInfo(playlistId);
