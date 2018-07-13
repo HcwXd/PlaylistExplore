@@ -188,26 +188,31 @@ function renderNewComment() {
 
     for (let i = 0; i < ownerInfo.playlistInfo.songList[nowPlayingIndex].comments.length; i++) {
         commentInfo = ownerInfo.playlistInfo.songList[nowPlayingIndex].comments[i];
+        let comment_info_wrap_node = renderSingleComment(commentInfo);
 
-        let comment_info_wrap_node = document.createElement('div');
-        comment_info_wrap_node.className = 'comment_info';
-        comment_info_wrap_node.innerHTML = `
-            <img class="comment_avatar" src="${commentInfo.avatar}" alt="gg">
-            <div class="comment_name">${commentInfo.userName}</div>
-            <div class="comment_content">${commentInfo.commentContent}</div>`;
-
-        if (userInfo && commentInfo.commentToken === userInfo.token) {
-            let delete_comment_btn_node = document.createElement('div');
-            delete_comment_btn_node.className = 'delete_comment_btn';
-            delete_comment_btn_node.innerHTML = 'X';
-            delete_comment_btn_node.commentInfo = commentInfo;
-            delete_comment_btn_node.addEventListener('click', deleteComment);
-            comment_info_wrap_node.appendChild(delete_comment_btn_node);
-        }
         comment_wrap_node.appendChild(comment_info_wrap_node);
     }
 
     document.querySelector('.comment_text').value = '';
+}
+
+function renderSingleComment(commentInfo) {
+    let comment_info_wrap_node = document.createElement('div');
+    comment_info_wrap_node.className = 'comment_info';
+    comment_info_wrap_node.innerHTML = `
+            <img class="comment_avatar" src="${commentInfo.avatar}" alt="gg">
+            <div class="comment_name">${commentInfo.userName}</div>
+            <div class="comment_content">${commentInfo.commentContent}</div>`;
+
+    if (userInfo && commentInfo.commentToken === userInfo.token) {
+        let delete_comment_btn_node = document.createElement('div');
+        delete_comment_btn_node.className = 'delete_comment_btn';
+        delete_comment_btn_node.innerHTML = 'X';
+        delete_comment_btn_node.commentInfo = commentInfo;
+        delete_comment_btn_node.addEventListener('click', deleteComment);
+        comment_info_wrap_node.appendChild(delete_comment_btn_node);
+    }
+    return comment_info_wrap_node;
 }
 
 function deleteComment() {
@@ -224,14 +229,20 @@ function addComment() {
 
     let listId = ownerInfo.playlistInfo.listId;
     let songIndex = nowPlayingIndex;
+    let commentContent = document.querySelector('.comment_text').value;
 
     let commentInfo = {
         listOwnerToken,
         listId,
         songIndex,
-        commentContent: document.querySelector('.comment_text').value,
+        commentContent,
     };
-
+    let newCommentNode = renderSingleComment({
+        commentContent,
+        avatar: userInfo.avatar,
+        userName: userInfo.userName,
+    });
+    document.querySelector('.comment_content_wrap').appendChild(newCommentNode);
     socket.emit('newComment', commentInfo);
 }
 
