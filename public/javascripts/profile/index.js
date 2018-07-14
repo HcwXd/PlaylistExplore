@@ -1,11 +1,7 @@
-console.log('GOGOGO');
-
 let userInfo;
 socket.emit('getUserInfo');
 
 socket.on('getUserInfo', (socketOn_userInfo) => {
-    console.log('get user info');
-    console.log(socketOn_userInfo);
     userInfo = socketOn_userInfo;
 });
 
@@ -22,23 +18,18 @@ let ownerInfo;
 let ownerHistory;
 
 socket.on('getSongComment', (commentArray) => {
-    console.log('getSongComment');
     ownerInfo.playlistInfo.songList[nowPlayingIndex].comments = commentArray;
     renderNewComment();
 });
 
 function onYouTubePlayerAPIReady() {
-    console.log('Before Emit');
     socket.emit('getOwnerInfo', {
         listOwnerToken,
         listId,
     });
-    console.log('Emit');
     socket.on('getOwnerInfo', (socketOn_ownerInfo) => {
         document.querySelector('.loader').remove();
         ownerInfo = socketOn_ownerInfo;
-        console.log('ownerInfo:');
-        console.log(ownerInfo);
         renderOwnerInfo(ownerInfo);
         renderPlayerInfo(ownerInfo);
         player = new YT.Player('video_placeholder', {
@@ -57,13 +48,10 @@ function onYouTubePlayerAPIReady() {
 
 socket.on('getOwnerHistory', (socketOn_ownerHistory) => {
     ownerHistory = socketOn_ownerHistory;
-    console.log('ownerHistory');
-    console.log(ownerHistory);
     renderOwnerHistory();
 });
 
 function renderOwnerHistory() {
-    console.log('renderOwnerHistory');
     for (let recordIndex = 0; recordIndex < ownerHistory.length; recordIndex++) {
         let record_wrap_node = document.createElement('div');
         record_wrap_node.className = 'record_wrap';
@@ -111,7 +99,6 @@ function renderPlayerInfo(ownerInfo) {
         listId: ownerInfo.playlistInfo.listId,
         songIndex: nowPlayingIndex,
     };
-    console.log(songInfo);
     socket.emit('getSongComment', songInfo);
 }
 
@@ -242,7 +229,6 @@ function renderSingleComment(commentInfo) {
 }
 
 function deleteComment() {
-    console.log(this.commentInfo);
     this.parentNode.remove();
     socket.emit('deleteComment', this.commentInfo);
 }
@@ -405,119 +391,3 @@ function showNowPlayingSong() {
 
 let submit_btn = document.querySelector('.submit_btn');
 submit_btn.addEventListener('click', addComment);
-
-const _ownerInfo = {
-    userName: 'HorseMin',
-    avatar: 'http://junkee.com/wp-content/uploads/2017/09/Bojack-Horseman-2.jpg',
-    bio: '我是馬小明，很小的小，很明的明，這是為了要湊到換行所以才加的一堆字，想看看超過第三行的效果所以又有一些字。',
-    playlistInfo: {
-        songList: [],
-    },
-};
-const __ownerInfo = {
-    userName: 'HorseMin',
-    avatar: 'http://junkee.com/wp-content/uploads/2017/09/Bojack-Horseman-2.jpg',
-    bio: '我是馬小明，很小的小，很明的明，這是為了要湊到換行所以才加的一堆字，想看看超過第三行的效果所以又有一些字。',
-    playlistInfo: {
-        songList: [
-            {
-                url: 'x3bDhtuC5yk',
-                songName: '既視感 - 不規則鐘擺',
-                cover: 'https://www.billboard.com/files/styles/900_wide/public/media/Green-Day-American-Idiot-album-covers-billboard-1000x1000.jpg',
-                des: '這是一首不規則的歌',
-                like: 81,
-                comments: [
-                    {
-                        userName: 'Penguin',
-                        avatar: 'https://www.ienglishstatus.com/wp-content/uploads/2018/04/Anonymous-Whatsapp-profile-picture.jpg',
-                        content: '這首歌真不規則',
-                    },
-                    {
-                        userName: 'Apple',
-                        avatar: 'https://i.pinimg.com/736x/2c/9d/07/2c9d0704ae49dfde914e2b477bf9279c--stick-figure-profile-pictures.jpg',
-                        content: '真不規則的一首歌',
-                    },
-                ],
-            },
-            {
-                url: 'x3bDhtuC5yk',
-                songName: '既視感 - 不規則鐘擺',
-                cover: 'https://www.billboard.com/files/styles/900_wide/public/media/Green-Day-American-Idiot-album-covers-billboard-1000x1000.jpg',
-                des: '這是一首不規則的歌',
-                like: 81,
-                comments: [
-                    {
-                        userName: 'Penguin',
-                        avatar: 'https://www.ienglishstatus.com/wp-content/uploads/2018/04/Anonymous-Whatsapp-profile-picture.jpg',
-                        content: '這首歌真不規則',
-                    },
-                    {
-                        userName: 'Apple',
-                        avatar: 'https://i.pinimg.com/736x/2c/9d/07/2c9d0704ae49dfde914e2b477bf9279c--stick-figure-profile-pictures.jpg',
-                        content: '真不規則的一首歌',
-                    },
-                ],
-            },
-            {
-                url: 'x3bDhtuC5yk',
-                songName: 'Soft Lipa 蛋堡-回到過去',
-                cover: 'https://www.billboard.com/files/styles/900_wide/public/media/Green-Day-American-Idiot-album-covers-billboard-1000x1000.jpg',
-                des: '這是一首不規則的歌',
-                like: 71,
-                comments: [
-                    {
-                        userName: 'Penguin',
-                        avatar: 'https://www.ienglishstatus.com/wp-content/uploads/2018/04/Anonymous-Whatsapp-profile-picture.jpg',
-                        content: '這首歌真不規則',
-                    },
-                    {
-                        userName: 'Apple',
-                        avatar: 'https://i.pinimg.com/736x/2c/9d/07/2c9d0704ae49dfde914e2b477bf9279c--stick-figure-profile-pictures.jpg',
-                        content: '真不規則的一首歌',
-                    },
-                ],
-            },
-            {
-                url: 'x3bDhtuC5yk',
-                songName: '既視感 - 不規則鐘擺',
-                cover: 'https://www.billboard.com/files/styles/900_wide/public/media/Green-Day-American-Idiot-album-covers-billboard-1000x1000.jpg',
-                des: '這是一首不規則的歌',
-                like: 81,
-                comments: [
-                    {
-                        userName: 'Penguin',
-                        avatar: 'https://www.ienglishstatus.com/wp-content/uploads/2018/04/Anonymous-Whatsapp-profile-picture.jpg',
-                        content: '這首歌真不規則',
-                    },
-                    {
-                        userName: 'Apple',
-                        avatar: 'https://i.pinimg.com/736x/2c/9d/07/2c9d0704ae49dfde914e2b477bf9279c--stick-figure-profile-pictures.jpg',
-                        content: '真不規則的一首歌',
-                    },
-                ],
-            },
-            {
-                url: 'x3bDhtuC5yk',
-                songName: '既視感 - 不規則鐘擺',
-                cover: 'https://www.billboard.com/files/styles/900_wide/public/media/Green-Day-American-Idiot-album-covers-billboard-1000x1000.jpg',
-                des: '這是一首規則的歌',
-                like: 81,
-                comments: [
-                    {
-                        userName: 'Penguin',
-                        avatar: 'https://www.ienglishstatus.com/wp-content/uploads/2018/04/Anonymous-Whatsapp-profile-picture.jpg',
-                        content: '這首歌真規則',
-                    },
-                    {
-                        userName: 'Apple',
-                        avatar: 'https://i.pinimg.com/736x/2c/9d/07/2c9d0704ae49dfde914e2b477bf9279c--stick-figure-profile-pictures.jpg',
-                        content: '真規則的一首歌',
-                    },
-                ],
-            },
-        ],
-        name: 'HMM Playlist',
-        des: '這是一個讓人頭昏腦脹的歌單',
-        date: '2012/12/12',
-    },
-};
