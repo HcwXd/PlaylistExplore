@@ -1,3 +1,5 @@
+console.log('GOGOGO');
+
 let userInfo;
 socket.emit('getUserInfo');
 
@@ -47,6 +49,7 @@ function onYouTubePlayerAPIReady() {
                 onStateChange: onPlayerStateChange,
             },
         });
+
         renderPlaylist(ownerInfo);
     });
     socket.emit('getOwnerHistory', listOwnerToken);
@@ -135,6 +138,7 @@ function renderPlaylist(ownerInfo) {
         song_info_node.addEventListener('click', renderClickSongPlayer);
         song_list_node.appendChild(song_info_node);
     }
+    showNowPlayingSong();
 }
 
 function addEditPlaylistBtn() {
@@ -162,7 +166,7 @@ function renderNextSongPlayer() {
     nowPlayingIndex += 1;
 
     player.loadVideoById(playlistInfo.songList[nowPlayingIndex].url);
-
+    showNowPlayingSong();
     renderNewSongStatsAndDes();
     let songInfo = {
         token: ownerInfo.playlistInfo.token,
@@ -177,7 +181,7 @@ function renderClickSongPlayer() {
     nowPlayingIndex = this.index;
 
     player.loadVideoById(playlistInfo.songList[nowPlayingIndex].url);
-
+    showNowPlayingSong();
     renderNewSongStatsAndDes();
     let songInfo = {
         token: ownerInfo.playlistInfo.token,
@@ -389,6 +393,14 @@ function changeFollowStatus() {
         this.innerHTML = 'Follow';
         socket.emit('unfollowUser', followInfo);
     }
+}
+
+function showNowPlayingSong() {
+    let song_name_node_collection = document.querySelectorAll('.song_name');
+    song_name_node_collection.forEach((node) => {
+        node.style.color = '#bebebe';
+    });
+    song_name_node_collection[nowPlayingIndex].style.color = 'rgba(204,204,0,0.7)';
 }
 
 let submit_btn = document.querySelector('.submit_btn');
