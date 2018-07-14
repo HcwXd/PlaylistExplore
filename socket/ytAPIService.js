@@ -1,15 +1,10 @@
-const { userTable,
-        commentTable,
-        songTable,
-        relationTable,
-        songListTable, } = require('./database');
+const { userTable, commentTable, songTable, relationTable, songListTable } = require('./database');
 
-var getSingleSongInfoArray = require('../routes/songSearch');
+const emitURLInfoArray = require('../routes/songSearch');
 
-function ytAPIService(socket){
+function ytAPIService(socket) {
     socket.on('getSearchResults', async (URL) => {
-        const singleSongInfos = await getSingleSongInfoArray(URL);
-        socket.emit('getSearchResults', singleSongInfos);
+        await emitURLInfoArray(URL, socket);
     });
 }
 

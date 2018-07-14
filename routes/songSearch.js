@@ -34,7 +34,7 @@ async function getPlaylistInfo(playlistId) {
             cover: getCoverImage(song.contentDetails.videoId),
         });
     });
-    console.log(songlistInfo);
+    return songlistInfo;
 }
 
 async function getSingleURLInfo(URL) {
@@ -54,12 +54,27 @@ async function getSingleURLInfo(URL) {
     return songInfoArray;
 }
 
+const listReg = new RegExp('^https://www.youtube.com/playlist\\?list=(\\w+)');
+const songReg = new RegExp('^https://www.youtube.com/watch\\?');
+
 // a very simple example of searching for youtube videos
-async function getSingleSongInfoArray(URL) {
-    if (/^'https'/.test(URL)) {
-        return await getSingleURLInfo(URL);
+async function emitURLInfoArray(URL, socket) {
+    if ((result = URL.match(listReg))) {
+        console.log('it is a song list');
+        const listId = result[1];
+        const playlistArray = await getPlaylistInfo(listId);
+        socket.emit('getSearchListResults', playlistArray);
+        return;
     }
 
+    if (songReg.test(URL)) {
+        console.log('single song url');
+        const singleSongInfo = await getSingleURLInfo(URL);
+        socket.emit('getSearchResults', singleSongInfo);
+        return;
+    }
+
+    console.log('query');
     const res = await youtube.search.list({
         part: 'id,snippet',
         q: URL,
@@ -75,12 +90,7 @@ async function getSingleSongInfoArray(URL) {
             cover: getCoverImage(element.id.videoId),
         });
     });
-
-    return songInfoArray;
+    socket.emit('getSearchResults', songInfoArray);
 }
 
-module.exports = getSingleSongInfoArray;
-
-/* test */
-playlistId = 'PLvLCR4OHWKxc8v_7pRFLAkaxjRrM_QBA6';
-getPlaylistInfo(playlistId);
+module.exports = emitURLInfoArray;
