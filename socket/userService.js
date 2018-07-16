@@ -8,9 +8,10 @@ const { userTable, commentTable, songTable, relationTable, songListTable } = req
 const defalutAvatar = 'https://i.imgur.com/9RXPWGu.png';
 
 function userService(socket) {
-    socket.on('getUserInfo', async (token) => {
+    socket.on('getUserInfo', async () => {
+        const token = socket.handshake.session.token;
         if (token) {
-            let userInfo = await userTable.getUserInfo(socket.handshake.session.token);
+            let userInfo = await userTable.getUserInfo(token);
             socket.emit('getUserInfo', userInfo);
             return;
         }
