@@ -115,15 +115,27 @@ function min(a, b) {
     return a < b ? a : b;
 }
 
-async function getLatestPlaylists(limitNum) {
-    let sql = 'SELECT s.* ,u.userName, u.avatar FROM songList s, user u \
+async function getPageSongList(limitNum, token) {
+    let sql, query;
+    if (token) {
+        sql =
+            'SELECT s.* ,u.userName, u.avatar FROM songList s, user u \
+               where s.token = u.token \
+               AND u.token NOT IN (SELECT followToken FROM relation WHERE token = ?)\
+               ORDER BY s.date DESC LIMIT ?';
+        query = mysql.format(sql, [token, limitNum]);
+    } else {
+        sql = 'SELECT s.* ,u.userName, u.avatar FROM songList s, user u \
                where s.token = u.token \
                ORDER BY s.date DESC LIMIT ?';
-    let query = mysql.format(sql, [limitNum]);
-    const songListData = await getData(query);
-    if (songListData.length == 0) return [];
+        query = mysql.format(sql, [limitNum]);
+    }
 
-    sql = '';
+    return await getData(query);
+}
+
+async function getPageSongData(limitNum, songListData) {
+    let sql = '';
     for (index = 0; index < min(songListData.length - 1, limitNum - 1); index++) {
         sql += 'SELECT *  \
                 FROM song \
@@ -140,9 +152,15 @@ async function getLatestPlaylists(limitNum) {
         insert.push(element.token);
         insert.push(element.listId);
     });
-    query = mysql.format(sql, insert);
-    const songData = await getData(query);
+    let query = mysql.format(sql, insert);
+    return await getData(query);
+}
 
+async function getLatestPlaylists(limitNum, token) {
+    const songListData = await getPageSongList(limitNum, token);
+    if (songListData.length == 0) return [];
+
+    const songData = await getPageSongData(limitNum, songListData);
     return makeLatestPlayLists(songListData, songData);
 }
 

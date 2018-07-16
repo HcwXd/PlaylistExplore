@@ -9,7 +9,7 @@ function songlistService(socket) {
     });
 
     socket.on('getLatestPlaylists', async () => {
-        let latestplaylistInfo = await songListTable.getLatestPlaylists(5);
+        let latestplaylistInfo = await songListTable.getLatestPlaylists(5, socket.handshake.session.token);
         socket.emit('getLatestPlaylists', latestplaylistInfo);
     });
 
