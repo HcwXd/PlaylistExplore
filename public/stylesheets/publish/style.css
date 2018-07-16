@@ -98,10 +98,60 @@ html, body {
         padding: 0px 15px; }
         .content_wrap .publish_wrap .container .real_publish_btn:hover {
           opacity: 0.9; }
+  .content_wrap .import_area_wrap {
+    display: none;
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 1px solid #bebebe;
+    width: 75%;
+    padding: 35px; }
+    .content_wrap .import_area_wrap .import_input {
+      width: 75%;
+      align-items: center;
+      text-decoration: none;
+      border: 2px solid #bebebe;
+      border-right: 1px solid #bebebe;
+      background-color: #282828;
+      color: #bebebe;
+      width: 85%;
+      height: 45px;
+      line-height: 45px;
+      font-size: 12px;
+      border-radius: 5px 0 0 5px;
+      padding: 0px 15px; }
+      .content_wrap .import_area_wrap .import_input:focus {
+        outline-color: #2c2d30;
+        outline-width: 0px;
+        box-shadow: none;
+        color: #bebebe; }
+    .content_wrap .import_area_wrap .import_cancel {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      cursor: pointer; }
+    .content_wrap .import_area_wrap .import_btn {
+      align-items: center;
+      text-align: center;
+      height: 45px;
+      border: 2px solid #bebebe;
+      border-left: 1px solid #bebebe;
+      line-height: 45px;
+      background-color: #282828;
+      color: #bebebe;
+      font-size: 12px;
+      font-weight: 500;
+      border-radius: 0 5px 5px 0;
+      cursor: pointer;
+      padding: 0 15px; }
+      .content_wrap .import_area_wrap .import_btn:hover {
+        opacity: 0.9; }
   .content_wrap .search_area_wrap {
     width: 100%;
     display: flex;
-    justify-content: space-around; }
+    justify-content: space-around;
+    position: relative; }
     .content_wrap .search_area_wrap .search_area {
       margin-top: 35px;
       margin-bottom: 35px;
@@ -142,6 +192,26 @@ html, body {
         cursor: pointer; }
         .content_wrap .search_area_wrap .search_area .search_btn:hover {
           opacity: 0.9; }
+    .content_wrap .search_area_wrap .show_import_btn {
+      position: absolute;
+      top: 50%;
+      right: 5%;
+      transform: translate(0, -50%);
+      text-align: center;
+      height: 45px;
+      border: 2px solid #bebebe;
+      line-height: 45px;
+      background-color: #282828;
+      color: #bebebe;
+      font-size: 12px;
+      font-weight: 500;
+      border-radius: 5px;
+      cursor: pointer;
+      padding: 0 15px;
+      transition-duration: 0.5s; }
+      .content_wrap .search_area_wrap .show_import_btn:hover {
+        opacity: 0.9;
+        border-radius: 20px; }
   .content_wrap .publishing_wrap {
     display: flex;
     justify-content: space-between;

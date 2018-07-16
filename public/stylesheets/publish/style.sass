@@ -108,12 +108,60 @@ html, body
         padding: 0px 15px
         &:hover
           opacity: 0.9
-    
+  .import_area_wrap
+    display: none
+    position: absolute
+    top: 45%
+    left: 50%
+    transform: translate(-50%, -50%)
+    border: 1px solid $txt_white
+    width: 75%
+    padding: 35px
+    .import_input
+      width: 75%
+      align-items: center
+      text-decoration: none
+      border: 2px solid $txt_white
+      border-right: 1px solid $txt_white
+      background-color: $bg_grey
+      color: $txt_white
+      width: 85%
+      height: 45px
+      line-height: 45px
+      font-size: 12px
+      border-radius: 5px 0 0 5px
+      padding: 0px 15px
+      &:focus
+        outline-color: rgb(44, 45, 48)
+        outline-width: 0px
+        box-shadow: none
+        color: $txt_white
+    .import_cancel
+      position: absolute
+      right: 10px
+      top: 10px
+      cursor: pointer
+    .import_btn  
+      align-items: center
+      text-align: center
+      height: 45px
+      border: 2px solid $txt_white
+      border-left: 1px solid $txt_white
+      line-height: 45px
+      background-color: $bg_grey
+      color: $txt_white
+      font-size: 12px
+      font-weight: 500
+      border-radius: 0 5px 5px 0
+      cursor: pointer
+      padding: 0 15px
+      &:hover
+        opacity: 0.9
   .search_area_wrap
     width: 100%
-    // border: 1px solid $txt_white
     display: flex
     justify-content: space-around
+    position: relative
     .search_area
       margin-top: 35px
       margin-bottom: 35px
@@ -154,6 +202,28 @@ html, body
         cursor: pointer
         &:hover
           opacity: 0.9
+    .show_import_btn
+      position: absolute
+      top: 50%
+      right: 5%
+      transform: translate(0, -50%)
+      // align-items: center
+      text-align: center
+      height: 45px
+      border: 2px solid $txt_white
+      line-height: 45px
+      background-color: $bg_grey
+      color: $txt_white
+      font-size: 12px
+      font-weight: 500
+      border-radius: 5px
+      cursor: pointer
+      padding: 0 15px
+      transition-duration: 0.5s
+      &:hover
+        opacity: 0.9
+        border-radius: 20px
+      
   .publishing_wrap
     display: flex
     justify-content: space-between
@@ -174,12 +244,9 @@ html, body
         border-top: 0px solid $txt_white
         padding: 5px 0px
         align-items: center
-        // &:active
-          // border: 1px solid yellow
         .song_name
           display: inline-block
           width: 85%
-          // white-space: nowrap
           overflow: hidden
           padding-left: 15px
           padding-right: 15px
@@ -188,7 +255,6 @@ html, body
           width: 70px
           height: 70px
           display: inline-block
-          // width: 15%
           padding-left: 15px
     .add_des_wrap
       width: 30%
@@ -236,7 +302,6 @@ html, body
       margin-right: 15px
       width: 30%
       max-height: 500px
-      // overflow-x: inherit
       padding-left: 23px
       margin-left: -23px
       overflow-y: scroll
