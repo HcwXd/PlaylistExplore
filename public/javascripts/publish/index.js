@@ -13,7 +13,7 @@ function compress(source_img_obj, quality, output_format) {
     let cvs = document.createElement('canvas');
     cvs.width = source_img_obj.naturalWidth;
     cvs.height = source_img_obj.naturalHeight;
-    let ctx = cvs.getContext('2d').drawImage(source_img_obj, 0, 0);
+    cvs.getContext('2d').drawImage(source_img_obj, 0, 0);
     let newImageData = cvs.toDataURL(mime_type, quality / 100);
     let result_image_obj = new Image();
     result_image_obj.src = newImageData;

@@ -115,15 +115,35 @@ function min(a, b) {
     return a < b ? a : b;
 }
 
-async function getLatestPlaylists(limitNum) {
-    let sql = 'SELECT s.* ,u.userName, u.avatar FROM songList s, user u \
+async function getPageSongList(limitNum, date, token, friends) {
+    let sql, query;
+    if (friends) {
+        sql =
+            'SELECT s.*, u.userName, u.avatar from songList s, user u \
+               WHERE s.token in (SELECT followToken FROM relation WHERE token = ?) \
+               AND s.token = u.token AND s.date < ? \
+               ORDER BY date DESC LIMIT ?';
+        query = mysql.format(sql, [token, date, limitNum]);
+    } else if (token) {
+        sql =
+            'SELECT s.* ,u.userName, u.avatar FROM songList s, user u \
                where s.token = u.token \
+               AND u.token NOT IN (SELECT followToken FROM relation WHERE token = ?) \
+               AND s.date < ? \
                ORDER BY s.date DESC LIMIT ?';
-    let query = mysql.format(sql, [limitNum]);
-    const songListData = await getData(query);
-    if (songListData.length == 0) return [];
+        query = mysql.format(sql, [token, date, limitNum]);
+    } else {
+        sql = 'SELECT s.* ,u.userName, u.avatar FROM songList s, user u \
+               where s.token = u.token AND s.date < ? \
+               ORDER BY s.date DESC LIMIT ?';
+        query = mysql.format(sql, [date, limitNum]);
+    }
 
-    sql = '';
+    return await getData(query);
+}
+
+async function getPageSongData(limitNum, songListData) {
+    let sql = '';
     for (index = 0; index < min(songListData.length - 1, limitNum - 1); index++) {
         sql += 'SELECT *  \
                 FROM song \
@@ -140,9 +160,15 @@ async function getLatestPlaylists(limitNum) {
         insert.push(element.token);
         insert.push(element.listId);
     });
-    query = mysql.format(sql, insert);
-    const songData = await getData(query);
+    let query = mysql.format(sql, insert);
+    return await getData(query);
+}
 
+async function getLatestPlaylists(limitNum, date, token, friends) {
+    const songListData = await getPageSongList(limitNum, date, token, friends);
+    if (songListData.length == 0) return [];
+
+    const songData = await getPageSongData(limitNum, songListData);
     return makeLatestPlayLists(songListData, songData);
 }
 
