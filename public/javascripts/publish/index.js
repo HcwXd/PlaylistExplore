@@ -66,6 +66,36 @@ playlist_status_wrap_node.style.display = 'none';
 let songListState = [];
 let uploadCover;
 
+const show_import_btn_node = document.querySelector('.show_import_btn');
+
+function getImportResults() {
+    let import_input_node = document.querySelector('.import_input');
+    const listReg = new RegExp('^https://www.youtube.com/playlist');
+    if (!listReg.test(import_input_node.value)) {
+        alert('請輸入一個 Youtube 播放清單');
+        return;
+    }
+    socket.emit('getSearchResults', import_input_node.value);
+    socket.on('getSearchListResults', (socketOn_singleSongInfos) => {
+        let singleSongInfos = socketOn_singleSongInfos;
+        console.log(singleSongInfos);
+        appendSearchResults(singleSongInfos, search_result_wrap_node);
+    });
+
+    import_input_node.value = '';
+    document.querySelector('.import_area_wrap').style.display = 'none';
+}
+
+function showImportWrap() {
+    document.querySelector('.import_btn').addEventListener('click', getImportResults);
+    document.querySelector('.import_area_wrap').style.display = 'flex';
+    document.querySelector('.import_cancel').addEventListener('click', () => {
+        document.querySelector('.import_area_wrap').style.display = 'none';
+    });
+}
+
+show_import_btn_node.addEventListener('click', showImportWrap);
+
 const search_input_node = document.querySelector('.search_input');
 search_input_node.addEventListener('keydown', (e) => {
     if (e.keyCode === 13) {
