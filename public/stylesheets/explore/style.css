@@ -64,7 +64,8 @@ html, body {
   left: 0%;
   border: 3px solid #282828;
   background-color: #f2f2f2;
-  padding: 15px; }
+  padding: 15px;
+  display: none; }
   .toggle_background_wrap .toggle_background_switch {
     width: 60px;
     height: 30px;
