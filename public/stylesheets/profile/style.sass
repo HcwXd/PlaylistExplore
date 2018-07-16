@@ -265,14 +265,19 @@ input
     text-align: center
     display: inline-block
     cursor: pointer
+    transition: 0.24s ease
+    border-radius: 5px
+    overflow: hidden
+    &:hover
+      transform: translateY(-8px)
+      box-shadow: 0 16px 16px 0 rgba(0,0,0,0.24)
     .record_cover
       width: 100%
-      
     .record_name
       background-color: $bg_grey
+      color: $txt_white
       padding: 5px
       font-size: 24px
-      transition: 0.5s
        
 
       

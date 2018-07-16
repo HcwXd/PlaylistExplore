@@ -248,13 +248,19 @@ input {
     margin-bottom: 0;
     text-align: center;
     display: inline-block;
-    cursor: pointer; }
+    cursor: pointer;
+    transition: 0.24s ease;
+    border-radius: 5px;
+    overflow: hidden; }
+    .history_wrap .record_wrap:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 16px 16px 0 rgba(0, 0, 0, 0.24); }
     .history_wrap .record_wrap .record_cover {
       width: 100%; }
     .history_wrap .record_wrap .record_name {
       background-color: #282828;
+      color: #bebebe;
       padding: 5px;
-      font-size: 24px;
-      transition: 0.5s; }
+      font-size: 24px; }
 
 /*# sourceMappingURL=style.css.map */

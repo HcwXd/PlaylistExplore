@@ -1,4 +1,5 @@
 let userInfo;
+
 socket.emit('getUserInfo');
 
 socket.on('getUserInfo', (socketOn_userInfo) => {
