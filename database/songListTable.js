@@ -115,9 +115,16 @@ function min(a, b) {
     return a < b ? a : b;
 }
 
-async function getPageSongList(limitNum, date, token) {
+async function getPageSongList(limitNum, date, token, friends) {
     let sql, query;
-    if (token) {
+    if (friends) {
+        sql =
+            'SELECT s.*, u.userName, u.avatar from songList s, user u \
+               WHERE s.token in (SELECT followToken FROM relation WHERE token = ?) \
+               AND s.token = u.token AND s.date < ? \
+               ORDER BY date DESC LIMIT ?';
+        query = mysql.format(sql, [token, date, limitNum]);
+    } else if (token) {
         sql =
             'SELECT s.* ,u.userName, u.avatar FROM songList s, user u \
                where s.token = u.token \
@@ -157,8 +164,8 @@ async function getPageSongData(limitNum, songListData) {
     return await getData(query);
 }
 
-async function getLatestPlaylists(limitNum, date, token) {
-    const songListData = await getPageSongList(limitNum, date, token);
+async function getLatestPlaylists(limitNum, date, token, friends) {
+    const songListData = await getPageSongList(limitNum, date, token, friends);
     if (songListData.length == 0) return [];
 
     const songData = await getPageSongData(limitNum, songListData);

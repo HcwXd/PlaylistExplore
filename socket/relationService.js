@@ -10,7 +10,7 @@ function relationService(socket) {
     });
 
     socket.on('getFriendsLatest', async () => {
-        const latestFriendPlaylistArray = await relationTable.getFriendsLatest(socket.handshake.session.token, 5);
+        const latestFriendPlaylistArray = await songListTable.getLatestPlaylists(5, new Date(), socket.handshake.session.token, true);
         socket.emit('getFriendLatest', latestFriendPlaylistArray);
     });
 
