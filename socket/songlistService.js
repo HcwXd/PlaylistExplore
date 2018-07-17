@@ -1,4 +1,5 @@
 const { userTable, commentTable, songTable, relationTable, songListTable } = require('./database');
+const fecha = require('fecha');
 
 let ownerInfoMap = {};
 
@@ -9,6 +10,7 @@ function songlistService(socket) {
     });
 
     socket.on('getLatestPlaylists', async (date) => {
+        date = fecha.format(new Date(date), 'YYYY-MM-DD hh:mm:ss');
         let latestplaylistInfo = await songListTable.getLatestPlaylists(5, date, socket.handshake.session.token, false);
         socket.emit('getLatestPlaylists', latestplaylistInfo);
     });

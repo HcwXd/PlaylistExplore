@@ -122,7 +122,7 @@ async function getPageSongList(limitNum, date, token, friends) {
             'SELECT s.*, u.userName, u.avatar from songList s, user u \
                WHERE s.token in (SELECT followToken FROM relation WHERE token = ?) \
                AND s.token = u.token AND s.date < ? \
-               ORDER BY date DESC LIMIT ?';
+               ORDER BY s.date DESC LIMIT ?';
         query = mysql.format(sql, [token, date, limitNum]);
     } else if (token) {
         sql =
