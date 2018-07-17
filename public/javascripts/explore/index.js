@@ -1,18 +1,19 @@
 let latestPlaylistInfoState = [];
 let lastPlaylistDateState = new Date();
+let isRenderingPlaylistState = true;
 
 socket.emit('getLatestPlaylists', lastPlaylistDateState);
 
 socket.on('getLatestPlaylists', (socketOn_latestPlaylistInfo) => {
     document.querySelector('.loader').style.display = 'none';
-
+    console.log(socketOn_latestPlaylistInfo);
     let fiveLatestPlaylistInfo = socketOn_latestPlaylistInfo;
     latestPlaylistInfoState.push(...fiveLatestPlaylistInfo);
 
     console.log(latestPlaylistInfoState);
 
     renderLatestPlaylist(fiveLatestPlaylistInfo);
-    lastPlaylistDateState = fiveLatestPlaylistInfo[4].playlistInfo.date;
+    lastPlaylistDateState = fiveLatestPlaylistInfo[fiveLatestPlaylistInfo.length - 1].playlistInfo.date;
 
     document.querySelector('.toggle_background_wrap').style.display = 'block';
     document.querySelector('.toggle_background_switch').addEventListener('click', changeBackground);
@@ -37,6 +38,7 @@ function renderLatestPlaylist(fiveLatestPlaylistInfo) {
 
     let more_infos_node = document.querySelectorAll('.more_info');
     more_infos_node.forEach((node) => node.addEventListener('mouseenter', showSongList));
+    isRenderingPlaylistState = false;
 }
 
 function createSonglistNode(currentPlaylist) {
@@ -200,3 +202,12 @@ function changeBackground() {
 }
 
 countIdleTimeToRenderRandomBackground();
+
+window.onscroll = function(ev) {
+    if (!isRenderingPlaylistState) {
+        if (window.innerHeight + window.pageYOffset >= document.body.scrollHeight - 2) {
+            isRenderingPlaylistState = true;
+            socket.emit('getLatestPlaylists', lastPlaylistDateState);
+        }
+    }
+};
