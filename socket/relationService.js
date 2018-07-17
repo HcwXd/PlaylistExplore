@@ -9,8 +9,8 @@ function relationService(socket) {
         relationTable.deleteRelation(relation.userToken, relation.listOwnerToken);
     });
 
-    socket.on('getFriendsLatest', async () => {
-        const latestFriendPlaylistArray = await songListTable.getLatestPlaylists(5, new Date(), socket.handshake.session.token, true);
+    socket.on('getFriendsLatest', async (date) => {
+        const latestFriendPlaylistArray = await songListTable.getLatestPlaylists(5, date, socket.handshake.session.token, true);
         socket.emit('getFriendLatest', latestFriendPlaylistArray);
     });
 
