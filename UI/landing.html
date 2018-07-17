@@ -15,8 +15,10 @@
         <div class="right_nav">
             <a class="nav_item" href="#home">Playlist Explore</a>
             <a class="nav_item" href="#explore">探索</a>
-            <a class="nav_item" href="#share">分享</a>
+            <!-- <a class="nav_item" href="#share">分享</a> -->
             <a class="nav_item" href="#about">關於</a>
+            <a class="nav_item" href="#email">訂閱</a>
+
         </div>
         <div class="left_nav">
             <a class="nav_item" href="/signup">註冊</a>
@@ -26,7 +28,12 @@
 
     <div class="header" id="home">
         <div class="background_wrap">
-            <h1>Playlist Explore</h1>
+            <div class="title_wrap">
+                <h1 class="playlist">Playlist</h1>
+                <div class="circle"></div>
+                <div class="dot"></div>
+                <h1 class="explore">Explore</h1>
+            </div>
             <h2>分享與探索音樂清單</h2>
             <div class="btn_wrap">
                 <div class="trial_btn">看看別人都在聽什麼音樂</div>
@@ -47,10 +54,19 @@
         <div class="right_wrap">
         </div>
     </div>
-    <div class="section" id="share"></div>
-    <div class="section" id="about"></div>
-    <div class="section" id="signup"></div>
-    <div class="footer"></div>
+    <div class="section" id="about">
+        <div class="about_title">關於 Playlist Explore</div>
+        <p>Playlist Explore 是由兩個熱愛音樂的大學生一二三四五六，七八九十。十一十二十三十四，十五十六十七。
+            <br> 十八十九二十二一二二二三二四二五，二六二七二八二九，三十。一二三四五六，七八九十。十一十二十三十四，十五十六十七。
+            <br> 十八十九二十二一二二二三二四二五，二六二七二八二九，三十。一二三四五六，七八九十。十一十二十三十四，十五十六十七。十八十九二十二一二二二三二四二五，二六二七二八二九，三十。
+        </p>
+    </div>
+    <div class="section" id="email">
+        <div class="email_title">想要定時收到 Playlist Explore 的音樂推薦嗎?</div>
+        <input type="text" class="email_input" placeholder="Email">
+        <div class="email_btn">訂閱我們</div>
+    </div>
+    <!-- <div class="footer"></div> -->
 
     <script src="/index.js"></script>
 </body>
