@@ -13,7 +13,7 @@ socket.on('redirect', (url) => {
 const pageInfo = getQueryStringObject();
 let [listOwnerToken, listId, songId] = [pageInfo.id, pageInfo.list, pageInfo.song];
 
-let nowPlayingIndex = 0;
+let nowPlayingIndex = songId ? songId : 0;
 let player;
 let ownerInfo;
 let ownerHistory;
