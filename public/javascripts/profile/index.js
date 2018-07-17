@@ -10,10 +10,10 @@ socket.on('redirect', (url) => {
     window.location = url;
 });
 
-const queryString = window.location.href.split('?id=')[1];
-let [listOwnerToken, listId] = queryString.split('&list=');
+const pageInfo = getQueryStringObject();
+let [listOwnerToken, listId, songId] = [pageInfo.id, pageInfo.list, pageInfo.song];
 
-let nowPlayingIndex = 0;
+let nowPlayingIndex = songId ? songId : 0;
 let player;
 let ownerInfo;
 let ownerHistory;
@@ -388,6 +388,23 @@ function showNowPlayingSong() {
         node.style.color = '#bebebe';
     });
     song_name_node_collection[nowPlayingIndex].style.color = 'rgba(204,204,0,0.7)';
+}
+
+function getQueryStringObject() {
+    let queryString = window.location.search;
+    let getPara;
+    let ParaVal;
+    let queryStringArray = [];
+
+    if (queryString.indexOf('?') != -1) {
+        let getSearch = queryString.split('?');
+        getPara = getSearch[1].split('&');
+        for (i = 0; i < getPara.length; i++) {
+            ParaVal = getPara[i].split('=');
+            queryStringArray[ParaVal[0]] = ParaVal[1];
+        }
+    }
+    return queryStringArray;
 }
 
 let submit_btn = document.querySelector('.submit_btn');
