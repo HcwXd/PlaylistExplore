@@ -29,7 +29,7 @@ async function getPlaylistInfo(playlistId) {
     let songlistInfo = [];
     songlist.map((song) => {
         songlistInfo.push({
-            songName: song.snippet.tittle,
+            songName: song.snippet.title,
             url: song.contentDetails.videoId,
             cover: getCoverImage(song.contentDetails.videoId),
         });
