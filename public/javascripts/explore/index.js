@@ -176,10 +176,11 @@ function createRandomBackgroundNode() {
             album_node.className = 'album';
             album_node.style.top = random(0, 80) + '%';
             album_node.style.right = random(0, 80) + '%';
-            album_node.href = `/profile?id=${currentPlaylist.playlistInfo.token}`;
             album_node.style.animationDelay = random(-6, 0) + 's';
+            album_node.href = `/profile?id=${currentPlaylist.playlistInfo.token}&list=${currentPlaylist.playlistInfo.listId}&song=${currentPlaylist.playlistInfo.songList[j].songIndex}`;
             let bg_url = `https://img.youtube.com/vi/${currentPlaylist.playlistInfo.songList[j].url}/hqdefault.jpg`;
             album_node.style.backgroundImage = `url(${bg_url})`;
+
             idle_background_node.appendChild(album_node);
         }
     }
