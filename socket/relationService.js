@@ -13,7 +13,7 @@ function relationService(socket) {
     socket.on('getFriendsLatest', async (date) => {
         date = fecha.format(new Date(date), 'YYYY-MM-DD hh:mm:ss');
         const latestFriendPlaylistArray = await songListTable.getLatestPlaylists(5, date, socket.handshake.session.token, true);
-        socket.emit('getFriendLatest', latestFriendPlaylistArray);
+        socket.emit('getFriendsLatest', latestFriendPlaylistArray);
     });
 
     socket.on('getFollowState', async (token, listOwnerToken) => {
