@@ -80,6 +80,10 @@ html, body
         background-color: $bg_orange
         cursor: pointer
         letter-spacing: 2px
+        transition-duration: 0.5s
+        transition-timing-function: ease
+        &:hover
+          border-radius: 30px
       .signup_btn
         display: inline-block
         // border: 1px solid $txt_white
@@ -93,6 +97,7 @@ html, body
 .section
   width: 100%
   height: 85%
+  min-height: 600px
 #explore
   background-color: $bg_black
   display: flex
@@ -115,6 +120,52 @@ html, body
     height: 80%
     width: 35%
 
+#about
+  background-color: $bg_grey
+  display: flex
+  align-items: center
+  flex-direction: column
+  .about_title
+    margin-top: 8%
+    font-size: 36px
+  p
+    width: 45%
+    font-size: 24px
+#email
+  background-color: transparent
+  display: flex
+  align-items: center
+  flex-direction: column
+  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8)), url(https://scontent-tpe1-1.xx.fbcdn.net/v/t31.0-8/22051315_1829894783705429_4886891333327965999_o.jpg?_nc_cat=0&oh=eea5f9b2a5e5886f23d872493d1e0e56&oe=5B6E9F42)
+  background-size: cover
+  background-attachment: fixed
+  .email_title
+    margin-top: 15%
+    font-size: 36px
+  .email_input
+    text-align: center
+    margin-top: 50px
+    background-color: transparent
+    padding: 6px 12px
+    width: 400px
+    height: 30px
+    font-size: 24px
+    color: $txt_white
+    border-radius: 3px
+  .email_btn
+    margin-top: 50px
+    background-color: $bg_blue
+    padding: 15px 30px
+    border-radius: 15px
+    cursor: pointer
+    letter-spacing: 2px
+
+.footer
+  background-color: $bg_grey
+  opacity: 0.5
+  width: 100%
+  height: 40%
+ 
 
 
 
