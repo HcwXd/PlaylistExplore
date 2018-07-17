@@ -8,8 +8,8 @@ function songlistService(socket) {
         await songListTable.modifyPlayList(playlistInfo);
     });
 
-    socket.on('getLatestPlaylists', async () => {
-        let latestplaylistInfo = await songListTable.getLatestPlaylists(5, new Date(), socket.handshake.session.token, false);
+    socket.on('getLatestPlaylists', async (date) => {
+        let latestplaylistInfo = await songListTable.getLatestPlaylists(5, date, socket.handshake.session.token, false);
         socket.emit('getLatestPlaylists', latestplaylistInfo);
     });
 
