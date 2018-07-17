@@ -1,5 +1,6 @@
 const { db, getData, applyQuery } = require('./DB');
 const mysql = require('mysql');
+const fecha = require('fecha');
 const songTable = require('./songTable');
 const userTable = require('./userTable');
 
@@ -20,7 +21,7 @@ async function createPlayList(playlistInfo) {
         token: playlistInfo.token,
         name: playlistInfo.name,
         des: playlistInfo.des,
-        date: playlistInfo.date,
+        date: fecha.format(new Date(playlistInfo.date), 'YYYY-MM-DD HH:mm:ss'),
         cover: playlistInfo.uploadCover || defaultCover,
     };
     const query = mysql.format(sql, insert);

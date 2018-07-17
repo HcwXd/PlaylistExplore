@@ -5,6 +5,7 @@ let isRenderingPlaylistState = true;
 socket.emit('getFriendsLatest', lastPlaylistDateState);
 
 socket.on('getFriendsLatest', (socketOn_latestPlaylistInfo) => {
+    console.log(socketOn_latestPlaylistInfo);
     document.querySelector('.loader').style.display = 'none';
 
     if (socketOn_latestPlaylistInfo.length === 0) {
