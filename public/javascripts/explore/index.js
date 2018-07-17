@@ -1,24 +1,28 @@
-socket.emit('getLatestPlaylists');
+let latestPlaylistInfoState = [];
+let lastPlaylistDateState = new Date();
 
-let fivePlaylistInfo;
-socket.on('getLatestPlaylists', (socketOn_fivePlaylistInfo) => {
-    document.querySelector('.loader').remove();
-    fivePlaylistInfo = socketOn_fivePlaylistInfo;
+socket.emit('getLatestPlaylists', lastPlaylistDateState);
 
-    console.log(fivePlaylistInfo);
+socket.on('getLatestPlaylists', (socketOn_latestPlaylistInfo) => {
+    document.querySelector('.loader').style.display = 'none';
 
-    renderLatestPlaylist();
+    let fiveLatestPlaylistInfo = socketOn_latestPlaylistInfo;
+    latestPlaylistInfoState.push(...fiveLatestPlaylistInfo);
+
+    console.log(latestPlaylistInfoState);
+
+    renderLatestPlaylist(fiveLatestPlaylistInfo);
+    lastPlaylistDateState = fiveLatestPlaylistInfo[4].playlistInfo.date;
 
     document.querySelector('.toggle_background_wrap').style.display = 'block';
     document.querySelector('.toggle_background_switch').addEventListener('click', changeBackground);
 });
 
-function renderLatestPlaylist() {
+function renderLatestPlaylist(fiveLatestPlaylistInfo) {
     let posts_wrap_node = document.querySelector('.posts_wrap');
-    posts_wrap_node.innerHTML = '';
 
-    for (let playlistIndex = 0; playlistIndex < fivePlaylistInfo.length; playlistIndex++) {
-        let currentPlaylist = fivePlaylistInfo[playlistIndex];
+    for (let playlistIndex = 0; playlistIndex < fiveLatestPlaylistInfo.length; playlistIndex++) {
+        let currentPlaylist = fiveLatestPlaylistInfo[playlistIndex];
 
         let song_list_node = createSonglistNode(currentPlaylist);
         let post_content_node = createPostContentNode(currentPlaylist);
@@ -110,10 +114,9 @@ function hideSongListAfterTwoSeconds() {
     }, 2000);
 }
 
-function countInactivityTime() {
+function countIdleTimeToRenderRandomBackground() {
     let idleTime;
     window.onload = resetTimer;
-    // DOM Events
     document.onload = resetTimer;
     document.onmousemove = resetTimer;
     // document.onmousedown = resetTimer; // touchscreen presses
@@ -122,7 +125,15 @@ function countInactivityTime() {
     document.onscroll = resetTimer; // scrolling with arrow keys
     document.onkeypress = resetTimer;
 
-    function idleRender() {
+    function resetTimer() {
+        if (document.querySelector('.idle_background-idling')) {
+            document.querySelector('.idle_background-idling').remove();
+        }
+        clearTimeout(idleTime);
+        idleTime = setTimeout(renderRandomBackground, 10000);
+    }
+
+    function renderRandomBackground() {
         let idle_background_node = document.createElement('div');
         idle_background_node.className = 'idle_background idle_background-idling';
         idle_background_node.style.zIndex = '100';
@@ -134,30 +145,22 @@ function countInactivityTime() {
             let num = Math.floor(Math.random() * (max - min)) + min;
             return num;
         }
-        for (let i = 0; i < fivePlaylistInfo.length; i++) {
-            for (let j = 0; j < fivePlaylistInfo[i].playlistInfo.songList.length; j++) {
+        for (let i = 0; i < latestPlaylistInfoState.length; i++) {
+            for (let j = 0; j < latestPlaylistInfoState[i].playlistInfo.songList.length; j++) {
                 let album_node = document.createElement('A');
                 album_node.className = 'album';
 
                 album_node.style.top = random(0, 80) + '%';
                 album_node.style.right = random(0, 80) + '%';
-                album_node.href = `/profile?id=${fivePlaylistInfo[i].playlistInfo.token}`;
+                album_node.href = `/profile?id=${latestPlaylistInfoState[i].playlistInfo.token}`;
                 album_node.style.animationDelay = random(-6, 0) + 's';
 
-                let bg_url = `https://img.youtube.com/vi/${fivePlaylistInfo[i].playlistInfo.songList[j].url}/hqdefault.jpg`;
+                let bg_url = `https://img.youtube.com/vi/${latestPlaylistInfoState[i].playlistInfo.songList[j].url}/hqdefault.jpg`;
                 album_node.style.backgroundImage = `url(${bg_url})`;
 
                 idle_background_node.appendChild(album_node);
             }
         }
-    }
-
-    function resetTimer() {
-        if (document.querySelector('.idle_background-idling')) {
-            document.querySelector('.idle_background-idling').remove();
-        }
-        clearTimeout(idleTime);
-        idleTime = setTimeout(idleRender, 10000);
     }
 }
 
@@ -177,17 +180,17 @@ function changeBackground() {
             let num = Math.floor(Math.random() * (max - min)) + min;
             return num;
         }
-        for (let i = 0; i < fivePlaylistInfo.length; i++) {
-            for (let j = 0; j < fivePlaylistInfo[i].playlistInfo.songList.length; j++) {
+        for (let i = 0; i < latestPlaylistInfoState.length; i++) {
+            for (let j = 0; j < latestPlaylistInfoState[i].playlistInfo.songList.length; j++) {
                 let album_node = document.createElement('A');
                 album_node.className = 'album';
 
                 album_node.style.top = random(0, 80) + '%';
                 album_node.style.right = random(0, 80) + '%';
-                album_node.href = `/profile?id=${fivePlaylistInfo[i].playlistInfo.token}`;
+                album_node.href = `/profile?id=${latestPlaylistInfoState[i].playlistInfo.token}`;
                 album_node.style.animationDelay = random(-6, 0) + 's';
 
-                let bg_url = `https://img.youtube.com/vi/${fivePlaylistInfo[i].playlistInfo.songList[j].url}/hqdefault.jpg`;
+                let bg_url = `https://img.youtube.com/vi/${latestPlaylistInfoState[i].playlistInfo.songList[j].url}/hqdefault.jpg`;
                 album_node.style.backgroundImage = `url(${bg_url})`;
 
                 idle_background_node.appendChild(album_node);
@@ -196,4 +199,4 @@ function changeBackground() {
     }
 }
 
-countInactivityTime();
+countIdleTimeToRenderRandomBackground();
