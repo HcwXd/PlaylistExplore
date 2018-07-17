@@ -55,7 +55,9 @@ function createSonglistNode(currentPlaylist) {
 
         song_list_html += `
         <div class="song_info">
+            <a href="/profile?id=${currentPlaylist.playlistInfo.token}&list=${currentPlaylist.playlistInfo.listId}&song=${songIndex}">
             <div class="song_name" data-songid="${songIndex}">${renderSongName}</div>
+            </a>
         </div>
         `;
     }
