@@ -1,7 +1,10 @@
 <div class="nav_wrap">
     <div class="right_nav">
         <a class="nav_item" href="/explore">Playlist Explore</a>
-        <a class="nav_item" href="/explore">最新歌單</a>
+        <a class="nav_item" href="/explore">探索歌單</a>
+        <% if (token) { %>
+            <a class="nav_item" href="/friend">朋友歌單</a>
+            <% } %>
     </div>
     <div class="left_nav">
         <% if (token) { %>
