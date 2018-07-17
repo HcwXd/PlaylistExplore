@@ -10,7 +10,9 @@ function songlistService(socket) {
     });
 
     socket.on('getLatestPlaylists', async (date) => {
-        date = fecha.format(new Date(date), 'YYYY-MM-DD hh:mm:ss');
+        //console.log(date.toISOString);
+        date = fecha.format(new Date(date), 'YYYY-MM-DD HH:mm:ss');
+        console.log(date);
         let latestplaylistInfo = await songListTable.getLatestPlaylists(5, date, socket.handshake.session.token, false);
         socket.emit('getLatestPlaylists', latestplaylistInfo);
     });

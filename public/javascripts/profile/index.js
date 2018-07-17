@@ -275,7 +275,7 @@ function addLike() {
         alert('Please log in to express your love');
         return;
     }
-    let likeId = userInfo.token;
+    let token = userInfo.token;
     let listId = ownerInfo.playlistInfo.listId;
     let songIndex = nowPlayingIndex;
 
@@ -283,7 +283,7 @@ function addLike() {
         listOwnerToken,
         listId,
         songIndex,
-        likeId,
+        token,
     };
     socket.emit('newLike', likeInfo);
 

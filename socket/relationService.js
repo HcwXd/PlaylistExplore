@@ -11,7 +11,7 @@ function relationService(socket) {
     });
 
     socket.on('getFriendsLatest', async (date) => {
-        date = fecha.format(new Date(date), 'YYYY-MM-DD hh:mm:ss');
+        date = fecha.format(new Date(date), 'YYYY-MM-DD HH:mm:ss');
         const latestFriendPlaylistArray = await songListTable.getLatestPlaylists(5, date, socket.handshake.session.token, true);
         socket.emit('getFriendsLatest', latestFriendPlaylistArray);
     });
@@ -25,4 +25,5 @@ function relationService(socket) {
     });
 }
 
+console.log(fecha.format(new Date(), 'YYYY-MM-DD HH:mm:ss'));
 module.exports = relationService;
