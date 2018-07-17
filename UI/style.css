@@ -59,7 +59,6 @@ html, body {
       width: 20%;
       position: relative; }
       .header#home .background_wrap .title_wrap .rotate_wrap {
-        transform: rotate(45deg);
         transform: translate(-50%, -50%);
         width: 84px;
         height: 84px;
