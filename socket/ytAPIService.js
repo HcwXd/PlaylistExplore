@@ -1,4 +1,4 @@
-const { userTable, commentTable, songTable, relationTable, songListTable } = require('./database');
+const { userTable, commentTable, songTable, relationTable, songListTable, likeTable } = require('./database');
 
 const emitURLInfoArray = require('./songSearch');
 

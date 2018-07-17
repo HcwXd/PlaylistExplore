@@ -1,4 +1,4 @@
-const { userTable, commentTable, songTable, relationTable, songListTable } = require('./database');
+const { userTable, commentTable, songTable, relationTable, songListTable, likeTable } = require('./database');
 
 async function emitLatestComment(socket, listOwnerToken, songIndex, listId) {
     songInfo = {
