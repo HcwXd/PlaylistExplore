@@ -1,4 +1,4 @@
-const { userTable, commentTable, songTable, relationTable, songListTable } = require('./database');
+const { userTable, commentTable, songTable, relationTable, songListTable, likeTable } = require('./database');
 const fecha = require('fecha');
 
 let ownerInfoMap = {};
@@ -49,10 +49,6 @@ function songlistService(socket) {
 
         let ownerInfo = await songListTable.getCompleteplaylistInfo(playlistInfo, true);
         socket.emit('getOwnerInfo', ownerInfo);
-    });
-
-    socket.on('newLike', async (songInfo) => {
-        songTable.updateLike(songInfo);
     });
 
     socket.on('editPlaylist', (ownerInfo) => {

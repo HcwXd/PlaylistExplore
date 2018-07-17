@@ -3,7 +3,7 @@ const mysql = require('mysql');
 const { map } = require('p-iteration');
 const userTable = require('./userTable');
 
-function createSong(songListInfo, singleSongInfo){
+function createSong(songListInfo, singleSongInfo) {
     const sql = 'INSERT INTO song SET ?';
     const insertObject = {
         token: songListInfo.token,
@@ -13,56 +13,56 @@ function createSong(songListInfo, singleSongInfo){
         songName: singleSongInfo.songName,
         cover: singleSongInfo.cover,
         des: singleSongInfo.des || ' ',
-        likeNum: singleSongInfo.like
-    }
+        likeNum: singleSongInfo.like,
+    };
     const query = mysql.format(sql, insertObject);
     applyQuery(query);
 }
 
-async function createMultipleSong(playlistInfo){
+async function createMultipleSong(playlistInfo) {
     const sql = 'INSERT INTO song \
                (token, listId, songIndex, url, songName, cover, des, likeNum) \
                VALUES ?';
     const token = playlistInfo.token;
     const listId = playlistInfo.listId;
     let insert = [];
-    playlistInfo.songList.map( (song, index) => {
-        insert.push([
-            token, listId, index, song.url, song.songName, song.cover, song.des || ' ', song.like,
-        ]);
+    playlistInfo.songList.map((song, index) => {
+        insert.push([token, listId, index, song.url, song.songName, song.cover, song.des || ' ', song.like]);
     });
     const query = mysql.format(sql, [insert]);
     await applyQuery(query);
 }
 
-function deleteSongInList(songListInfo){
+function deleteSongInList(songListInfo) {
     let sql = 'DELETE FROM song WHERE ?? = ? AND ?? = ?';
-    let insert = [
-        'token', songListInfo.token,
-        'listId', songListInfo.listId,
-    ];
+    let insert = ['token', songListInfo.token, 'listId', songListInfo.listId];
     let query = mysql.format(sql, insert);
     applyQuery(query);
 
     /* delete comment when song list delete */
     sql = 'DELETE FROM comment WHERE ?? = ? and ?? = ?';
-    insert = [
-        'listOwnerToken', songListInfo.token,
-        'listId', songListInfo.listId,
-    ];
+    insert = ['listOwnerToken', songListInfo.token, 'listId', songListInfo.listId];
     query = mysql.format(sql, insert);
     applyQuery(query);
 }
 
-async function updateLike(songInfo){
+async function addLike(likeInfo) {
     const sql = 'UPDATE song SET likeNum = likeNum + 1 WHERE token = ? AND listId = ? AND songIndex = ?';
-    const insert = [songInfo.listOwnerToken, songInfo.listId, songInfo.songIndex];
+    const insert = [likeInfo.listOwnerToken, likeInfo.listId, likeInfo.songIndex];
+    const query = mysql.format(sql, insert);
+    applyQuery(query);
+}
+
+async function deleteLike(likeInfo) {
+    const sql = 'UPDATE song SET likeNum = likeNum - 1 WHERE token = ? AND listId = ? AND songIndex = ?';
+    const insert = [likeInfo.listOwnerToken, likeInfo.listId, likeInfo.songIndex];
     const query = mysql.format(sql, insert);
     applyQuery(query);
 }
 
 async function getCommentInfo(songInfo) {
-    const sql = 'SELECT c.* ,u.userName, u.avatar \
+    const sql =
+        'SELECT c.* ,u.userName, u.avatar \
            FROM comment c, user u \
            WHERE c.listOwnerToken = ? AND c.songIndex = ? AND c.commentToken = u.token AND c.listId = ? \
            ORDER BY c.commentIndex';
@@ -81,7 +81,8 @@ async function getCommentInfo(songInfo) {
 module.exports = {
     createSong,
     deleteSongInList,
-    updateLike,
+    addLike,
     getCommentInfo,
     createMultipleSong,
-}
+    deleteLike,
+};
