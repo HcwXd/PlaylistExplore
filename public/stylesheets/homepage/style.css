@@ -146,7 +146,7 @@ html, body {
       margin: 0 15px;
       cursor: pointer;
       letter-spacing: 2px;
-      transition-duration: 0.5s;
+      transition-duration: 0.2s;
       transition-timing-function: linear; }
       .header#home .background_wrap .btn_wrap .trial_btn:hover, .header#home .background_wrap .btn_wrap .signup_btn:hover {
         border-radius: 30px; }
@@ -224,7 +224,7 @@ html, body {
     border-radius: 15px;
     cursor: pointer;
     letter-spacing: 2px;
-    transition-duration: 0.5s;
+    transition-duration: 0.2s;
     transition-timing-function: linear; }
     #email .email_btn:hover {
       border-radius: 30px; }
