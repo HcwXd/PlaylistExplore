@@ -76,7 +76,13 @@ function renderOwnerInfo(ownerInfo) {
         if (userInfoState.token === listOwnerToken) {
             renderEditBioBtn();
         } else {
-            addFollowBtn();
+            console.log(userInfoState.token);
+            console.log(listOwnerToken);
+
+            socket.emit('getFollowState', userInfoState.token, listOwnerToken);
+            socket.on('getFollowState', (isFollowing) => {
+                renderFollowBtn(isFollowing);
+            });
         }
     }
 }
@@ -320,13 +326,13 @@ function renderEditBioBtn() {
     }
 }
 
-function addFollowBtn() {
+function renderFollowBtn(isFollowing) {
     let follow_btn_node = document.createElement('div');
     follow_btn_node.className = 'follow_btn';
-    follow_btn_node.innerHTML = 'Follow';
+    follow_btn_node.innerHTML = isFollowing ? 'Follow' : 'Follow';
     follow_btn_node.addEventListener('click', changeFollowStatus);
-    let owner_info_wrap = document.querySelector('.owner_info_wrap');
-    owner_info_wrap.appendChild(follow_btn_node);
+
+    document.querySelector('.owner_info_wrap').appendChild(follow_btn_node);
 }
 
 function changeFollowStatus() {
