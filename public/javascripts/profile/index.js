@@ -1,26 +1,17 @@
-let userInfo;
-
-socket.emit('getUserInfo');
-
-socket.on('getUserInfo', (socketOn_userInfo) => {
-    userInfo = socketOn_userInfo;
-});
-
-socket.on('redirect', (url) => {
-    window.location = url;
-});
+const userInfoState;
+let ownerInfoState;
+let ownerHistoryState;
+let nowPlayingIndexState;
 
 const pageInfo = getQueryStringObject();
-let [listOwnerToken, listId, songId] = [pageInfo.id, pageInfo.list, pageInfo.song];
+const [listOwnerToken, listId, songId] = [pageInfo.id, pageInfo.list, pageInfo.song];
+nowPlayingIndexState = songId ? songId : 0;
 
-let nowPlayingIndex = songId ? songId : 0;
 let player;
-let ownerInfo;
-let ownerHistory;
 
-socket.on('getSongComment', (commentArray) => {
-    ownerInfo.playlistInfo.songList[nowPlayingIndex].comments = commentArray;
-    renderNewComment();
+socket.emit('getUserInfo');
+socket.on('getUserInfo', (socketOn_userInfo) => {
+    userInfoState = socketOn_userInfo;
 });
 
 function onYouTubePlayerAPIReady() {
@@ -30,36 +21,36 @@ function onYouTubePlayerAPIReady() {
     });
     socket.on('getOwnerInfo', (socketOn_ownerInfo) => {
         document.querySelector('.loader').remove();
-        ownerInfo = socketOn_ownerInfo;
-        renderOwnerInfo(ownerInfo);
-        renderPlayerInfo(ownerInfo);
+        ownerInfoState = socketOn_ownerInfo;
+        renderOwnerInfo(ownerInfoState);
+        renderPlayerInfo(ownerInfoState);
         player = new YT.Player('video_placeholder', {
             width: '700',
             height: '400',
-            videoId: ownerInfo.playlistInfo.songList[nowPlayingIndex].url,
+            videoId: ownerInfoState.playlistInfo.songList[nowPlayingIndexState].url,
             events: {
                 onStateChange: onPlayerStateChange,
             },
         });
 
-        renderPlaylist(ownerInfo);
+        renderPlaylist(ownerInfoState);
     });
     socket.emit('getOwnerHistory', listOwnerToken);
 }
 
 socket.on('getOwnerHistory', (socketOn_ownerHistory) => {
-    ownerHistory = socketOn_ownerHistory;
+    ownerHistoryState = socketOn_ownerHistory;
     renderOwnerHistory();
 });
 
 function renderOwnerHistory() {
-    for (let recordIndex = 0; recordIndex < ownerHistory.length; recordIndex++) {
+    for (let recordIndex = 0; recordIndex < ownerHistoryState.length; recordIndex++) {
         let record_wrap_node = document.createElement('div');
         record_wrap_node.className = 'record_wrap';
         record_wrap_node.innerHTML = `
-        <img src="${ownerHistory[recordIndex].cover}" alt="cover" class="record_cover">
-        <div class="record_name">${ownerHistory[recordIndex].name}</div>`;
-        record_wrap_node.listId = ownerHistory[recordIndex].listId;
+        <img src="${ownerHistoryState[recordIndex].cover}" alt="cover" class="record_cover">
+        <div class="record_name">${ownerHistoryState[recordIndex].name}</div>`;
+        record_wrap_node.listId = ownerHistoryState[recordIndex].listId;
 
         record_wrap_node.addEventListener('click', redirectToClickList);
         document.querySelector('.history_wrap').appendChild(record_wrap_node);
@@ -78,8 +69,8 @@ function renderOwnerInfo(ownerInfo) {
         <div class="owner_bio">${ownerInfo.bio ? ownerInfo.bio : ''}</div>`;
     owner_info_wrap_node.innerHTML = owner_info_wrap_html;
 
-    if (userInfo) {
-        if (userInfo.token === listOwnerToken) {
+    if (userInfoState) {
+        if (userInfoState.token === listOwnerToken) {
             addEditBioBtn();
         } else {
             addFollowBtn();
@@ -98,7 +89,7 @@ function renderPlayerInfo(ownerInfo) {
     let songInfo = {
         token: ownerInfo.playlistInfo.token,
         listId: ownerInfo.playlistInfo.listId,
-        songIndex: nowPlayingIndex,
+        songIndex: nowPlayingIndexState,
     };
     socket.emit('getSongComment', songInfo);
 }
@@ -109,7 +100,7 @@ function renderPlaylist(ownerInfo) {
     <div class="playlist_name">${ownerInfo.playlistInfo.name}</div>
     <div class="playlist_des">${ownerInfo.playlistInfo.des}</div>`;
     playlist_info_node.innerHTML = playlist_info_html;
-    if (userInfo && userInfo.token === listOwnerToken) {
+    if (userInfoState && userInfoState.token === listOwnerToken) {
         addEditPlaylistBtn();
     }
 
@@ -138,43 +129,43 @@ function addEditPlaylistBtn() {
 }
 
 function editPlaylist() {
-    socket.emit('editPlaylist', ownerInfo);
+    socket.emit('editPlaylist', ownerInfoState);
 }
 
 function onPlayerStateChange(event) {
     if (event.data === 0) {
-        if (nowPlayingIndex + 1 < ownerInfo.playlistInfo.songList.length) {
+        if (nowPlayingIndexState + 1 < ownerInfoState.playlistInfo.songList.length) {
             renderNextSongPlayer();
         }
     }
 }
 
 function renderNextSongPlayer() {
-    let playlistInfo = ownerInfo.playlistInfo;
-    nowPlayingIndex += 1;
+    let playlistInfo = ownerInfoState.playlistInfo;
+    nowPlayingIndexState += 1;
 
-    player.loadVideoById(playlistInfo.songList[nowPlayingIndex].url);
+    player.loadVideoById(playlistInfo.songList[nowPlayingIndexState].url);
     showNowPlayingSong();
     renderNewSongStatsAndDes();
     let songInfo = {
-        token: ownerInfo.playlistInfo.token,
-        listId: ownerInfo.playlistInfo.listId,
-        songIndex: nowPlayingIndex,
+        token: ownerInfoState.playlistInfo.token,
+        listId: ownerInfoState.playlistInfo.listId,
+        songIndex: nowPlayingIndexState,
     };
     socket.emit('getSongComment', songInfo);
 }
 
 function renderClickSongPlayer() {
     let playlistInfo = this.ownerInfo.playlistInfo;
-    nowPlayingIndex = this.index;
+    nowPlayingIndexState = this.index;
 
-    player.loadVideoById(playlistInfo.songList[nowPlayingIndex].url);
+    player.loadVideoById(playlistInfo.songList[nowPlayingIndexState].url);
     showNowPlayingSong();
     renderNewSongStatsAndDes();
     let songInfo = {
-        token: ownerInfo.playlistInfo.token,
-        listId: ownerInfo.playlistInfo.listId,
-        songIndex: nowPlayingIndex,
+        token: ownerInfoState.playlistInfo.token,
+        listId: ownerInfoState.playlistInfo.listId,
+        songIndex: nowPlayingIndexState,
     };
     socket.emit('getSongComment', songInfo);
 }
@@ -183,7 +174,7 @@ function renderNewSongStatsAndDes() {
     let song_stats_node = document.querySelector('.song_stats');
     let song_stats_html = `
     <div class="like_btn">♥</div>
-    <div class="like_number">${ownerInfo.playlistInfo.songList[nowPlayingIndex].like}</div>`;
+    <div class="like_number">${ownerInfoState.playlistInfo.songList[nowPlayingIndexState].like}</div>`;
     song_stats_node.innerHTML = song_stats_html;
 
     let like_btn_node = document.querySelector('.like_btn');
@@ -191,8 +182,8 @@ function renderNewSongStatsAndDes() {
 
     let song_des_node = document.querySelector('.song_des');
     let song_des_html = `
-    <div class="song_date">${ownerInfo.playlistInfo.date.substr(0, 10)}</div>
-    <div class="song_text">${ownerInfo.playlistInfo.songList[nowPlayingIndex].des}</div>`;
+    <div class="song_date">${ownerInfoState.playlistInfo.date.substr(0, 10)}</div>
+    <div class="song_text">${ownerInfoState.playlistInfo.songList[nowPlayingIndexState].des}</div>`;
     song_des_node.innerHTML = song_des_html;
 }
 
@@ -200,8 +191,8 @@ function renderNewComment() {
     let comment_wrap_node = document.querySelector('.comment_content_wrap');
     comment_wrap_node.innerHTML = '';
 
-    for (let i = 0; i < ownerInfo.playlistInfo.songList[nowPlayingIndex].comments.length; i++) {
-        commentInfo = ownerInfo.playlistInfo.songList[nowPlayingIndex].comments[i];
+    for (let i = 0; i < ownerInfoState.playlistInfo.songList[nowPlayingIndexState].comments.length; i++) {
+        commentInfo = ownerInfoState.playlistInfo.songList[nowPlayingIndexState].comments[i];
         let comment_info_wrap_node = renderSingleComment(commentInfo);
 
         comment_wrap_node.appendChild(comment_info_wrap_node);
@@ -218,7 +209,7 @@ function renderSingleComment(commentInfo) {
             <div class="comment_name">${commentInfo.userName}</div>
             <div class="comment_content">${commentInfo.commentContent}</div>`;
 
-    if (userInfo && commentInfo.commentToken === userInfo.token) {
+    if (userInfoState && commentInfo.commentToken === userInfoState.token) {
         let delete_comment_btn_node = document.createElement('div');
         delete_comment_btn_node.className = 'delete_comment_btn';
         delete_comment_btn_node.innerHTML = 'X';
@@ -235,13 +226,13 @@ function deleteComment() {
 }
 
 function addComment() {
-    if (!userInfo) {
+    if (!userInfoState) {
         alert('Please log in to add your comment');
         return;
     }
 
-    let listId = ownerInfo.playlistInfo.listId;
-    let songIndex = nowPlayingIndex;
+    let listId = ownerInfoState.playlistInfo.listId;
+    let songIndex = nowPlayingIndexState;
     let commentContent = document.querySelector('.comment_text').value;
 
     let commentInfo = {
@@ -252,8 +243,8 @@ function addComment() {
     };
     let newCommentNode = renderSingleComment({
         commentContent,
-        avatar: userInfo.avatar,
-        userName: userInfo.userName,
+        avatar: userInfoState.avatar,
+        userName: userInfoState.userName,
     });
     document.querySelector('.comment_content_wrap').appendChild(newCommentNode);
     socket.emit('newComment', commentInfo);
@@ -263,21 +254,21 @@ function renderNewLike(ownerInfo, newLikeNumber) {
     let song_stats = document.querySelector('.song_stats');
     let song_stats_html = `
     <div class="like_btn">♥</div>
-    <div class="like_number">${ownerInfo.playlistInfo.songList[nowPlayingIndex].like}</div>`;
+    <div class="like_number">${ownerInfo.playlistInfo.songList[nowPlayingIndexState].like}</div>`;
     song_stats.innerHTML = song_stats_html;
 
     let song_list_child = document.querySelector('.song_list').childNodes;
-    song_list_child[nowPlayingIndex + 1].lastChild.innerHTML = `♥ ${newLikeNumber}`;
+    song_list_child[nowPlayingIndexState + 1].lastChild.innerHTML = `♥ ${newLikeNumber}`;
 }
 
 function addLike() {
-    if (!userInfo) {
+    if (!userInfoState) {
         alert('Please log in to express your love');
         return;
     }
-    let token = userInfo.token;
-    let listId = ownerInfo.playlistInfo.listId;
-    let songIndex = nowPlayingIndex;
+    let token = userInfoState.token;
+    let listId = ownerInfoState.playlistInfo.listId;
+    let songIndex = nowPlayingIndexState;
 
     let likeInfo = {
         listOwnerToken,
@@ -287,9 +278,9 @@ function addLike() {
     };
     socket.emit('newLike', likeInfo);
 
-    ownerInfo.playlistInfo.songList[nowPlayingIndex].like += 1;
-    let newLikeNumber = ownerInfo.playlistInfo.songList[nowPlayingIndex].like;
-    renderNewLike(ownerInfo, newLikeNumber);
+    ownerInfoState.playlistInfo.songList[nowPlayingIndexState].like += 1;
+    let newLikeNumber = ownerInfoState.playlistInfo.songList[nowPlayingIndexState].like;
+    renderNewLike(ownerInfoState, newLikeNumber);
 }
 
 function addEditBioBtn() {
@@ -371,7 +362,7 @@ function addFollowBtn() {
 function changeFollowStatus() {
     let followInfo = {
         listOwnerToken,
-        userToken: userInfo.token,
+        userToken: userInfoState.token,
     };
     if (this.innerHTML === 'Follow') {
         this.innerHTML = 'Following';
@@ -387,7 +378,7 @@ function showNowPlayingSong() {
     song_name_node_collection.forEach((node) => {
         node.style.color = '#bebebe';
     });
-    song_name_node_collection[nowPlayingIndex].style.color = 'rgba(204,204,0,0.7)';
+    song_name_node_collection[nowPlayingIndexState].style.color = 'rgba(204,204,0,0.7)';
 }
 
 function getQueryStringObject() {
@@ -409,3 +400,12 @@ function getQueryStringObject() {
 
 let submit_btn = document.querySelector('.submit_btn');
 submit_btn.addEventListener('click', addComment);
+
+socket.on('redirect', (url) => {
+    window.location = url;
+});
+
+socket.on('getSongComment', (commentArray) => {
+    ownerInfoState.playlistInfo.songList[nowPlayingIndexState].comments = commentArray;
+    renderNewComment();
+});
