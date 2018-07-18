@@ -47,24 +47,6 @@ html, body {
   margin-top: 30px;
   cursor: pointer; }
 
-.bio_btn {
-  align-items: center;
-  text-align: center;
-  height: 45px;
-  border: 2px solid #bebebe;
-  line-height: 45px;
-  font-size: 12px;
-  background-color: #282828;
-  color: #bebebe;
-  font-weight: 500;
-  padding: 0px 10px;
-  border-radius: 5px;
-  margin-top: 30px;
-  cursor: pointer; }
-
-.small_btn {
-  margin-top: 15px; }
-
 input {
   margin-top: 30px;
   align-items: center;
@@ -111,6 +93,42 @@ input {
     .content_wrap .owner_info_wrap .owner_bio {
       margin-top: 15px;
       padding: 0px 25px; }
+    .content_wrap .owner_info_wrap .edit_bio_wrap .edit_bio_btn, .content_wrap .owner_info_wrap .edit_bio_wrap .cancel_bio_btn, .content_wrap .owner_info_wrap .edit_bio_wrap .submit_bio_btn {
+      align-items: center;
+      text-align: center;
+      height: 45px;
+      border: 2px solid #bebebe;
+      line-height: 45px;
+      font-size: 12px;
+      background-color: #282828;
+      color: #bebebe;
+      font-weight: 500;
+      padding: 0px 10px;
+      border-radius: 5px;
+      margin-top: 30px;
+      cursor: pointer; }
+    .content_wrap .owner_info_wrap .edit_bio_wrap .editing_bio_wrap {
+      display: none; }
+      .content_wrap .owner_info_wrap .edit_bio_wrap .editing_bio_wrap .cancel_bio_btn, .content_wrap .owner_info_wrap .edit_bio_wrap .editing_bio_wrap .submit_bio_btn {
+        margin-top: 15px; }
+      .content_wrap .owner_info_wrap .edit_bio_wrap .editing_bio_wrap .edit_bio_input {
+        margin-top: 30px;
+        align-items: center;
+        text-decoration: none;
+        border: 2px solid #bebebe;
+        background-color: #282828;
+        color: #bebebe;
+        width: 90%;
+        height: 35px;
+        line-height: 35px;
+        font-size: 12px;
+        border-radius: 5px;
+        padding: 0px 10px; }
+        .content_wrap .owner_info_wrap .edit_bio_wrap .editing_bio_wrap .edit_bio_input:focus {
+          outline-color: #2c2d30;
+          outline-width: 0px;
+          box-shadow: none;
+          color: #bebebe; }
   .content_wrap .player_wrap {
     background-color: #282828;
     padding: 15px;

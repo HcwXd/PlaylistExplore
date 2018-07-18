@@ -55,23 +55,6 @@ html, body
   border-radius: 5px
   margin-top: 30px
   cursor: pointer
-
-.bio_btn
-  align-items: center
-  text-align: center
-  height: 45px
-  border: 2px solid $txt_white
-  line-height: 45px
-  font-size: 12px
-  background-color: $bg_grey
-  color: $txt_white
-  font-weight: 500
-  padding: 0px 10px
-  border-radius: 5px
-  margin-top: 30px
-  cursor: pointer
-.small_btn
-  margin-top: 15px
 input
   margin-top: 30px
   align-items: center
@@ -118,6 +101,43 @@ input
     .owner_bio
       margin-top: 15px
       padding: 0px 25px
+    .edit_bio_wrap
+      .edit_bio_btn, .cancel_bio_btn, .submit_bio_btn
+        align-items: center
+        text-align: center
+        height: 45px
+        border: 2px solid $txt_white
+        line-height: 45px
+        font-size: 12px
+        background-color: $bg_grey
+        color: $txt_white
+        font-weight: 500
+        padding: 0px 10px
+        border-radius: 5px
+        margin-top: 30px
+        cursor: pointer
+      .editing_bio_wrap
+        display: none
+        .cancel_bio_btn, .submit_bio_btn
+          margin-top: 15px
+        .edit_bio_input
+          margin-top: 30px
+          align-items: center
+          text-decoration: none
+          border: 2px solid $txt_white
+          background-color: $bg_grey
+          color: $txt_white
+          width: 90%
+          height: 35px
+          line-height: 35px
+          font-size: 12px
+          border-radius: 5px
+          padding: 0px 10px
+          &:focus
+            outline-color: rgb(44, 45, 48)
+            outline-width: 0px
+            box-shadow: none
+            color: $txt_white
   .player_wrap
     background-color: $bg_grey
     // border: 10px solid $bg_grey
