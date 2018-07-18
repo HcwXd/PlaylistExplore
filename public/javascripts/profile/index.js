@@ -78,6 +78,7 @@ function renderOwnerInfo(ownerInfo) {
         } else {
             socket.emit('getFollowState', userInfoState.token, listOwnerToken);
             socket.on('getFollowState', (isFollowing) => {
+                console.log(isFollowing);
                 renderFollowBtn(isFollowing);
             });
         }
