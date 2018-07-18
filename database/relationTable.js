@@ -21,11 +21,11 @@ async function deleteRelation(token, followToken) {
 }
 
 async function isFriend(token, followToken) {
-    const sql = 'SELECT * WHERE token = ? AND followToken = ?';
+    const sql = 'SELECT * from relation WHERE token = ? AND followToken = ?';
     const insert = [token, followToken];
     const query = mysql.format(sql, insert);
     const result = await getData(query);
-    return Boolean(result.length !== 0);
+    return Boolean(result.length);
 }
 
 module.exports = {
