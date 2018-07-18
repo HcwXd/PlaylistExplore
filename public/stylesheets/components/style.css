@@ -69,15 +69,28 @@ a {
       top: 95%;
       left: 28px;
       background-color: #f2f2f2;
-      color: #757575;
+      color: rgba(117, 117, 117, 0.7);
       box-shadow: 0 3px 14px -1px rgba(0, 0, 0, 0.18);
       border-radius: 0 0 5px 5px;
       width: 156px; }
       .nav_wrap .nav_search_btn .suggestion_wrap li {
         padding: 5px 10px;
-        list-style: none; }
+        list-style: none;
+        display: flex;
+        align-items: center; }
         .nav_wrap .nav_search_btn .suggestion_wrap li:hover {
-          opacity: 0.7; }
+          background-color: #bebebe; }
+        .nav_wrap .nav_search_btn .suggestion_wrap li .name {
+          display: inline-block;
+          font-size: 16px; }
+          .nav_wrap .nav_search_btn .suggestion_wrap li .name .highlight {
+            color: #646464; }
+        .nav_wrap .nav_search_btn .suggestion_wrap li .avatar {
+          display: inline-block;
+          height: 25px;
+          width: 25px;
+          border-radius: 100%;
+          margin-right: 10px; }
   .nav_wrap .nav_search_btn-hover {
     width: 180px;
     border-radius: 5px; }

@@ -1,23 +1,23 @@
 const userList = [
     {
         userName: '胡程維',
-        userId: 123,
-        avatar: 123,
+        userId: 1819883341429439,
+        avatar: 'http://graph.facebook.com/1819883341429439/picture?type=large',
     },
     {
         userName: '胡程啊',
-        userId: 123,
-        avatar: 123,
+        userId: 1819883341429439,
+        avatar: 'http://graph.facebook.com/564885960573962/picture?type=large',
     },
     {
         userName: '阿程維',
-        userId: 123,
-        avatar: 123,
+        userId: 1819883341429439,
+        avatar: 'http://graph.facebook.com/564885960573962/picture?type=large',
     },
     {
         userName: '胡阿維',
-        userId: 123,
-        avatar: 123,
+        userId: 1819883341429439,
+        avatar: 'https://i.imgur.com/9RXPWGu.png',
     },
 ];
 
@@ -48,18 +48,24 @@ function showNavSearchInput(e) {
 }
 
 function displayMatches() {
+    if (this.value === '') {
+        document.querySelector('.suggestion_wrap').innerHTML = '';
+        return;
+    }
     let suggestion_wrap_node = document.querySelector('.suggestion_wrap');
     suggestion_wrap_node.className = 'suggestion_wrap';
     const matchArray = findMatches(this.value, userList);
     const html = matchArray
         .map((user) => {
             const regex = new RegExp(this.value, 'gi');
-            const userList = user.userName.replace(regex, `<span class="hl">${this.value}</span>`);
+            const userList = user.userName.replace(regex, `<span class="highlight">${this.value}</span>`);
             return `
-        <li>
-            <span class="avatar"></span>
-            <span class="name">${userList}</span>
-        </li>
+        <a href="/profile?id=${user.userId}&list=-1">
+            <li>
+                <img class="avatar" src="${user.avatar}">
+                <span class="name">${userList}</span>
+            </li>
+        </a>
       `;
         })
         .join('');
