@@ -76,9 +76,6 @@ function renderOwnerInfo(ownerInfo) {
         if (userInfoState.token === listOwnerToken) {
             renderEditBioBtn();
         } else {
-            console.log(userInfoState.token);
-            console.log(listOwnerToken);
-
             socket.emit('getFollowState', userInfoState.token, listOwnerToken);
             socket.on('getFollowState', (isFollowing) => {
                 renderFollowBtn(isFollowing);
@@ -93,6 +90,7 @@ function renderPlayerInfo(ownerInfo) {
         comment_submit.innerHTML = '目前還沒有任何播放清單';
         comment_submit.style.justifyContent = 'space-around';
         comment_submit.style.fontSize = '24px';
+        return;
     }
     renderNewSongStatsAndDes();
     let songInfo = {
@@ -180,20 +178,19 @@ function renderClickSongPlayer() {
 }
 
 function renderNewSongStatsAndDes() {
-    let song_stats_node = document.querySelector('.song_stats');
     let song_stats_html = `
-    <div class="like_btn">♥</div>
-    <div class="like_number">${ownerInfoState.playlistInfo.songList[nowPlayingIndexState].like}</div>`;
-    song_stats_node.innerHTML = song_stats_html;
+        <div class="like_btn">♥</div>
+        <div class="like_number">${ownerInfoState.playlistInfo.songList[nowPlayingIndexState].like}</div>
+    `;
+    document.querySelector('.song_stats').innerHTML = song_stats_html;
 
-    let like_btn_node = document.querySelector('.like_btn');
-    like_btn_node.addEventListener('click', addLike);
+    document.querySelector('.like_btn').addEventListener('click', addLike);
 
-    let song_des_node = document.querySelector('.song_des');
     let song_des_html = `
-    <div class="song_date">${ownerInfoState.playlistInfo.date.substr(0, 10)}</div>
-    <div class="song_text">${ownerInfoState.playlistInfo.songList[nowPlayingIndexState].des}</div>`;
-    song_des_node.innerHTML = song_des_html;
+        <div class="song_date">${ownerInfoState.playlistInfo.date.substr(0, 10)}</div>
+        <div class="song_text">${ownerInfoState.playlistInfo.songList[nowPlayingIndexState].des}</div>
+    `;
+    document.querySelector('.song_des').innerHTML = song_des_html;
 }
 
 function renderNewComment() {
