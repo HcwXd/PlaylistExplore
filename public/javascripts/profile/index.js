@@ -327,7 +327,7 @@ function renderEditBioBtn() {
 function renderFollowBtn(isFollowing) {
     let follow_btn_node = document.createElement('div');
     follow_btn_node.className = 'follow_btn';
-    follow_btn_node.innerHTML = isFollowing ? 'Follow' : 'Follow';
+    follow_btn_node.innerHTML = isFollowing ? 'Following' : 'Follow';
     follow_btn_node.addEventListener('click', changeFollowStatus);
 
     document.querySelector('.owner_info_wrap').appendChild(follow_btn_node);
