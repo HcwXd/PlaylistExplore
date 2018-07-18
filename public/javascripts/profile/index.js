@@ -36,7 +36,7 @@ function onYouTubePlayerAPIReady() {
         player = new YT.Player('video_placeholder', {
             width: '700',
             height: '400',
-            videoId: ownerInfo.playlistInfo.songList[0].url,
+            videoId: ownerInfo.playlistInfo.songList[nowPlayingIndex].url,
             events: {
                 onStateChange: onPlayerStateChange,
             },
