@@ -66,7 +66,18 @@ a {
       border-right: 1px solid rgba(0, 0, 0, 0.18); }
     .nav_wrap .nav_search_btn .suggestion_wrap {
       position: absolute;
-      bottom: 0; }
+      top: 95%;
+      left: 28px;
+      background-color: #f2f2f2;
+      color: #757575;
+      box-shadow: 0 3px 14px -1px rgba(0, 0, 0, 0.18);
+      border-radius: 0 0 5px 5px;
+      width: 156px; }
+      .nav_wrap .nav_search_btn .suggestion_wrap li {
+        padding: 5px 10px;
+        list-style: none; }
+        .nav_wrap .nav_search_btn .suggestion_wrap li:hover {
+          opacity: 0.7; }
   .nav_wrap .nav_search_btn-hover {
     width: 180px;
     border-radius: 5px; }
