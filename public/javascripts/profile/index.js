@@ -49,7 +49,7 @@ function renderOwnerInfo(ownerInfo) {
         <div class="owner_bio">${ownerInfo.bio ? ownerInfo.bio : ''}</div>`;
     owner_info_wrap_node.innerHTML = owner_info_wrap_html;
 
-    if (userInfoState) {
+    if (userInfoState.token !== undefined) {
         if (userInfoState.token === listOwnerToken) {
             renderEditBioBtn();
         } else {
@@ -332,8 +332,7 @@ function renderNewLike(ownerInfo, newLikeNumber) {
 }
 
 function addLike() {
-    if (userInfoState === undefined) {
-        console.log('sd');
+    if (userInfoState.token === undefined) {
         alert('Please log in to express your love');
         return;
     }
