@@ -73,7 +73,7 @@ function displayMatches() {
             const regex = new RegExp(this.value, 'gi');
             const userList = user.userName.replace(regex, `<span class="highlight">${this.value}</span>`);
             return `
-        <a href="/profile?id=${user.userId}&list=-1">
+        <a href="/profile?id=${user.token}&list=-1">
             <li>
                 <img class="avatar" src="${user.avatar}">
                 <span class="name">${userList}</span>
