@@ -4,6 +4,9 @@
 
 $txt_black: rgb(60, 60, 60)
 $bg_white: rgb(242, 242, 242)
+$bg_orange: #FF6700
+$bg_blue: #0A2463
+$noti_green: hsla(120, 100%, 50%, 0.3)
 
 $bg_deep_black: rgb(15, 15, 15)
 $bg_black: rgb(26, 26, 26)
@@ -54,6 +57,9 @@ a
     box-shadow: 0 3px 14px -1px rgba(#000, .18)
     .noti_wrap
       position: absolute
+  .nav_noti_btn-active
+    background-color: $noti_green
+    color: $txt_white
   .nav_search_btn
     position: relative
     border-radius: 100%
@@ -123,6 +129,8 @@ a
     height: 40px
     width: 40px
     border-radius: 100%
+    box-shadow: 0 3px 14px -1px rgba(#000, .18)
+
   .nav_item
     padding: 12px
     margin-left: 12px

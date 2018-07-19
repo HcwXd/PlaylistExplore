@@ -46,6 +46,9 @@ a {
     box-shadow: 0 3px 14px -1px rgba(0, 0, 0, 0.18); }
     .nav_wrap .nav_noti_btn .noti_wrap {
       position: absolute; }
+  .nav_wrap .nav_noti_btn-active {
+    background-color: rgba(0, 255, 0, 0.3);
+    color: #bebebe; }
   .nav_wrap .nav_search_btn {
     position: relative;
     border-radius: 100%;
@@ -114,7 +117,8 @@ a {
   .nav_wrap .nav_avatar {
     height: 40px;
     width: 40px;
-    border-radius: 100%; }
+    border-radius: 100%;
+    box-shadow: 0 3px 14px -1px rgba(0, 0, 0, 0.18); }
   .nav_wrap .nav_item {
     padding: 12px;
     margin-left: 12px;
