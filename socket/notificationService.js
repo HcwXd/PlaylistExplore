@@ -10,10 +10,9 @@ id
 | date
 */
 
-function notificationService(notificationInfo, socketMap) {
-    if (socketMap.hasOwnProperty(notificationInfo.receiverToken)) {
-        emitNotification(notificationInfo, socketMap);
-    }
-
-    notificationTable.insertNotification(notificationInfo);
+function notificationService(socket) {
+    socket.on('getNotification', (info) => {
+        const notificationList = await notificationTable.getLatestNotification(info.token, info.date);
+        socket.emit('getNotification', notificationList);
+    })
 }

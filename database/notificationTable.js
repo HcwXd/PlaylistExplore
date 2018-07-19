@@ -38,8 +38,8 @@ function createNotificationObject(type, info) {
             return {
                 type: 'follow',
                 isRead: 0,
-                receiverToken: info.followToken,
-                triggerToken: info.token,
+                receiverToken: info.listOwnerToken,
+                triggerToken: info.userToken,
                 referenceIndex: info.id,
                 date: new Date(),
             };

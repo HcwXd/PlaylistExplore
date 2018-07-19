@@ -1,13 +1,22 @@
-const { userTable, commentTable, songTable, relationTable, songListTable, likeTable } = require('./database');
+const { userTable, commentTable, songTable, relationTable, songListTable, likeTable, notificationTable } = require('./database');
 const fecha = require('fecha');
 
 function relationService(socket) {
     socket.on('followUser', async (relation) => {
-        relationTable.createRelation(relation.userToken, relation.listOwnerToken);
+        const ret = await relationTable.createRelation(relation.userToken, relation.listOwnerToken);
+        relation['id'] = ret.insertId;
+
+        const notification = notificationTable.createNotificationObject('follow', relation);
+        notificationTable.insertNotification(notification);
     });
 
     socket.on('unfollowUser', async (relation) => {
         relationTable.deleteRelation(relation.userToken, relation.listOwnerToken);
+
+        notificationTable.deleteNotification({
+            type: 'follow',
+            referenceIndex: relation.id,
+        });
     });
 
     socket.on('getFriendsLatest', async (date) => {

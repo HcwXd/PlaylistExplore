@@ -19,7 +19,7 @@ async function addLikeInfo(likeInfo) {
     };
     const query = mysql.format(sql, insert);
     const ret = await applyQuery(query);
-    console.log(ret);
+    return ret;
 }
 
 async function deleteLikeInfo(likeInfo) {

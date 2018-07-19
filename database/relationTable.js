@@ -10,7 +10,7 @@ async function createRelation(token, followToken) {
         followToken,
     };
     const query = mysql.format(sql, insert);
-    applyQuery(query);
+    return await applyQuery(query);
 }
 
 async function deleteRelation(token, followToken) {
