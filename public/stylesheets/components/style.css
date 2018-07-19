@@ -65,13 +65,14 @@ a {
       border: 0;
       position: absolute;
       background-color: rgba(0, 0, 0, 0);
-      color: #000;
+      color: rgba(0, 0, 0, 0);
       transition-duration: 0.3s;
       opacity: 0;
       margin-left: 10px; }
       .nav_wrap .nav_search_btn .nav_search_input:focus {
         outline-style: none;
-        border: 0; }
+        border: 0;
+        color: #000; }
     .nav_wrap .nav_search_btn .nav_search_input-hover {
       opacity: 1; }
     .nav_wrap .nav_search_btn .svg-hover {
