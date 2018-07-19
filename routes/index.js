@@ -11,6 +11,10 @@ router.get('/explore', function(req, res, next) {
     res.render('explore');
 });
 
+router.get('/exploreA', function(req, res, next) {
+    res.render('explore-floating');
+});
+
 router.get('/login', function(req, res, next) {
     res.render('login');
 });

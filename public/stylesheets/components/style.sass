@@ -4,6 +4,9 @@
 
 $txt_black: rgb(60, 60, 60)
 $bg_white: rgb(242, 242, 242)
+$bg_orange: #FF6700
+$bg_blue: #0A2463
+$noti_green: hsla(120, 100%, 50%, 0.3)
 
 $bg_deep_black: rgb(15, 15, 15)
 $bg_black: rgb(26, 26, 26)
@@ -39,9 +42,9 @@ a
   .left_nav
     display: flex
     align-items: center
-  .nav_search_btn
+  .nav_noti_btn
     position: relative
-    margin-right: 24px 
+    margin: 0 24px 
     border-radius: 100%
     padding: 2px
     width: 30px
@@ -52,19 +55,38 @@ a
     cursor: pointer
     transition: all .3s ease .6s
     box-shadow: 0 3px 14px -1px rgba(#000, .18)
+    .noti_wrap
+      position: absolute
+  .nav_noti_btn-active
+    background-color: $noti_green
+    color: $txt_white
+  .nav_search_btn
+    position: relative
+    border-radius: 100%
+    padding: 2px
+    width: 30px
+    height: 30px
+    display: flex
+    align-items: center
+    justify-content: space-around
+    cursor: pointer
+    transition: all .3s ease .6s
+    box-shadow: 0 3px 14px -1px rgba(#000, .18)
+    overflow: hidden
     .nav_search_input
       width: 140px
       height: 30px
       border: 0
       position: absolute
       background-color: rgba(0,0,0,0)
-      color: #000
+      color: rgba(0,0,0,0)
       transition-duration: 0.3s
       opacity: 0
       margin-left: 10px
       &:focus
         outline-style: none
         border: 0
+        color: #000
     .nav_search_input-hover
       opacity: 1
     .svg-hover
@@ -99,17 +121,16 @@ a
           width: 25px
           border-radius: 100%
           margin-right: 10px
-
-
-
-
   .nav_search_btn-hover
       width: 180px
       border-radius: 5px
+      overflow: initial
   .nav_avatar
     height: 40px
     width: 40px
     border-radius: 100%
+    box-shadow: 0 3px 14px -1px rgba(#000, .18)
+
   .nav_item
     padding: 12px
     margin-left: 12px

@@ -25,26 +25,37 @@ const userList = [
 // socket.on('getUserList', (socketOn_userList) => {
 //     userList = [...socketOn_userList];
 // });
-
+let isShowing = false;
 const nav_search_btn_node = document.querySelector('.nav_search_btn');
 nav_search_btn_node.addEventListener('mouseenter', showNavSearchWrap);
-nav_search_btn_node.addEventListener('transitionend', showNavSearchInput);
+nav_search_btn_node.addEventListener('mouseout', () => (isShowing = false));
+
+nav_search_btn_node.addEventListener('transitionend', (e) => isShowing && showNavSearchInput(e));
 
 function showNavSearchWrap() {
+    isShowing = true;
     nav_search_btn_node.classList.add('nav_search_btn-hover');
     document.querySelector('svg').classList.add('svg-hover');
 }
 
 function showNavSearchInput(e) {
-    console.log(e.propertyName);
     if (e.propertyName.includes('width')) {
         let nav_search_input_node = document.querySelector('.nav_search_input');
         nav_search_input_node.classList.add('nav_search_input-hover');
         nav_search_input_node.placeholder = '請輸入欲搜尋的用戶名';
-
         nav_search_input_node.addEventListener('change', displayMatches);
         nav_search_input_node.addEventListener('keyup', displayMatches);
+        isShowing = false;
     }
+}
+
+function hideNavSearchInput() {
+    document.querySelector('svg').classList.remove('svg-hover');
+    document.querySelector('.nav_search_input').classList.remove('nav_search_input-hover');
+    document.querySelector('.nav_search_input').value = '';
+    document.querySelector('.nav_search_input').placeholder = '';
+    nav_search_btn_node.classList.remove('nav_search_btn-hover');
+    document.querySelector('.suggestion_wrap').innerHTML = '';
 }
 
 function displayMatches() {
@@ -78,3 +89,15 @@ function findMatches(wordToMatch, userList) {
         return user.userName.match(regex);
     });
 }
+
+document.addEventListener('click', (evt) => {
+    let targetElement = evt.target;
+    do {
+        if (targetElement == nav_search_btn_node) {
+            return;
+        }
+        targetElement = targetElement.parentNode;
+    } while (targetElement);
+
+    hideNavSearchInput();
+});
