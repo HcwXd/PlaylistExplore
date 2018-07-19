@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Playlist Explore - share and discover music</title>
+
+
+
+  <link rel="stylesheet" href="/stylesheets/explore-floating/style.css">
+  <link rel="stylesheet" href="/stylesheets/components/style.css">
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    var socket = io();
+  </script>
+
+
+
+</head>
+
+<body>
+  <%- include('components/nav') %>
+    <div class="loader"></div>
+    <div class="toggle_background_wrap">
+      <div class="toggle_background_switch">
+        <div class="btn"></div>
+      </div>
+    </div>
+
+    <div class="content_wrap">
+      <div class="posts_wrap">
+      </div>
+    </div>
+    <script src="/javascripts/explore-floating/index.js"></script>
+</body>
+
+</html>

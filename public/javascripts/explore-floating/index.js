@@ -163,6 +163,7 @@ function changeBackground() {
 
         let content_wrap_node = document.querySelector('.content_wrap');
         content_wrap_node.parentNode.appendChild(idle_background_node);
+        content_wrap_node.style.display = 'none';
     }
 }
 
