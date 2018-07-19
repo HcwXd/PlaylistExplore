@@ -1,5 +1,5 @@
 const mysql = require('mysql');
-const config = require('./config')
+const config = require('./config');
 const con = mysql.createConnection({
     host: config.host,
     user: config.user,
@@ -21,8 +21,7 @@ function getData(query) {
         try {
             db.query(query, (error, result) => {
                 console.log(query);
-                if(error)
-                    console.log(error);
+                if (error) console.log(error);
                 console.log(result);
                 resolve(result);
             });
@@ -32,11 +31,11 @@ function getData(query) {
     });
 }
 
-function applyQuery(query){
+function applyQuery(query) {
     return new Promise((resolve, reject) => {
-        try{
+        try {
             db.query(query, (error, result) => {
-                if(error){
+                if (error) {
                     console.log(error);
                     return;
                 }
@@ -44,14 +43,19 @@ function applyQuery(query){
                 console.log(result);
                 resolve(result);
             });
-        } catch (error){
+        } catch (error) {
             console.log(error);
         }
     });
 }
 
+function multipleGetData(queryArray) {
+    return Promise.all(queryArray);
+}
+
 module.exports = {
     applyQuery,
     getData,
+    multipleGetData,
     db,
 };

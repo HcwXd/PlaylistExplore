@@ -18,10 +18,10 @@ function relationService(socket) {
 
     socket.on('getFollowState', async (token, listOwnerToken) => {
         if (await relationTable.isFriend(token, listOwnerToken)) {
-            socket.emit('getFollowState', true);
+            socket.emit('getFollowState', new Boolean(true));
             return;
         }
-        socket.emit('getFollowState', false);
+        socket.emit('getFollowState', new Boolean(false));
     });
 }
 
