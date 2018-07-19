@@ -44,10 +44,8 @@ async function confirmUser(userInfo) {
     return false;
 }
 
-async function searchUser(userName) {
-    const sql = 'SELECT * FROM user WHERE userName = ?';
-    const insert = [userName];
-    const query = mysql.format(sql, insert);
+async function getUserList() {
+    const query = 'SELECT * FROM user';
     const ret = await getData(query);
     return ret;
 }
@@ -58,5 +56,5 @@ module.exports = {
     getUserInfo,
     updateBio,
     confirmUser,
-    searchUser,
+    getUserList,
 };

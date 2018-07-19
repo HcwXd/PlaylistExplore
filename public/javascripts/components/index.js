@@ -1,4 +1,5 @@
-const userList = [
+let userList;
+/*= [
     {
         userName: '胡程維',
         userId: 1819883341429439,
@@ -20,11 +21,12 @@ const userList = [
         avatar: 'https://i.imgur.com/9RXPWGu.png',
     },
 ];
-
-// socket.emit('getUserList');
-// socket.on('getUserList', (socketOn_userList) => {
-//     userList = [...socketOn_userList];
-// });
+*/
+socket.emit('getUserList');
+socket.on('getUserList', (socketOn_userList) => {
+    userList = [...socketOn_userList];
+    console.log(userList);
+});
 let isShowing = false;
 const nav_search_btn_node = document.querySelector('.nav_search_btn');
 nav_search_btn_node.addEventListener('mouseenter', showNavSearchWrap);

@@ -78,8 +78,9 @@ function userService(socket) {
         socket.emit('signInSuccess');
     });
 
-    socket.on('searchUser', async (userName) => {
-        return await userTable.searchUser;
+    socket.on('getUserList', async (userName) => {
+        const ret = await userTable.getUserList();
+        socket.emit('getUserList', ret);
     });
 }
 
