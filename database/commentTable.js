@@ -11,11 +11,12 @@ const mysql = require('mysql');
  * commentContent
  */
 
-function createComment(commentInfo) {
+async function createComment(commentInfo) {
     const sql = 'INSERT INTO comment SET ?';
     const insert = commentInfo;
     const query = mysql.format(sql, insert);
-    applyQuery(query);
+    const ret = await applyQuery(query);
+    return ret;
 }
 
 function deleteComment(commentIndex) {

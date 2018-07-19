@@ -1,4 +1,4 @@
-const { userTable, commentTable, songTable, relationTable, songListTable, likeTable } = require('./database');
+const { userTable, commentTable, songTable, relationTable, songListTable, likeTable, notificationTable } = require('./database');
 
 async function emitLatestComment(socket, listOwnerToken, songIndex, listId) {
     songInfo = {
@@ -17,16 +17,28 @@ function commentService(socket) {
     });
 
     socket.on('newComment', async (commentInfo) => {
-        if (commentInfo.commentContent) {
-            commentInfo['commentToken'] = socket.handshake.session.token;
-            await commentTable.createComment(commentInfo);
-        }
+        if (!commentInfo.commentContent) return;
+
+        commentInfo['commentToken'] = socket.handshake.session.token;
+        const ret = await commentTable.createComment(commentInfo);
         emitLatestComment(socket, commentInfo.listOwnerToken, commentInfo.songIndex, commentInfo.listId);
+
+        if (commentInfo.listOwnerToken === commentInfo.commentToken) return;
+
+        commentInfo['id'] = ret.insertId;
+        const notification = notificationTable.createNotificationObject('comment', commentInfo);
+        notificationTable.insertNotification(notification);
     });
 
     socket.on('deleteComment', async (commentInfo) => {
         commentTable.deleteComment(commentInfo.commentIndex);
         emitLatestComment(socket, commentInfo.listOwnerToken, commentInfo.songIndex, commentInfo.listId);
+
+        if (commentInfo.listOwnerToken === commentInfo.commentToken) return;
+        notificationTable.deleteNotification({
+            type: 'comment',
+            referenceIndex: commentInfo.commentIndex,
+        });
     });
 }
 

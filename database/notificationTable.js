@@ -10,9 +10,44 @@ id
 | date
 */
 
+function createNotificationObject(type, info) {
+    switch (type) {
+        case 'like': {
+            return {
+                type: 'like',
+                isRead: 0,
+                receiverToken: info.listOwnerToken,
+                triggerToken: info.token,
+                referenceIndex: info.id,
+                date: new Date(),
+            };
+        }
+
+        case 'comment': {
+            return {
+                type: 'comment',
+                isRead: 0,
+                receiverToken: info.listOwnerToken,
+                triggerToken: info.commentToken,
+                referenceIndex: info.id,
+                date: new Date(),
+            };
+        }
+
+        case 'follow': {
+            return {
+                type: 'follow',
+                isRead: 0,
+                receiverToken: info.followToken,
+                triggerToken: info.token,
+                referenceIndex: info.id,
+                date: new Date(),
+            };
+        }
+    }
+}
+
 async function insertNotification(notificationInfo) {
-    notificationInfo['date'] = new Date();
-    notificationInfo['isRead'] = 0;
     const sql = 'INSERT INTO notification SET ?';
     const insert = notificationInfo;
     const query = mysql.format(sql, insert);
@@ -103,4 +138,5 @@ module.exports = {
     deleteNotification,
     tagRead,
     getNotificationInfo,
+    createNotificationObject,
 };
