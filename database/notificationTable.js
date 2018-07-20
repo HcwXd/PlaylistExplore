@@ -23,12 +23,12 @@ async function getCommentNotification(refferenceIndex) {
 
 async function getLikeNotification(refferenceIndex) {
     const sql =
-        'SELECT u.userName as triggerName, u.avatar as triggeavatar, s.token as listOwnerToken, l.listId, l.songIndex \
+        'SELECT u.userName as triggerName, u.avatar as triggerAvatar, s.token as listOwnerToken, l.listId, l.songIndex \
                  FROM user u, songList s, likeInfo l \
                  WHERE l.id = ? AND u.token = l.token AND s.listId = l.listId';
     const query = mysql.format(sql, [refferenceIndex]);
     const likeNotificationInfo = await getData(query);
-    return likeNotificationInfo;
+    return likeNotificationInfo[0];
 }
 
 function createNotificationObject(type, info) {
@@ -111,7 +111,7 @@ async function formatNotification(notification) {
                 listOwnerToken: info.listOwnerToken,
                 listId: info.listId,
                 songIndex: info.songIndex,
-                date: date,
+                date: notification.date,
             };
         }
     }

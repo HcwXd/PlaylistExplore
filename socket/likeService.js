@@ -19,7 +19,7 @@ function likeService(socket) {
         const notificationInfo = await notificationTable.formatNotification(notification);
         console.log(notificationInfo);
         const informSocket = socketMap.get(likeInfo.listOwnerToken);
-        informSocket.emit('newNotification', notification);
+        informSocket.emit('newNotification', notificationInfo);
     });
 
     socket.on('unlike', async (unlikeInfo) => {
@@ -41,8 +41,6 @@ function likeService(socket) {
     });
 
     socket.on('getLikeStatus', async (songInfo) => {
-        const token = socket.handshake.session.token;
-        songInfo[token] = token;
         const bool = await likeTable.checkLikeExist(songInfo);
         socket.emit('getLikeStatus', bool);
     });
