@@ -18,6 +18,7 @@ useSession = session({
     saveUninitialized: true,
 });
 
+let socketMap = new Map();
 const io = require('./socket/socket')(server, useSession);
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
