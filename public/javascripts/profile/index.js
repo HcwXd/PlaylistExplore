@@ -174,7 +174,45 @@ function renderLikeStatus(isLiked) {
         `;
     }
     document.querySelector('.song_stats').innerHTML = song_stats_html;
-    document.querySelector('.like_btn').addEventListener('click', addLike);
+    document.querySelector('.like_btn').isLiked = isLiked;
+    document.querySelector('.like_btn').addEventListener('click', toggleLike);
+}
+
+function toggleLike() {
+    if (userInfoState.token === undefined) {
+        alert('Please log in to express your love');
+        return;
+    }
+    let token = userInfoState.token;
+    let listId = ownerInfoState.playlistInfo.listId;
+    let songIndex = nowPlayingIndexState;
+
+    let likeInfo = {
+        listOwnerToken,
+        listId,
+        songIndex,
+        token,
+    };
+    console.log(this.isLiked);
+    if (this.isLiked) {
+        socket.emit('unlike', likeInfo);
+    } else {
+        socket.emit('newLike', likeInfo);
+    }
+
+    ownerInfoState.playlistInfo.songList[nowPlayingIndexState].like += this.isLiked ? -1 : 1;
+    this.isLiked = !this.isLiked;
+
+    renderNewLike(ownerInfoState, ownerInfoState.playlistInfo.songList[nowPlayingIndexState].like);
+}
+
+function renderNewLike(ownerInfo, newLikeNumber) {
+    document.querySelector('.like_btn').classList.toggle('like_btn-active');
+    document.querySelector('.like_number').innerHTML = ownerInfo.playlistInfo.songList[nowPlayingIndexState].like;
+    // document.querySelector('.song_stats').innerHTML = song_stats_html;
+
+    let song_list_child = document.querySelector('.song_list').childNodes;
+    song_list_child[nowPlayingIndexState + 1].querySelector('.song_like').innerHTML = `♥ ${newLikeNumber}`;
 }
 
 function renderNewComment() {
@@ -344,39 +382,6 @@ function addComment() {
     });
     document.querySelector('.comment_content_wrap').appendChild(newCommentNode);
     socket.emit('newComment', commentInfo);
-}
-
-function renderNewLike(ownerInfo, newLikeNumber) {
-    let song_stats_html = `
-        <div class="like_btn">♥</div>
-        <div class="like_number">${ownerInfo.playlistInfo.songList[nowPlayingIndexState].like}</div>
-    `;
-    document.querySelector('.song_stats').innerHTML = song_stats_html;
-
-    let song_list_child = document.querySelector('.song_list').childNodes;
-    song_list_child[nowPlayingIndexState + 1].querySelector('.song_like').innerHTML = `♥ ${newLikeNumber}`;
-}
-
-function addLike() {
-    if (userInfoState.token === undefined) {
-        alert('Please log in to express your love');
-        return;
-    }
-    let token = userInfoState.token;
-    let listId = ownerInfoState.playlistInfo.listId;
-    let songIndex = nowPlayingIndexState;
-
-    let likeInfo = {
-        listOwnerToken,
-        listId,
-        songIndex,
-        token,
-    };
-    console.log(likeInfo);
-    socket.emit('newLike', likeInfo);
-
-    ownerInfoState.playlistInfo.songList[nowPlayingIndexState].like += 1;
-    renderNewLike(ownerInfoState, ownerInfoState.playlistInfo.songList[nowPlayingIndexState].like);
 }
 
 function getQueryStringObject() {
