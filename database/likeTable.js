@@ -39,8 +39,17 @@ async function getLikeList(songInfo) {
     return likeList;
 }
 
+async function getLikeId(likeInfo) {
+    const sql = 'SELECT id FROM likeInfo WHERE token = ? AND listId = ? AND songIndex = ?';
+    const insert = [likeInfo.token, likeInfo.listId, likeInfo.songIndex];
+    const query = mysql.format(sql, insert);
+    const ret = await getData(query);
+    return ret[0].id;
+}
+
 module.exports = {
     checkLikeExist,
     addLikeInfo,
     getLikeList,
+    getLikeId,
 };
