@@ -1,6 +1,7 @@
 let latestPlaylistInfoState = [];
 let lastPlaylistDateState = new Date();
 let isRenderingPlaylistState = true;
+let isRenderFirstTime = true;
 
 socket.emit('getLatestPlaylists', lastPlaylistDateState);
 
@@ -15,13 +16,56 @@ socket.on('getLatestPlaylists', (socketOn_latestPlaylistInfo) => {
     latestPlaylistInfoState.push(...fiveLatestPlaylistInfo);
 
     console.log(latestPlaylistInfoState);
+    isRenderFirstTime && changeBackground();
+    isRenderFirstTime = false;
 
     renderLatestPlaylist(fiveLatestPlaylistInfo);
     lastPlaylistDateState = fiveLatestPlaylistInfo[fiveLatestPlaylistInfo.length - 1].playlistInfo.date;
-
     document.querySelector('.toggle_background_wrap').style.display = 'block';
     document.querySelector('.toggle_background_switch').addEventListener('click', changeBackground);
 });
+
+function changeBackground() {
+    let content_wrap_node = document.querySelector('.content_wrap');
+    if (document.querySelector('.toggle_background_switch-on')) {
+        document.querySelector('.idle_background').remove();
+        document.querySelector('.toggle_background_switch-on').classList.remove('toggle_background_switch-on');
+        content_wrap_node.style.display = 'flex';
+    } else {
+        document.querySelector('.toggle_background_switch').classList.add('toggle_background_switch-on');
+        let idle_background_node = createRandomBackgroundNode();
+        idle_background_node.className = 'idle_background';
+
+        content_wrap_node.parentNode.appendChild(idle_background_node);
+        content_wrap_node.style.display = 'none';
+    }
+}
+
+function createRandomBackgroundNode() {
+    let idle_background_node = document.createElement('div');
+
+    for (let i = 0; i < latestPlaylistInfoState.length; i++) {
+        let currentPlaylist = latestPlaylistInfoState[i];
+        for (let j = 0; j < currentPlaylist.playlistInfo.songList.length; j++) {
+            let album_node = document.createElement('A');
+            album_node.className = 'album';
+            album_node.style.top = `calc(${random(0, 100)}% - 200px)`;
+            album_node.style.right = `calc(${random(0, 100)}% - 200px)`;
+            album_node.style.animationDelay = random(-6, 0) + 's';
+            album_node.href = `/profile?id=${currentPlaylist.playlistInfo.token}&list=${currentPlaylist.playlistInfo.listId}&song=${currentPlaylist.playlistInfo.songList[j].songIndex}`;
+            let bg_url = `https://img.youtube.com/vi/${currentPlaylist.playlistInfo.songList[j].url}/hqdefault.jpg`;
+            album_node.style.backgroundImage = `url(${bg_url})`;
+
+            let album_info_node = document.createElement('div');
+            album_info_node.className = 'album_info';
+            album_info_node.innerHTML = currentPlaylist.playlistInfo.name;
+            album_node.appendChild(album_info_node);
+
+            idle_background_node.appendChild(album_node);
+        }
+    }
+    return idle_background_node;
+}
 
 function renderLatestPlaylist(fiveLatestPlaylistInfo) {
     let posts_wrap_node = document.querySelector('.posts_wrap');
@@ -150,42 +194,6 @@ function countIdleTimeToRenderRandomBackground() {
         let content_wrap_node = document.querySelector('.content_wrap');
         content_wrap_node.parentNode.appendChild(idle_background_node);
     }
-}
-
-function changeBackground() {
-    if (document.querySelector('.toggle_background_switch-on')) {
-        document.querySelector('.idle_background').remove();
-        document.querySelector('.toggle_background_switch-on').classList.remove('toggle_background_switch-on');
-    } else {
-        document.querySelector('.toggle_background_switch').classList.add('toggle_background_switch-on');
-        let idle_background_node = createRandomBackgroundNode();
-        idle_background_node.className = 'idle_background';
-
-        let content_wrap_node = document.querySelector('.content_wrap');
-        content_wrap_node.parentNode.appendChild(idle_background_node);
-        content_wrap_node.style.display = 'none';
-    }
-}
-
-function createRandomBackgroundNode() {
-    let idle_background_node = document.createElement('div');
-
-    for (let i = 0; i < latestPlaylistInfoState.length; i++) {
-        let currentPlaylist = latestPlaylistInfoState[i];
-        for (let j = 0; j < currentPlaylist.playlistInfo.songList.length; j++) {
-            let album_node = document.createElement('A');
-            album_node.className = 'album';
-            album_node.style.top = random(0, 80) + '%';
-            album_node.style.right = random(0, 80) + '%';
-            album_node.style.animationDelay = random(-6, 0) + 's';
-            album_node.href = `/profile?id=${currentPlaylist.playlistInfo.token}&list=${currentPlaylist.playlistInfo.listId}&song=${currentPlaylist.playlistInfo.songList[j].songIndex}`;
-            let bg_url = `https://img.youtube.com/vi/${currentPlaylist.playlistInfo.songList[j].url}/hqdefault.jpg`;
-            album_node.style.backgroundImage = `url(${bg_url})`;
-
-            idle_background_node.appendChild(album_node);
-        }
-    }
-    return idle_background_node;
 }
 
 function random(min, max) {
