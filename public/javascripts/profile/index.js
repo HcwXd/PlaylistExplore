@@ -328,7 +328,7 @@ function renderNewLike(ownerInfo, newLikeNumber) {
     document.querySelector('.song_stats').innerHTML = song_stats_html;
 
     let song_list_child = document.querySelector('.song_list').childNodes;
-    song_list_child[nowPlayingIndexState + 1].lastChild.innerHTML = `♥ ${newLikeNumber}`;
+    song_list_child[nowPlayingIndexState + 1].querySelector('.song_like').innerHTML = `♥ ${newLikeNumber}`;
 }
 
 function addLike() {
