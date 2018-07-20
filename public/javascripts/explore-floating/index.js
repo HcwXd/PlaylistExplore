@@ -193,8 +193,7 @@ function random(min, max) {
     return num;
 }
 
-countIdleTimeToRenderRandomBackground();
-
+// countIdleTimeToRenderRandomBackground();
 window.onscroll = function(ev) {
     if (!isRenderingPlaylistState) {
         if (window.innerHeight + window.pageYOffset >= document.body.scrollHeight - 2) {

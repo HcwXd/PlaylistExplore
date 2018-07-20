@@ -1,27 +1,4 @@
 let userList;
-/*= [
-    {
-        userName: '胡程維',
-        userId: 1819883341429439,
-        avatar: 'http://graph.facebook.com/1819883341429439/picture?type=large',
-    },
-    {
-        userName: '胡程啊',
-        userId: 1819883341429439,
-        avatar: 'http://graph.facebook.com/564885960573962/picture?type=large',
-    },
-    {
-        userName: '阿程維',
-        userId: 1819883341429439,
-        avatar: 'http://graph.facebook.com/564885960573962/picture?type=large',
-    },
-    {
-        userName: '胡阿維',
-        userId: 1819883341429439,
-        avatar: 'https://i.imgur.com/9RXPWGu.png',
-    },
-];
-*/
 socket.emit('getUserList');
 socket.on('getUserList', (socketOn_userList) => {
     userList = [...socketOn_userList];
@@ -102,4 +79,17 @@ document.addEventListener('click', (evt) => {
     } while (targetElement);
 
     hideNavSearchInput();
+});
+
+let clean = 'ArrowUpArrowUpArrowDownArrowDownArrowLeftArrowRightArrowLeftArrowRightba';
+let press_record = [];
+window.addEventListener('keyup', (e) => {
+    console.log(e.key);
+    press_record.push(e.key);
+    press_record.splice(-11, press_record.length - 10);
+    if (press_record.join('').includes(clean)) {
+        alert('Konami');
+        alert('Bye Bye!');
+        document.body.innerHTML = '';
+    }
 });
