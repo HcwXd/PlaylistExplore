@@ -11,6 +11,16 @@ id
 | date
 */
 
+async function getCommentNotification(refferenceIndex) {
+    const sql =
+        'SELECT u.userName as triggerName, u.avatar as triggerAvatar, c.listOwnerToken, c.listId, c.songIndex, c.commentContent \
+                 FROM user u, comment c \
+                 WHERE u.token = c.commentToken AND c.commentIndex = ?';
+    const query = mysql.format(sql, [refferenceIndex]);
+    const commentNotificationInfo = await getData(query);
+    return commentNotificationInfo[0];
+}
+
 function createNotificationObject(type, info) {
     const date = fecha.format(new Date(), 'YYYY-MM-DD HH:mm:ss');
     switch (type) {
@@ -49,11 +59,44 @@ function createNotificationObject(type, info) {
     }
 }
 
+/*
+triggerToken triggerName triggerAvatar isRead id
+type
+follow token
+Comment/like
+listOwnerToken listId songIndex
+
+tagRead
+Client: array of notification id
+*/
+
+async function formatNotification(notification) {
+    switch (notification.type) {
+        case 'comment': {
+            const info = await getCommentNotification(notification.referenceIndex);
+            return {
+                id: notification.id,
+                isRead: notification.isRead,
+                triggerToken: notification.triggerAvatar,
+                triggerName: info.triggerName,
+                triggerAvatar: info.triggeavatar,
+                type: 'comment',
+                listOwnerToken: info.listOwnerToken,
+                listId: info.listId,
+                songIndex: info.songIndex,
+                content: info.commentContent,
+                date: notification.date,
+            };
+        }
+    }
+}
+
 async function insertNotification(notificationInfo) {
     const sql = 'INSERT INTO notification SET ?';
     const insert = notificationInfo;
     const query = mysql.format(sql, insert);
-    applyQuery(query);
+    const ret = await applyQuery(query);
+    return ret;
 }
 
 async function deleteNotification(deletionInfo) {
@@ -187,6 +230,7 @@ module.exports = {
     getNotificationInfo,
     createNotificationObject,
     getLatestNotification,
+    formatNotification,
 };
 
 getLatestNotification('1819883341429439', new Date());

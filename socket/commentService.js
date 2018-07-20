@@ -28,11 +28,14 @@ function commentService(socket) {
 
         commentInfo['id'] = ret.insertId;
         const notification = notificationTable.createNotificationObject('comment', commentInfo);
-        notificationTable.insertNotification(notification);
+        const ret_ = await notificationTable.insertNotification(notification);
 
         if (!socketMap.has(commentInfo.listOwnerToken)) return;
+        notification['id'] = ret_.insertId;
+        const notificationInfo = await notificationTable.formatNotification(notification);
+        console.log(notificationInfo);
         const informSocket = socketMap.get(commentInfo.listOwnerToken);
-        informSocket.emit('newNotification', notification);
+        informSocket.emit('newNotification', notificationInfo);
     });
 
     socket.on('deleteComment', async (commentInfo) => {
