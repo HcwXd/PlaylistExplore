@@ -45,7 +45,41 @@ a {
     transition: all 0.3s ease 0.6s;
     box-shadow: 0 3px 14px -1px rgba(0, 0, 0, 0.18); }
     .nav_wrap .nav_noti_btn .noti_wrap {
-      position: absolute; }
+      display: none;
+      position: absolute;
+      top: 180%;
+      background-color: #f2f2f2;
+      color: rgba(117, 117, 117, 0.7);
+      box-shadow: 0 3px 14px -1px rgba(0, 0, 0, 0.18);
+      border-radius: 5px;
+      width: 260px; }
+      .nav_wrap .nav_noti_btn .noti_wrap .noti_square {
+        position: absolute;
+        width: 14px;
+        height: 14px;
+        background-color: #f2f2f2;
+        top: -7px;
+        left: calc(50% - 7px);
+        transform: rotate(45deg); }
+      .nav_wrap .nav_noti_btn .noti_wrap li {
+        padding: 10px;
+        list-style: none;
+        display: flex;
+        align-items: center;
+        cursor: pointer; }
+        .nav_wrap .nav_noti_btn .noti_wrap li:hover {
+          opacity: 0.7; }
+        .nav_wrap .nav_noti_btn .noti_wrap li .name {
+          display: inline-block;
+          font-size: 16px; }
+          .nav_wrap .nav_noti_btn .noti_wrap li .name .highlight {
+            color: #646464; }
+        .nav_wrap .nav_noti_btn .noti_wrap li .avatar {
+          display: inline-block;
+          height: 25px;
+          width: 25px;
+          border-radius: 100%;
+          margin-right: 10px; }
   .nav_wrap .nav_noti_btn-active {
     background-color: rgba(0, 255, 0, 0.3);
     color: #bebebe; }
