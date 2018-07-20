@@ -21,6 +21,16 @@ async function getCommentNotification(refferenceIndex) {
     return commentNotificationInfo[0];
 }
 
+async function getLikeNotification(refferenceIndex) {
+    const sql =
+        'SELECT u.userName as triggerName, u.avatar as triggeavatar, s.token as listOwnerToken, l.listId, l.songIndex \
+                 FROM user u, songList s, likeInfo l \
+                 WHERE l.id = ? AND u.token = l.token AND s.listId = l.listId';
+    const query = mysql.format(sql, [refferenceIndex]);
+    const likeNotificationInfo = await getData(query);
+    return likeNotificationInfo;
+}
+
 function createNotificationObject(type, info) {
     const date = fecha.format(new Date(), 'YYYY-MM-DD HH:mm:ss');
     switch (type) {
@@ -86,6 +96,22 @@ async function formatNotification(notification) {
                 songIndex: info.songIndex,
                 content: info.commentContent,
                 date: notification.date,
+            };
+        }
+
+        case 'like': {
+            const info = await getLikeNotification(notification.referenceIndex);
+            return {
+                id: notification.id,
+                isRead: notification.isRead,
+                triggerToken: notification.triggerToken,
+                triggerName: info.triggerName,
+                triggerAvatar: info.triggerAvatar,
+                type: 'like',
+                listOwnerToken: info.listOwnerToken,
+                listId: info.listId,
+                songIndex: info.songIndex,
+                date: date,
             };
         }
     }
@@ -232,5 +258,3 @@ module.exports = {
     getLatestNotification,
     formatNotification,
 };
-
-getLatestNotification('1819883341429439', new Date());

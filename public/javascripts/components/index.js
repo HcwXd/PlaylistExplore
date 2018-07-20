@@ -126,8 +126,6 @@ window.addEventListener('keyup', (e) => {
         document.body.innerHTML = '';
     }
 });
-<<<<<<< HEAD
-=======
 
 socket.on('newNotification', (notification) => {
     console.log(notification);
@@ -137,4 +135,3 @@ socket.emit('getLatestNotification', new Date());
 socket.on('getLatestNotification', (notificationList) => {
     console.log(notificationList);
 });
->>>>>>> 75c81a79cf13f6769edab8745b8ff857bcbe2fa1

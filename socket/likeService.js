@@ -11,10 +11,13 @@ function likeService(socket) {
 
         likeInfo['id'] = ret.insertId;
         const notification = notificationTable.createNotificationObject('like', likeInfo);
-        notificationTable.insertNotification(notification);
+        const ret_ = notificationTable.insertNotification(notification);
 
         if (!socketMap.has(likeInfo.listOwnerToken)) return;
 
+        notification['id'] = ret_.insertId;
+        const notificationInfo = await notificationTable.formatNotification(notification);
+        console.log(notificationInfo);
         const informSocket = socketMap.get(likeInfo.listOwnerToken);
         informSocket.emit('newNotification', notification);
     });
@@ -40,7 +43,7 @@ function likeService(socket) {
     socket.on('getLikeStatus', async (songInfo) => {
         const token = socket.handshake.session.token;
         songInfo[token] = token;
-        const bool = await checkLikeExist(songInfo);
+        const bool = await likeTable.checkLikeExist(songInfo);
         socket.emit('getLikeStatus', bool);
     });
 }
