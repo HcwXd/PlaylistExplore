@@ -1,16 +1,19 @@
-const sharedsession = require("express-socket.io-session");
+const sharedsession = require('express-socket.io-session');
 const ytAPIService = require('./ytAPIService');
 const songlistService = require('./songlistService');
 const commentService = require('./commentService');
 const userService = require('./userService');
 const relationService = require('./relationService');
+const likeService = require('./likeService');
 const Socket = require('socket.io');
 
-function initializeSocket(server, session){
+function initializeSocket(server, session) {
     const io = Socket(server);
-    io.use(sharedsession(session, {
-        autoSave:true
-    }));
+    io.use(
+        sharedsession(session, {
+            autoSave: true,
+        })
+    );
 
     io.on('connect', async (socket) => {
         ytAPIService(socket);
@@ -18,6 +21,7 @@ function initializeSocket(server, session){
         userService(socket);
         relationService(socket);
         commentService(socket);
+        likeService(socket);
     });
 
     return io;

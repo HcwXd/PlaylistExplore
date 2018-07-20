@@ -2,6 +2,7 @@ const { userTable, commentTable, songTable, relationTable, songListTable, likeTa
 
 function likeService(socket) {
     socket.on('newLike', async (likeInfo) => {
+        console.log(likeInfo);
         songTable.addLike(likeInfo);
         const ret = await likeTable.addLikeInfo(likeInfo);
 
@@ -36,3 +37,5 @@ function likeService(socket) {
         socket.emit('getLikeStatus', bool);
     });
 }
+
+module.exports = likeService;
