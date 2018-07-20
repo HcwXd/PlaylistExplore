@@ -131,6 +131,8 @@ html, body {
         cursor: pointer; }
         .content_wrap .player_wrap .song_stats .like_btn:hover {
           opacity: 0.5; }
+      .content_wrap .player_wrap .song_stats .like_btn-active {
+        color: #FF6700; }
       .content_wrap .player_wrap .song_stats .like_number {
         margin-left: 5px;
         line-height: 24px; }

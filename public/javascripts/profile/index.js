@@ -136,19 +136,45 @@ function renderPlayerInfo(ownerInfo) {
 }
 
 function renderNewSongStatsAndDes() {
-    let song_stats_html = `
-        <div class="like_btn">♥</div>
-        <div class="like_number">${ownerInfoState.playlistInfo.songList[nowPlayingIndexState].like}</div>
-    `;
-    document.querySelector('.song_stats').innerHTML = song_stats_html;
-
-    document.querySelector('.like_btn').addEventListener('click', addLike);
+    songInfo = {
+        listId: ownerInfoState.playlistInfo.listId,
+        songIndex: nowPlayingIndexState,
+        token: userInfoState.token,
+    };
+    socket.emit('getLikeStatus', songInfo);
+    // socket.emit('getLikeList', songInfo);
 
     let song_des_html = `
         <div class="song_date">${ownerInfoState.playlistInfo.date.substr(0, 10)}</div>
         <div class="song_text">${ownerInfoState.playlistInfo.songList[nowPlayingIndexState].des}</div>
     `;
     document.querySelector('.song_des').innerHTML = song_des_html;
+}
+
+socket.on('getLikeStatus', (isLiked) => {
+    renderLikeStatus(isLiked);
+});
+
+socket.on('getLikeList', (likeList) => {
+    // const likeList = likeTable.getLikeList(songInfo);
+});
+
+function renderLikeStatus(isLiked) {
+    let song_stats_html;
+
+    if (isLiked) {
+        song_stats_html = `
+            <div class="like_btn like_btn-active">♥</div>
+            <div class="like_number">${ownerInfoState.playlistInfo.songList[nowPlayingIndexState].like}</div>
+        `;
+    } else {
+        song_stats_html = `
+            <div class="like_btn">♥</div>
+            <div class="like_number">${ownerInfoState.playlistInfo.songList[nowPlayingIndexState].like}</div>
+        `;
+    }
+    document.querySelector('.song_stats').innerHTML = song_stats_html;
+    document.querySelector('.like_btn').addEventListener('click', addLike);
 }
 
 function renderNewComment() {
