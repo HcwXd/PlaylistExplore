@@ -1,5 +1,5 @@
 const { notificationTable } = require('./database');
-
+const fecha = require('fecha');
 /*
 id
 | type
@@ -11,8 +11,13 @@ id
 */
 
 function notificationService(socket) {
-    socket.on('getNotification', (info) => {
-        const notificationList = await notificationTable.getLatestNotification(info.token, info.date);
-        socket.emit('getNotification', notificationList);
-    })
+    socket.on('getLatestNotification', async (date) => {
+        date = fecha.format(new Date(date), 'YYYY-MM-DD HH:mm:ss');
+        if (!socket.handshake.session.token) return;
+        const notificationList = await notificationTable.getLatestNotification(socket.handshake.session.token, date);
+        console.log(notificationList);
+        socket.emit('getLatestNotification', notificationList);
+    });
 }
+
+module.exports = notificationService;

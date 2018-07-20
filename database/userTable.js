@@ -17,7 +17,7 @@ async function userExist(token) {
 }
 
 async function getUserInfo(token) {
-    const sql = 'SELECT * FROM user WHERE token = ?';
+    const sql = 'SELECT userName, token, avatar, bio FROM user WHERE token = ?';
     const query = mysql.format(sql, token);
     const userInfo = await getData(query);
     console.log(userInfo);
@@ -45,7 +45,7 @@ async function confirmUser(userInfo) {
 }
 
 async function getUserList() {
-    const query = 'SELECT * FROM user';
+    const query = 'SELECT userName, token, avatar FROM user';
     const ret = await getData(query);
     return ret;
 }

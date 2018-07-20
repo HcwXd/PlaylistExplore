@@ -5,6 +5,7 @@ const commentService = require('./commentService');
 const userService = require('./userService');
 const relationService = require('./relationService');
 const likeService = require('./likeService');
+const notificationService = require('./notificationService');
 const Socket = require('socket.io');
 const socketMap = require('./socketMap');
 
@@ -27,6 +28,7 @@ function initializeSocket(server, session) {
         relationService(socket);
         commentService(socket);
         likeService(socket);
+        notificationService(socket);
 
         socket.on('disconnect', () => {
             if (socket.handshake.session.token) {

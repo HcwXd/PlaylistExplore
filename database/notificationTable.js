@@ -1,5 +1,6 @@
 const { db, getData, applyQuery, multipleGetData } = require('./DB');
 const mysql = require('mysql');
+const fecha = require('fecha');
 /*
 id
 | type
@@ -11,6 +12,7 @@ id
 */
 
 function createNotificationObject(type, info) {
+    const date = fecha.format(new Date(), 'YYYY-MM-DD HH:mm:ss');
     switch (type) {
         case 'like': {
             return {
@@ -19,7 +21,7 @@ function createNotificationObject(type, info) {
                 receiverToken: info.listOwnerToken,
                 triggerToken: info.token,
                 referenceIndex: info.id,
-                date: new Date(),
+                date: date,
             };
         }
 
@@ -30,7 +32,7 @@ function createNotificationObject(type, info) {
                 receiverToken: info.listOwnerToken,
                 triggerToken: info.commentToken,
                 referenceIndex: info.id,
-                date: new Date(),
+                date: date,
             };
         }
 
@@ -41,7 +43,7 @@ function createNotificationObject(type, info) {
                 receiverToken: info.listOwnerToken,
                 triggerToken: info.userToken,
                 referenceIndex: info.id,
-                date: new Date(),
+                date: date,
             };
         }
     }
@@ -72,17 +74,22 @@ async function tagRead(notificationInfo) {
 
 async function getLatestNotificationMeta(receiverToken, date) {
     const sql = 'SELECT * FROM notification WHERE receiverToken = ? AND date < ? \
-                 ORDER BY date';
+                 ORDER BY date DESC';
     const insert = [receiverToken, date];
     const query = mysql.format(sql, insert);
     const notificationList = await getData(query);
     return notificationList;
 }
 
-function unionQuery(query, table, columnName, id) {
-    let sql = 'SELECT * FROM ?? WHERE ?? = ?';
-    const insert = [table, columnName, id];
-    let newQuery = mysql.format(sql, insert);
+function unionQuery(query, table, tokenColumn, idColumn, id) {
+    let newQuery = '';
+    if (table === 'likeInfo') {
+        newQuery = `SELECT ${table}.*, user.userName, user.avatar, songList.token as listOwnerToken FROM ${table}, user, songList
+                    WHERE ${table}.${idColumn} = ${id} AND ${table}.${tokenColumn} = user.token AND ${table}.listId = songList.listId`;
+    } else {
+        newQuery = `SELECT ${table}.*, user.userName, user.avatar FROM ${table}, user
+                    WHERE ${table}.${idColumn} = ${id} AND ${table}.${tokenColumn} = user.token`;
+    }
     if (query === 'empty') return newQuery;
     return query + ' UNION ' + newQuery;
 }
@@ -92,16 +99,52 @@ function mergeData(notificationList, likeData, commentData, relationData) {
     let likeIndex = 0,
         commentIndex = 0,
         relationIndex = 0;
+
     notificationList.forEach((element, index) => {
+        const date = fecha.format(new Date(element.date), 'YYYY-MM-DD HH:mm:ss');
         if (element.type === 'like') {
-            notificationInfo.push(likeData[likeIndex++]);
+            const likeInfo = likeData[likeIndex++];
+            notificationInfo.push({
+                id: element.id,
+                isRead: element.isRead,
+                triggerToken: likeInfo.token,
+                triggerName: likeInfo.userName,
+                triggerAvatar: likeInfo.avatar,
+                type: 'like',
+                listOwnerToken: likeInfo.listOwnerToken,
+                listId: likeInfo.listId,
+                songIndex: likeInfo.songIndex,
+                date: date,
+            });
         } else if (element.type === 'comment') {
-            notificationInfo.push(commentData[commentIndex++]);
+            const commentInfo = commentData[commentIndex + 1];
+            notificationInfo.push({
+                id: element.id,
+                isRead: element.isRead,
+                triggerToken: commentInfo.commentToken,
+                triggerName: commentInfo.userName,
+                triggerAvatar: commentInfo.avatar,
+                type: 'comment',
+                listOwnerToken: commentInfo.listOwnerToken,
+                listId: commentInfo.listId,
+                songIndex: commentInfo.songIndex,
+                content: commentInfo.commentContent,
+                date: date,
+            });
         } else if (element.type === 'follow') {
-            notificationInfo.push(relationData[relationIndex++]);
+            const relationInfo = relationData[relationIndex++];
+            notificationInfo.push({
+                id: element.id,
+                isRead: element.isRead,
+                triggerToken: relationInfo.token,
+                triggerName: relationInfo.userName,
+                triggerAvatar: relationInfo.avatar,
+                type: 'follow',
+                date: date,
+            });
         }
-        notificationInfo[index]['type'] = element.type;
     });
+    console.log(notificationInfo);
     return notificationInfo;
 }
 
@@ -111,18 +154,22 @@ async function getNotificationInfo(notificationList) {
     let relationQuery = 'empty';
     notificationList.forEach((element) => {
         if (element.type === 'like') {
-            likeQuery = unionQuery(likeQuery, 'likeInfo', 'id', element.referenceIndex);
-            console.log(likeQuery);
+            likeQuery = unionQuery(likeQuery, 'likeInfo', 'token', 'id', element.referenceIndex);
         } else if (element.type === 'comment') {
-            commentQuery = unionQuery(commentQuery, 'comment', 'commentIndex', element.referenceIndex);
-            console.log(commentQuery);
+            commentQuery = unionQuery(commentQuery, 'comment', 'commentToken', 'commentIndex', element.referenceIndex);
         } else if (element.type === 'follow') {
-            relationQuery = unionQuery(relationQuery, 'relation', 'id', element.referenceIndex);
-            console.log(relationQuery);
+            relationQuery = unionQuery(relationQuery, 'relation', 'token', 'id', element.referenceIndex);
         }
     });
 
-    const data = await multipleGetData([getData(likeQuery), getData(commentQuery), getData(relationQuery)]);
+    const promiseArray = [];
+    if (likeQuery !== 'empty') promiseArray.push(getData(likeQuery));
+    else promiseArray.push({});
+    if (commentQuery !== 'empty') promiseArray.push(getData(commentQuery));
+    else promiseArray.push({});
+    if (relationQuery !== 'empty') promiseArray.push(getData(relationQuery));
+    else promiseArray.push({});
+    const data = await multipleGetData(promiseArray);
     const [likeData, commentData, relationData] = data;
     return await mergeData(notificationList, likeData, commentData, relationData);
 }
@@ -130,7 +177,7 @@ async function getNotificationInfo(notificationList) {
 async function getLatestNotification(receiverToken, date) {
     const notificationList = await getLatestNotificationMeta(receiverToken, date);
     const notificationInfo = await getNotificationInfo(notificationList);
-    console.log(notificationInfo);
+    return notificationInfo;
 }
 
 module.exports = {
@@ -139,4 +186,7 @@ module.exports = {
     tagRead,
     getNotificationInfo,
     createNotificationObject,
+    getLatestNotification,
 };
+
+getLatestNotification('1819883341429439', new Date());
