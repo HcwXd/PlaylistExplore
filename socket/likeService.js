@@ -40,7 +40,7 @@ function likeService(socket) {
     socket.on('getLikeStatus', async (songInfo) => {
         const token = socket.handshake.session.token;
         songInfo[token] = token;
-        const bool = await checkLikeExist(songInfo);
+        const bool = await likeTable.checkLikeExist(songInfo);
         socket.emit('getLikeStatus', bool);
     });
 }
