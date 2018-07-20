@@ -1,4 +1,5 @@
 const { userTable, commentTable, songTable, relationTable, songListTable, likeTable, notificationTable } = require('./database');
+const socketMap = require('./socketMap');
 
 async function emitLatestComment(socket, listOwnerToken, songIndex, listId) {
     songInfo = {
@@ -28,6 +29,10 @@ function commentService(socket) {
         commentInfo['id'] = ret.insertId;
         const notification = notificationTable.createNotificationObject('comment', commentInfo);
         notificationTable.insertNotification(notification);
+
+        if (!socketMap.has(commentInfo.listOwnerToken)) return;
+        const informSocket = socketMap.get(commentInfo.listOwnerToken);
+        informSocket.emit('newNotification', notification);
     });
 
     socket.on('deleteComment', async (commentInfo) => {

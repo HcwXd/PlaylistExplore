@@ -1,7 +1,9 @@
 const { userTable, commentTable, songTable, relationTable, songListTable, likeTable, notificationTable } = require('./database');
+const socketMap = require('./socketMap');
 
 function likeService(socket) {
     socket.on('newLike', async (likeInfo) => {
+        console.log(likeInfo);
         songTable.addLike(likeInfo);
         const ret = await likeTable.addLikeInfo(likeInfo);
 
@@ -10,9 +12,15 @@ function likeService(socket) {
         likeInfo['id'] = ret.insertId;
         const notification = notificationTable.createNotificationObject('like', likeInfo);
         notificationTable.insertNotification(notification);
+
+        if (!socketMap.has(likeInfo.listOwnerToken)) return;
+
+        const informSocket = socketMap.get(likeInfo.listOwnerToken);
+        informSocket.emit('newNotification', notification);
     });
 
     socket.on('unlike', async (unlikeInfo) => {
+        const likeId = await likeTable.getLikeId(unlikeInfo);
         likeTable.deleteLikeInfo(unlikeInfo);
         songTable.deleteLike(unlikeInfo);
 
@@ -20,7 +28,7 @@ function likeService(socket) {
 
         notificationTable.deleteNotification({
             type: 'like',
-            referenceIndex: unlikeInfo.id,
+            referenceIndex: likeId,
         });
     });
 
@@ -36,3 +44,5 @@ function likeService(socket) {
         socket.emit('getLikeStatus', bool);
     });
 }
+
+module.exports = likeService;

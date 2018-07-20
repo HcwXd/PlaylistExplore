@@ -93,3 +93,7 @@ window.addEventListener('keyup', (e) => {
         document.body.innerHTML = '';
     }
 });
+
+socket.on('newNotification', (notification) => {
+    console.log(notification);
+});

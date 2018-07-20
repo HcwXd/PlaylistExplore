@@ -346,6 +346,7 @@ function addLike() {
         songIndex,
         token,
     };
+    console.log(likeInfo);
     socket.emit('newLike', likeInfo);
 
     ownerInfoState.playlistInfo.songList[nowPlayingIndexState].like += 1;

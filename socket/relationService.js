@@ -1,5 +1,6 @@
 const { userTable, commentTable, songTable, relationTable, songListTable, likeTable, notificationTable } = require('./database');
 const fecha = require('fecha');
+const socketMap = require('./socketMap');
 
 function relationService(socket) {
     socket.on('followUser', async (relation) => {
@@ -7,15 +8,23 @@ function relationService(socket) {
         relation['id'] = ret.insertId;
 
         const notification = notificationTable.createNotificationObject('follow', relation);
+        console.log(notification);
         notificationTable.insertNotification(notification);
+
+        if (!socketMap.has(relation.listOwnerToken)) return;
+        const informSocket = socketMap.get(relation.listOwnerToken);
+        informSocket.emit('newNotification', notification);
     });
 
     socket.on('unfollowUser', async (relation) => {
+        const relationId = await relationTable.getRelationId(relation.userToken, relation.listOwnerToken);
         relationTable.deleteRelation(relation.userToken, relation.listOwnerToken);
+
+        console.log(relationId);
 
         notificationTable.deleteNotification({
             type: 'follow',
-            referenceIndex: relation.id,
+            referenceIndex: relationId,
         });
     });
 
