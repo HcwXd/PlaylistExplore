@@ -29,6 +29,8 @@ function commentService(socket) {
         commentInfo['id'] = ret.insertId;
         const notification = notificationTable.createNotificationObject('comment', commentInfo);
         notificationTable.insertNotification(notification);
+
+        if (!socketMap.has(commentInfo.listOwnerToken)) return;
         const informSocket = socketMap.get(commentInfo.listOwnerToken);
         informSocket.emit('newNotification', notification);
     });

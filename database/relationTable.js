@@ -28,8 +28,17 @@ async function isFriend(token, followToken) {
     return Boolean(result.length);
 }
 
+async function getRelationId(token, followToken) {
+    const sql = 'SELECT id from relation WHERE token = ? AND followToken = ?';
+    const insert = [token, followToken];
+    const query = mysql.format(sql, insert);
+    const ret = await getData(query);
+    return ret[0].id;
+}
+
 module.exports = {
     createRelation,
     deleteRelation,
     isFriend,
+    getRelationId,
 };
