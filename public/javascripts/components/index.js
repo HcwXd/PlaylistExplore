@@ -1,14 +1,43 @@
-let userList;
+// Nav Notification
+
+let notificationState = [];
+
+socket.on('newNotification', (socketOn_notification) => {
+    console.log(socketOn_notification);
+    let renderFormatNoti = socketOn_notification.map((rawData) => {
+        let singleNotification = transformRawNotiToRenderFormat(socketOn_notification);
+        return singleNotification;
+    });
+
+    notificationState.push(...renderFormatNoti);
+
+    renderNotiMessage(notificationState);
+});
+
+function transformRawNotiToRenderFormat(rawNotiData) {
+    singleNotification = {
+        avatar,
+        url,
+        message,
+        isRead,
+    };
+
+    return singleNotification;
+}
+
+function renderNotiMessage(notificationState) {}
+
+// Nav Search
+
+let userListState;
 socket.emit('getUserList');
 socket.on('getUserList', (socketOn_userList) => {
-    userList = [...socketOn_userList];
-    console.log(userList);
+    userListState = [...socketOn_userList];
 });
 let isShowing = false;
 const nav_search_btn_node = document.querySelector('.nav_search_btn');
 nav_search_btn_node.addEventListener('mouseenter', showNavSearchWrap);
 nav_search_btn_node.addEventListener('mouseout', () => (isShowing = false));
-
 nav_search_btn_node.addEventListener('transitionend', (e) => isShowing && showNavSearchInput(e));
 
 function showNavSearchWrap() {
@@ -44,7 +73,7 @@ function displayMatches() {
     }
     let suggestion_wrap_node = document.querySelector('.suggestion_wrap');
     suggestion_wrap_node.className = 'suggestion_wrap';
-    const matchArray = findMatches(this.value, userList);
+    const matchArray = findMatches(this.value, userListState);
     const html = matchArray
         .map((user) => {
             const regex = new RegExp(this.value, 'gi');
@@ -69,6 +98,8 @@ function findMatches(wordToMatch, userList) {
     });
 }
 
+// Hide Nav Wrap
+
 document.addEventListener('click', (evt) => {
     let targetElement = evt.target;
     do {
@@ -81,6 +112,8 @@ document.addEventListener('click', (evt) => {
     hideNavSearchInput();
 });
 
+// Egg
+
 let clean = 'ArrowUpArrowUpArrowDownArrowDownArrowLeftArrowRightArrowLeftArrowRightba';
 let press_record = [];
 window.addEventListener('keyup', (e) => {
@@ -92,8 +125,4 @@ window.addEventListener('keyup', (e) => {
         alert('Bye Bye!');
         document.body.innerHTML = '';
     }
-});
-
-socket.on('newNotification', (notification) => {
-    console.log(notification);
 });
