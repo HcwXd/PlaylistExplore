@@ -31,6 +31,13 @@ async function getLikeNotification(refferenceIndex) {
     return likeNotificationInfo[0];
 }
 
+async function getFollowNotificaiton(triggerToken) {
+    const sql = 'SELECT userName as triggerName, avatar as triggerAvatar FROM user WHERE token = ?';
+    const query = mysql.format(sql, [triggerToken]);
+    const followNotificationInfo = await getData(query);
+    return followNotificationInfo[0];
+}
+
 function createNotificationObject(type, info) {
     const date = fecha.format(new Date(), 'YYYY-MM-DD HH:mm:ss');
     switch (type) {
@@ -97,6 +104,7 @@ async function formatNotification(notification) {
                 content: info.commentContent,
                 date: notification.date,
             };
+            break;
         }
 
         case 'like': {
@@ -111,6 +119,20 @@ async function formatNotification(notification) {
                 listOwnerToken: info.listOwnerToken,
                 listId: info.listId,
                 songIndex: info.songIndex,
+                date: notification.date,
+            };
+            break;
+        }
+
+        case 'follow': {
+            const info = await getFollowNotificaiton(notification.triggerToken);
+            return {
+                id: notification.id,
+                isRead: notification.isRead,
+                triggerToken: notification.triggerToken,
+                triggerName: info.triggerName,
+                triggerAvatar: info.triggerAvatar,
+                type: 'follow',
                 date: notification.date,
             };
         }
