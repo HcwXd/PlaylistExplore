@@ -97,3 +97,8 @@ window.addEventListener('keyup', (e) => {
 socket.on('newNotification', (notification) => {
     console.log(notification);
 });
+
+socket.emit('getLatestNotification', new Date());
+socket.on('getLatestNotification', (notificationList) => {
+    console.log(notificationList);
+});
