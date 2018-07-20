@@ -9,11 +9,14 @@ function relationService(socket) {
 
         const notification = notificationTable.createNotificationObject('follow', relation);
         console.log(notification);
-        notificationTable.insertNotification(notification);
+        const ret_ = await notificationTable.insertNotification(notification);
 
         if (!socketMap.has(relation.listOwnerToken)) return;
+        notification.id = ret_.insertId;
+        const notificationInfo = await notificationTable.formatNotification(notification);
+        console.log(notificationInfo);
         const informSocket = socketMap.get(relation.listOwnerToken);
-        informSocket.emit('newNotification', notification);
+        informSocket.emit('newNotification', notificationInfo);
     });
 
     socket.on('unfollowUser', async (relation) => {
