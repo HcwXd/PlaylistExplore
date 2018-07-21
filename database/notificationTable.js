@@ -39,6 +39,7 @@ async function getFollowNotificaiton(triggerToken) {
 }
 
 function createNotificationObject(type, info) {
+    console.log(info);
     const date = fecha.format(new Date(), 'YYYY-MM-DD HH:mm:ss');
     switch (type) {
         case 'like': {
@@ -94,9 +95,9 @@ async function formatNotification(notification) {
             return {
                 id: notification.id,
                 isRead: notification.isRead,
-                triggerToken: notification.triggerAvatar,
+                triggerToken: notification.triggerToken,
                 triggerName: info.triggerName,
-                triggerAvatar: info.triggeavatar,
+                triggerAvatar: info.triggerAvatar,
                 type: 'comment',
                 listOwnerToken: info.listOwnerToken,
                 listId: info.listId,
