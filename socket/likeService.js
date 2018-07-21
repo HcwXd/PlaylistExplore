@@ -27,7 +27,7 @@ function likeService(socket) {
         likeTable.deleteLikeInfo(unlikeInfo);
         songTable.deleteLike(unlikeInfo);
 
-        if (unlikeInfo.token === likeInfo.listOwnerToken) return;
+        if (unlikeInfo.token === unlikeInfo.listOwnerToken) return;
 
         notificationTable.deleteNotification({
             type: 'like',
