@@ -1,32 +1,76 @@
 // Nav Notification
-
+console.log('// Nav Notification');
 let notificationState = [];
 
-socket.on('newNotification', (socketOn_notification) => {
-    console.log(socketOn_notification);
-    let renderFormatNoti = socketOn_notification.map((rawData) => {
-        let singleNotification = transformRawNotiToRenderFormat(socketOn_notification);
-        return singleNotification;
+socket.emit('getLatestNotification', new Date());
+socket.on('getLatestNotification', (socketOn_notificationList) => {
+    console.log('// Nav Notification');
+    console.log(socketOn_notificationList);
+    let formatNoti = socketOn_notificationList.map((rawNotiData) => {
+        return transformRawNotiToRenderFormat(rawNotiData);
     });
 
-    notificationState.push(...renderFormatNoti);
+    notificationState.push(...formatNoti);
 
     renderNotiMessage(notificationState);
+    console.log(notificationState);
 });
 
 function transformRawNotiToRenderFormat(rawNotiData) {
-    singleNotification = {
-        avatar,
-        url,
-        message,
-        isRead,
-    };
+    switch (rawNotiData.type) {
+        case 'like':
+            return createLikeNoti(rawNotiData);
+            break;
+        case 'follow':
+            return createFollowNoti(rawNotiData);
+
+            break;
+        case 'comment':
+            return createCommentNoti(rawNotiData);
+            break;
+        default:
+            break;
+    }
+
+    function createLikeNoti(rawNotiData) {
+        let url = `/profile?id=${rawNotiData.triggerToken}&list=${rawNotiData.listOwnerToken}&song=${rawNotiData.songIndex}`;
+        let message = `${rawNotiData.triggerName} 對你的貼文按心`;
+        return {
+            avatar: rawNotiData.triggerAvatar,
+            url,
+            message,
+            isRead: rawNotiData.isRead,
+        };
+    }
+    function createFollowNoti(rawNotiData) {
+        let url = `/profile?id=${rawNotiData.triggerToken}&list=-1`;
+        let message = `${rawNotiData.triggerName} 已經開始追蹤你`;
+        return {
+            avatar: rawNotiData.triggerAvatar,
+            url,
+            message,
+            isRead: rawNotiData.isRead,
+        };
+    }
+    function createCommentNoti(rawNotiData) {
+        let url = `/profile?id=${rawNotiData.triggerToken}&list=${rawNotiData.listOwnerToken}&song=${rawNotiData.songIndex}`;
+        let message = `${rawNotiData.triggerName} 對你的貼文留言`;
+        return {
+            avatar: rawNotiData.triggerAvatar,
+            url,
+            message,
+            isRead: rawNotiData.isRead,
+        };
+    }
 
     return singleNotification;
 }
 
 function renderNotiMessage(notificationState) {}
 
+socket.on('newNotification', (socketOn_notification) => {
+    console.log(socketOn_notification);
+});
 // Nav Search
 
 let userListState;
@@ -125,13 +169,4 @@ window.addEventListener('keyup', (e) => {
         alert('Bye Bye!');
         document.body.innerHTML = '';
     }
-});
-
-socket.on('newNotification', (notification) => {
-    console.log(notification);
-});
-
-socket.emit('getLatestNotification', new Date());
-socket.on('getLatestNotification', (notificationList) => {
-    console.log(notificationList);
 });
