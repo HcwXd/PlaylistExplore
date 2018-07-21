@@ -24,3 +24,8 @@ function signIn() {
 }
 
 signin_btn.addEventListener('click', signIn);
+password_input.addEventListener('keydown', (e) => {
+    if (e.keyCode === 13) {
+        signIn();
+    }
+});
