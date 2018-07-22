@@ -4,19 +4,34 @@ let notificationState = [];
 socket.emit('getLatestNotification', new Date());
 socket.on('getLatestNotification', (socketOn_notificationList) => {
     console.log(socketOn_notificationList);
+    let unreadNotiCount = 0;
     let formatNoti = socketOn_notificationList.map((rawNotiData) => {
+        if (!rawNotiData.isRead) {
+            unreadNotiCount += 1;
+        }
         return transformRawNotiToRenderFormat(rawNotiData);
     });
+    if (unreadNotiCount > 0) {
+        updateNotiBtn(unreadNotiCount);
+    }
 
     notificationState.push(...formatNoti);
 
     document.querySelector('.nav_noti_btn').addEventListener('click', () => {
         document.querySelector('.noti_wrap').classList.add('noti_wrap-active');
     });
-
     renderNotiMessage(notificationState);
     console.log(notificationState);
 });
+
+function updateNotiBtn(unreadNotiCount) {
+    document.querySelector('.nav_noti_btn').classList.add('nav_noti_btn-active');
+    let unread_noti_count_node = document.createElement('div');
+    unread_noti_count_node.innerHTML = unreadNotiCount;
+    unread_noti_count_node.className = 'unread_noti_count';
+    document.querySelector('.nav_noti_btn').appendChild(unread_noti_count_node);
+    document.querySelector('.nav_noti_btn > svg').style.display = 'none';
+}
 
 function transformRawNotiToRenderFormat(rawNotiData) {
     switch (rawNotiData.type) {
