@@ -160,7 +160,7 @@ document.addEventListener('click', (evt) => {
     let targetElement = evt.target;
     do {
         if (targetElement === nav_search_btn_node) {
-            if (document.querySelector('nav_search_btn-hover')) {
+            if (document.querySelector('.nav_search_btn-hover')) {
                 return;
             }
         }
