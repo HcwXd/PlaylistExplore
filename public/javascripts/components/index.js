@@ -1,10 +1,8 @@
 // Nav Notification
-console.log('// Nav Notification');
 let notificationState = [];
 
 socket.emit('getLatestNotification', new Date());
 socket.on('getLatestNotification', (socketOn_notificationList) => {
-    console.log('// Nav Notification');
     console.log(socketOn_notificationList);
     let formatNoti = socketOn_notificationList.map((rawNotiData) => {
         return transformRawNotiToRenderFormat(rawNotiData);
@@ -33,7 +31,7 @@ function transformRawNotiToRenderFormat(rawNotiData) {
     }
 
     function createLikeNoti(rawNotiData) {
-        let url = `/profile?id=${rawNotiData.triggerToken}&list=${rawNotiData.listOwnerToken}&song=${rawNotiData.songIndex}`;
+        let url = `/profile?id=${rawNotiData.listOwnerToken}&list=${rawNotiData.listId}&song=${rawNotiData.songIndex}`;
         let message = `${rawNotiData.triggerName} 對你的貼文按心`;
         return {
             avatar: rawNotiData.triggerAvatar,
@@ -53,7 +51,7 @@ function transformRawNotiToRenderFormat(rawNotiData) {
         };
     }
     function createCommentNoti(rawNotiData) {
-        let url = `/profile?id=${rawNotiData.triggerToken}&list=${rawNotiData.listOwnerToken}&song=${rawNotiData.songIndex}`;
+        let url = `/profile?id=${rawNotiData.listOwnerToken}&list=${rawNotiData.listId}&song=${rawNotiData.songIndex}`;
         let message = `${rawNotiData.triggerName} 對你的貼文留言`;
         return {
             avatar: rawNotiData.triggerAvatar,
@@ -66,11 +64,28 @@ function transformRawNotiToRenderFormat(rawNotiData) {
     return singleNotification;
 }
 
-function renderNotiMessage(notificationState) {}
+function renderNotiMessage(notificationState) {
+    let noti_wrap_node = document.querySelector('.noti_wrap');
+    noti_wrap_node.style.display = 'block';
+    notificationState.map((notiState) => {
+        noti_wrap_node.appendChild(createSingleNotiNode(notiState));
+    });
+    // console.log(noti_node_collection);
+    // noti_wrap_node.appendChild(...noti_node_collection);
+}
 
-socket.on('newNotification', (socketOn_notification) => {
-    console.log(socketOn_notification);
-});
+function createSingleNotiNode(notiState) {
+    let singleNotiNode = document.createElement('li');
+    singleNotiNode.innerHTML = `
+                        <a href="${notiState.url}">
+                            <img class="avatar" src="${notiState.avatar}">
+                            <span class="noti_message">${notiState.message}</span>
+                        </a>
+                    `;
+    return singleNotiNode;
+}
+
+socket.on('newNotification', (socketOn_notification) => {});
 // Nav Search
 
 let userListState;
