@@ -2,15 +2,6 @@ const { db, getData, applyQuery, multipleGetData } = require('./DB');
 const mysql = require('mysql');
 const fecha = require('fecha');
 const emptyPromise = require('empty-promise');
-/*
-id
-| type
-| isRead
-| receiverToken
-| triggerToken
-| referenceIndex
-| date
-*/
 
 async function getCommentNotification(refferenceIndex) {
     const sql =
@@ -76,17 +67,6 @@ function createNotificationObject(type, info) {
         }
     }
 }
-
-/*
-triggerToken triggerName triggerAvatar isRead id
-type
-follow token
-Comment/like
-listOwnerToken listId songIndex
-
-tagRead
-Client: array of notification id
-*/
 
 async function formatNotification(notification) {
     switch (notification.type) {

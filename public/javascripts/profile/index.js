@@ -11,6 +11,7 @@ let player;
 
 socket.emit('getUserInfo');
 socket.on('getUserInfo', (socketOn_userInfo) => {
+    console.log(socketOn_userInfo);
     userInfoState = socketOn_userInfo;
 });
 
