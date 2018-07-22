@@ -83,8 +83,8 @@ function signUp() {
         if (!(email_input.value.length >= 1)) {
             throw new Error('You have to input your email address');
         }
-        if (!reg.test(username_input.value)) {
-            throw new Error('Username must only contain numbers, words and _');
+        if (!email_input.value.includes('@')) {
+            throw new Error('You have to input a valid email address');
         }
         if (!reg.test(password_input.value)) {
             throw new Error('Password must only contain numbers, words and _');
