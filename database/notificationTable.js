@@ -209,7 +209,7 @@ function mergeData(notificationList, likeData, commentData, relationData) {
                 date: date,
             });
         } else if (element.type === 'comment') {
-            const commentInfo = commentData[commentIndex + 1];
+            const commentInfo = commentData[commentIndex++];
             notificationInfo.push({
                 id: element.id,
                 isRead: element.isRead,
