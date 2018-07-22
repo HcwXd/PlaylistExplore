@@ -4,21 +4,22 @@ let notificationState = [];
 socket.emit('getLatestNotification', new Date());
 socket.on('getLatestNotification', (socketOn_notificationList) => {
     console.log(socketOn_notificationList);
-    let unreadNotiCount = 0;
+    let unreadNotiArray = [];
     let formatNoti = socketOn_notificationList.map((rawNotiData) => {
         if (!rawNotiData.isRead) {
-            unreadNotiCount += 1;
+            unreadNotiArray.push(rawNotiData.id);
         }
         return transformRawNotiToRenderFormat(rawNotiData);
     });
-    if (unreadNotiCount > 0) {
-        updateNotiBtn(unreadNotiCount);
+    if (unreadNotiArray.length > 0) {
+        updateNotiBtn(unreadNotiArray.length);
     }
 
     notificationState.push(...formatNoti);
 
     document.querySelector('.nav_noti_btn').addEventListener('click', () => {
         document.querySelector('.noti_wrap').classList.add('noti_wrap-active');
+        socket.emit('tagRead', unreadNotiArray);
     });
     renderNotiMessage(notificationState);
     console.log(notificationState);
@@ -86,7 +87,7 @@ function renderNotiMessage(notificationState) {
 
 function createSingleNotiNode(notiState) {
     let singleNotiNode = document.createElement('li');
-    singleNotiNode.className = 'noti noti-unread';
+    singleNotiNode.className = notiState.isRead ? 'noti' : 'noti noti-unread';
 
     singleNotiNode.innerHTML = `
                         <a href="${notiState.url}">
