@@ -38,7 +38,7 @@ function songlistService(socket) {
                     uploadCover: '',
                 },
             };
-            socket.emit('getOwnerInfo');
+            socket.emit('getOwnerInfo', ret);
             return;
         }
 
