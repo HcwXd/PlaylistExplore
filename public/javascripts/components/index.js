@@ -71,7 +71,8 @@ function renderNotiMessage(notificationState) {
 
 function createSingleNotiNode(notiState) {
     let singleNotiNode = document.createElement('li');
-    singleNotiNode.className = notiState.isRead ? 'noti' : 'noti-unread';
+    singleNotiNode.className = 'noti noti-unread';
+
     singleNotiNode.innerHTML = `
                         <a href="${notiState.url}">
                             <img class="noti_avatar" src="${notiState.avatar}">

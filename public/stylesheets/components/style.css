@@ -62,13 +62,17 @@ a {
         left: calc(50% - 7px);
         transform: rotate(45deg); }
       .nav_wrap .nav_noti_btn .noti_wrap .noti-unread {
-        background-color: #f2f2f2; }
+        border-left: 5px solid green; }
       .nav_wrap .nav_noti_btn .noti_wrap .noti {
         padding: 10px;
         list-style: none;
         display: flex;
         align-items: center;
-        cursor: pointer; }
+        cursor: pointer;
+        border-bottom: 1px solid rgba(60, 60, 60, 0.2);
+        margin-bottom: 1px; }
+        .nav_wrap .nav_noti_btn .noti_wrap .noti:last-child {
+          margin-bottom: 0px; }
         .nav_wrap .nav_noti_btn .noti_wrap .noti:hover {
           opacity: 0.7; }
         .nav_wrap .nav_noti_btn .noti_wrap .noti a {
