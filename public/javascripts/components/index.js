@@ -10,6 +10,10 @@ socket.on('getLatestNotification', (socketOn_notificationList) => {
 
     notificationState.push(...formatNoti);
 
+    document.querySelector('.nav_noti_btn').addEventListener('click', () => {
+        document.querySelector('.noti_wrap').classList.add('noti_wrap-active');
+    });
+
     renderNotiMessage(notificationState);
     console.log(notificationState);
 });
@@ -18,14 +22,10 @@ function transformRawNotiToRenderFormat(rawNotiData) {
     switch (rawNotiData.type) {
         case 'like':
             return createLikeNoti(rawNotiData);
-            break;
         case 'follow':
             return createFollowNoti(rawNotiData);
-
-            break;
         case 'comment':
             return createCommentNoti(rawNotiData);
-            break;
         default:
             break;
     }
@@ -60,25 +60,21 @@ function transformRawNotiToRenderFormat(rawNotiData) {
             isRead: rawNotiData.isRead,
         };
     }
-
-    return singleNotification;
 }
 
 function renderNotiMessage(notificationState) {
     let noti_wrap_node = document.querySelector('.noti_wrap');
-    noti_wrap_node.style.display = 'block';
     notificationState.map((notiState) => {
         noti_wrap_node.appendChild(createSingleNotiNode(notiState));
     });
-    // console.log(noti_node_collection);
-    // noti_wrap_node.appendChild(...noti_node_collection);
 }
 
 function createSingleNotiNode(notiState) {
     let singleNotiNode = document.createElement('li');
+    singleNotiNode.className = notiState.isRead ? 'noti' : 'noti-unread';
     singleNotiNode.innerHTML = `
                         <a href="${notiState.url}">
-                            <img class="avatar" src="${notiState.avatar}">
+                            <img class="noti_avatar" src="${notiState.avatar}">
                             <span class="noti_message">${notiState.message}</span>
                         </a>
                     `;
@@ -86,6 +82,7 @@ function createSingleNotiNode(notiState) {
 }
 
 socket.on('newNotification', (socketOn_notification) => {});
+
 // Nav Search
 
 let userListState;
@@ -140,8 +137,8 @@ function displayMatches() {
             return `
         <a href="/profile?id=${user.token}&list=-1">
             <li>
-                <img class="avatar" src="${user.avatar}">
-                <span class="name">${userList}</span>
+                <img class="search_avatar" src="${user.avatar}">
+                <span class="search_name">${userList}</span>
             </li>
         </a>
       `;
@@ -162,13 +159,24 @@ function findMatches(wordToMatch, userList) {
 document.addEventListener('click', (evt) => {
     let targetElement = evt.target;
     do {
-        if (targetElement == nav_search_btn_node) {
-            return;
+        if (targetElement === nav_search_btn_node) {
+            if (document.querySelector('nav_search_btn-hover')) {
+                return;
+            }
+        }
+        if (targetElement === document.querySelector('.noti_wrap') || targetElement === document.querySelector('.nav_noti_btn')) {
+            if (document.querySelector('.noti_wrap-active')) {
+                return;
+            }
         }
         targetElement = targetElement.parentNode;
     } while (targetElement);
-
-    hideNavSearchInput();
+    if (document.querySelector('.nav_search_btn-hover')) {
+        hideNavSearchInput();
+    }
+    if (document.querySelector('.noti_wrap-active')) {
+        document.querySelector('.noti_wrap').classList.remove('noti_wrap-active');
+    }
 });
 
 // Egg
