@@ -22,7 +22,8 @@ function getData(query) {
             db.query(query, (error, result) => {
                 console.log(query);
                 if (error) console.log(error);
-                console.log(result);
+                //console.log(result);
+                console.log('success');
                 resolve(result);
             });
         } catch (error) {
@@ -35,12 +36,13 @@ function applyQuery(query) {
     return new Promise((resolve, reject) => {
         try {
             db.query(query, (error, result) => {
+                console.log(query);
                 if (error) {
                     console.log(error);
                     return;
                 }
-                console.log(query);
-                console.log(result);
+                console.log('success');
+                //console.log(result);
                 resolve(result);
             });
         } catch (error) {

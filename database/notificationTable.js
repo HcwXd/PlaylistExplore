@@ -1,6 +1,7 @@
 const { db, getData, applyQuery, multipleGetData } = require('./DB');
 const mysql = require('mysql');
 const fecha = require('fecha');
+const emptyPromise = require('empty-promise');
 /*
 id
 | type
@@ -39,7 +40,6 @@ async function getFollowNotificaiton(triggerToken) {
 }
 
 function createNotificationObject(type, info) {
-    console.log(info);
     const date = fecha.format(new Date(), 'YYYY-MM-DD HH:mm:ss');
     switch (type) {
         case 'like': {
@@ -236,7 +236,6 @@ function mergeData(notificationList, likeData, commentData, relationData) {
             });
         }
     });
-    console.log(notificationInfo);
     return notificationInfo;
 }
 
@@ -256,11 +255,14 @@ async function getNotificationInfo(notificationList) {
 
     const promiseArray = [];
     if (likeQuery !== 'empty') promiseArray.push(getData(likeQuery));
-    else promiseArray.push({});
+    else promiseArray.push(emptyPromise().resolve([]));
+
     if (commentQuery !== 'empty') promiseArray.push(getData(commentQuery));
-    else promiseArray.push({});
+    else promiseArray.push(emptyPromise().resolve([]));
+
     if (relationQuery !== 'empty') promiseArray.push(getData(relationQuery));
-    else promiseArray.push({});
+    else promiseArray.push(emptyPromise().resolve([]));
+
     const data = await multipleGetData(promiseArray);
     const [likeData, commentData, relationData] = data;
     return await mergeData(notificationList, likeData, commentData, relationData);
