@@ -1,14 +1,5 @@
 const { notificationTable } = require('./database');
 const fecha = require('fecha');
-/*
-id
-| type
-| isRead
-| receiverToken
-| triggerToken
-| referenceIndex
-| date
-*/
 
 function notificationService(socket) {
     socket.on('getLatestNotification', async (date) => {
@@ -17,6 +8,10 @@ function notificationService(socket) {
         const notificationList = await notificationTable.getLatestNotification(socket.handshake.session.token, date);
         console.log(notificationList);
         socket.emit('getLatestNotification', notificationList);
+    });
+
+    socket.on('tagRead', (idArray) => {
+        notificationTable.tagRead(idArray);
     });
 }
 

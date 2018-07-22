@@ -136,11 +136,9 @@ async function deleteNotification(deletionInfo) {
     applyQuery(query);
 }
 
-async function tagRead(notificationInfo) {
-    const { isRead, type, referenceIndex } = notificationInfo;
-    const sql = 'UPDATE notification SET isRead = ? WHERE type = ? AND referenceIndex = ?';
-    const insert = [isRead, type, referenceIndex];
-    const query = mysql.format(sql, insert);
+async function tagRead(notificationIdArray) {
+    const insert = notificationIdArray.join();
+    const query = `UPDATE notification SET isRead = 1 WHERE id IN (${insert})`;
     applyQuery(query);
 }
 
