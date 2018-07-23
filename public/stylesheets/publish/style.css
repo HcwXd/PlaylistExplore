@@ -26,9 +26,9 @@ html, body {
     z-index: 10;
     width: 450px;
     position: absolute;
-    top: 45%;
+    top: 12px;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translateX(-50%);
     background-color: #0f0f0f;
     color: #bebebe; }
     .content_wrap .publish_wrap .container {
@@ -101,9 +101,9 @@ html, body {
   .content_wrap .import_area_wrap {
     display: none;
     position: absolute;
-    top: 45%;
+    top: 200px;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translateX(-50%);
     border: 1px solid #bebebe;
     width: 75%;
     padding: 35px; }
