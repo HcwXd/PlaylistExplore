@@ -152,13 +152,13 @@ function displayMatches() {
             const regex = new RegExp(this.value, 'gi');
             const userList = user.userName.replace(regex, `<span class="highlight">${this.value}</span>`);
             return `
-        <a href="/profile?id=${user.token}&list=-1">
-            <li>
-                <img class="search_avatar" src="${user.avatar}">
-                <span class="search_name">${userList}</span>
-            </li>
-        </a>
-      `;
+                <a href="/profile?id=${user.token}&list=-1">
+                    <li>
+                        <img class="search_avatar" src="${user.avatar}">
+                        <span class="search_name">${userList}</span>
+                    </li>
+                </a>
+            `;
         })
         .join('');
     suggestion_wrap_node.innerHTML = html;
