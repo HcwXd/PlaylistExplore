@@ -431,31 +431,6 @@ async function uploadImgur() {
             document.querySelector('.loader').classList.add('loader_hide');
             redirectToProfile();
         });
-
-        /*
-        let settings = {
-            async: false,
-            crossDomain: true,
-            processData: false,
-            contentType: false,
-            type: 'POST',
-            url: apiUrl,
-            headers: {
-                Authorization: 'Client-ID ' + apiKey,
-                Accept: 'application/json'
-            },
-            mimeType: 'multipart/form-data'
-        };
-
-        let formData = new FormData();
-        formData.append("image", files[0]);
-        settings.data = formData;
-
-        $.ajax(settings).done(function (response) {
-            responseData = JSON.parse(response);
-            uploadCover = responseData.data.link;
-        });
-        */
     }
 }
 
