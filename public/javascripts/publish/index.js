@@ -335,7 +335,7 @@ function redirectToProfile() {
         name: document.querySelector('.playlist_input_row').value,
         des: document.querySelector('.playlist_des_input').value,
         date: date,
-        songList: changeDragOrderSonglist(),
+        songList: returnChangeDragOrderSonglist(),
         listId: -1,
         uploadCover: uploadCover,
     };
@@ -347,7 +347,7 @@ function redirectToProfile() {
     window.location = `/profile?id=${userToken}&list=-1`;
 }
 
-function changeDragOrderSonglist() {
+function returnChangeDragOrderSonglist() {
     let song_name_node_collection = document.querySelectorAll('.song_info > .song_name');
     let readySongNames = [];
     song_name_node_collection.forEach((node) => {
