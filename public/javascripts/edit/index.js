@@ -325,42 +325,17 @@ function uploadImgur() {
             document.querySelector('.loader').classList.add('loader_hide');
             redirectToProfile();
         });
-
-        /*
-        let settings = {
-            async: false,
-            crossDomain: true,
-            processData: false,
-            contentType: false,
-            type: 'POST',
-            url: apiUrl,
-            headers: {
-                Authorization: 'Client-ID ' + apiKey,
-                Accept: 'application/json'
-            },
-            mimeType: 'multipart/form-data'
-        };
-
-        let formData = new FormData();
-        formData.append("image", files[0]);
-        settings.data = formData;
-
-        $.ajax(settings).done(function (response) {
-            responseData = JSON.parse(response);
-            uploadCover = responseData.data.link;
-        });
-        */
     }
 }
 
 function redirectToProfile() {
-    let date = new Date();
+    // let date = new Date();
     let editPlaylistInfo = {
         name: document.querySelector('.playlist_input_row').value,
         des: document.querySelector('.playlist_des_input').value,
-        date: date,
-        songList: changeDragOrderSonglist(),
-        listId: playlistInfo,
+        date: playlistInfo.date,
+        songList: returnChangeDragOrderSonglist(),
+        listId: playlistInfo.listId,
         uploadCover: uploadCover || playlistInfo.uploadCover,
     };
     console.log(editPlaylistInfo);
@@ -368,10 +343,10 @@ function redirectToProfile() {
     socket.emit('publishNewPlaylist', editPlaylistInfo);
 
     const userToken = window.location.href.split('?id=')[1];
-    window.location = `/profile?id=${userToken}`;
+    window.location = `/profile?id=${userToken}&list=${playlistInfo.listId}`;
 }
 
-function changeDragOrderSonglist() {
+function returnChangeDragOrderSonglist() {
     let song_name_node_collection = document.querySelectorAll('.song_info > .song_name');
     let readySongNames = [];
     song_name_node_collection.forEach((node) => {
