@@ -156,6 +156,7 @@ socket.on('getLikeStatus', (isLiked) => {
     renderLikeStatus(isLiked);
 });
 
+// TODO
 socket.on('getLikeList', (likeList) => {
     // const likeList = likeTable.getLikeList(songInfo);
 });
@@ -403,6 +404,11 @@ function getQueryStringObject() {
 }
 
 document.querySelector('.submit_btn').addEventListener('click', addComment);
+document.querySelector('.comment_text').addEventListener('keydown', (e) => {
+    if (e.keyCode === 13) {
+        addComment();
+    }
+});
 
 socket.on('redirect', (url) => {
     window.location = url;
