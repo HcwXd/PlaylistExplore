@@ -12,7 +12,8 @@ html, body {
   width: 100%;
   height: 100%;
   position: relative;
-  color: #bebebe; }
+  color: #bebebe;
+  font-family: "PingFang TC"; }
 
 .nav_wrap {
   top: 0px;
