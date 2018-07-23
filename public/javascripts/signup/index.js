@@ -74,8 +74,8 @@ async function imageCompression(file) {
 }
 
 function signUp() {
-    var reg = new RegExp('^\\w+$');
-    var avatar;
+    let reg = new RegExp('^\\w+$');
+    let avatar;
     try {
         if (!(username_input.value.length >= 1 && username_input.value.length <= 10)) {
             throw new Error('Username must shorter than 10');
@@ -99,66 +99,85 @@ function signUp() {
         alert(e);
         return;
     }
-    if (avatar_input.files[0]) {
-        avatar = uploadCover;
-    } else {
-        avatar = false;
-    }
     let user = {
         name: username_input.value,
         account: email_input.value,
         password: Crypto.SHA1(password_input.value),
         avatar: avatar,
     };
+
+    if (avatar_input.files[0]) {
+        uploadImgur(user);
+    } else {
+        avatar = false;
+        sentUserSignUpRequest(user);
+    }
+}
+
+function sentUserSignUpRequest(user) {
     socket.emit('userSignUp', user);
 }
 
-avatar_input.addEventListener('change', uploadImgur);
+// avatar_input.addEventListener('change', uploadImgur);
 
-async function uploadImgur() {
-    let files = avatar_input.files;
+async function uploadImgur(user) {
+    let avatar_input_node = document.querySelector('.avatar_input');
 
-    if (files.length) {
-        if (files[0].size > this.dataset.maxSize * 1024) {
+    let files = avatar_input_node.files;
+
+    if (!files.length) {
+        sentUserSignUpRequest(user);
+    } else {
+        if (files[0].size > avatar_input_node.dataset.maxSize * 1024) {
             alert('Please select a smaller file');
             return false;
         }
 
         console.log('Uploading file to Imgur..');
+        console.log(files[0]);
 
         let apiUrl = 'https://api.imgur.com/3/image';
         let apiKey = '50db29122a23727';
 
-        let settings = {
-            async: false,
-            crossDomain: true,
-            processData: false,
-            contentType: false,
-            type: 'POST',
-            url: apiUrl,
-            headers: {
-                Authorization: 'Client-ID ' + apiKey,
-                Accept: 'application/json',
-            },
-            mimeType: 'multipart/form-data',
-        };
+        async function getData3() {
+            var defer = $.Deferred();
 
-        let formData = new FormData();
-        console.log(files[0]);
-        const file = await imageCompression(files[0]);
-        console.log(file);
-        formData.append('image', file);
-        settings.data = formData;
+            let formData = new FormData();
+            const file = await imageCompression(files[0]);
+            console.log(file);
+            formData.append('image', file);
 
-        // Response contains stringified JSON
-        // Image URL available at response.data.link
+            $.ajax({
+                // async: false,
+                crossDomain: true,
+                processData: false,
+                contentType: false,
+                type: 'POST',
+                url: apiUrl,
+                headers: {
+                    Authorization: 'Client-ID ' + apiKey,
+                    Accept: 'application/json',
+                },
+                mimeType: 'multipart/form-data',
+                data: formData,
+                success: function(response) {
+                    defer.resolve(response);
+                },
+            });
 
-        $.ajax(settings).done(function(response) {
+            return defer.promise();
+        }
+        document.querySelector('.loader').classList.remove('loader_hide');
+
+        $.when(getData3()).done(function(response) {
             responseData = JSON.parse(response);
-            uploadCover = responseData.data.link;
+            user.avatar = responseData.data.link;
+            console.log(uploadCover);
+            console.log('Remove');
+            document.querySelector('.loader').classList.add('loader_hide');
+            sentUserSignUpRequest(user);
         });
     }
 }
 
 signup_btn.addEventListener('click', signUp);
-// fb_signup_btn.addEventListener('click', fbSignUp)
