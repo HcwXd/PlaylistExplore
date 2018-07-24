@@ -51,7 +51,7 @@ function getSearchResults() {
 
     try {
         if (!searchQuery) {
-            throw new Error("You must input song's name or url");
+            throw new Error('請輸入歌曲名稱或網址');
         }
     } catch (e) {
         alert(e);
@@ -212,7 +212,7 @@ function deleteSongFromPlaylist() {
 function readyToPublish() {
     try {
         if (playlistInfo.songList.length < 1) {
-            throw new Error('Playlist must contain at least one song');
+            throw new Error('歌單至少要包含一首歌以上');
         }
     } catch (e) {
         alert(e);
@@ -225,15 +225,15 @@ function readyToPublish() {
     <div class="container">
         <div class="cancel">X</div>
         <div class="field">
-            <label>播放清單名稱</label>
+            <label>歌單名稱*</label>
             <input class="playlist_input_row"  type="text">
         </div>
         <div class="field">
-            <label>播放清單描述</label>
+            <label>歌單描述*</label>
             <textarea rows="15" cols="20" class="playlist_des_input" placeholder="Write something about the playlist..."></textarea>
         </div>
         <div class="field">
-            <label>播放清單封面照片（若不更改則不需上傳）</label>
+            <label>歌單封面照片（若不更改則不需上傳）</label>
             <input class="avatar_input" type="file" name="avatar" data-maxSize="5000">
         </div>
         <a class="publish_loader_wrap">
@@ -259,10 +259,10 @@ function readyToPublish() {
 function publish() {
     try {
         if (!document.querySelector('.playlist_input_row').value) {
-            throw new Error('Playlist must have name');
+            throw new Error('請輸入歌單名稱');
         }
         if (!document.querySelector('.playlist_des_input').value) {
-            throw new Error('Playlist must have description');
+            throw new Error('請輸入歌單敘述');
         }
     } catch (e) {
         alert(e);
@@ -280,7 +280,7 @@ function uploadImgur() {
         redirectToProfile();
     } else {
         if (files[0].size > avatar_input_node.dataset.maxSize * 1024) {
-            alert('Please select a smaller file');
+            alert('請選擇一個較小的檔案');
             return false;
         }
 
@@ -430,38 +430,3 @@ function handleDrop(e) {
 function handleDragEnd(e) {
     this.style.borderTop = '0px solid yellow';
 }
-
-let __singleSongInfos = [
-    {
-        url: 'https://www.youtube.com/watch?v=YisGZ_Yl-A8',
-        songName: 'SmashRegz/違法 - 搭便車 ft. Triple T / 三小湯 (Music Video)',
-        cover: 'https://i.ytimg.com/vi/_PmHj0EP6I8/hqdefault.jpg?sqp=-oaymwEYCKgBEF5IVfKriqkDCwgBFQAAiEIYAXAB&rs=AOn4CLDnEUnGLF16aSZnbx2bzSZRxSa6mQ',
-        des: '',
-        like: 0,
-        comments: [],
-    },
-    {
-        url: 'https://www.youtube.com/watch?v=YisGZ_Yl-A8',
-        songName: 'SmashRegz/違法 - 搭便車 ft. Triple T / 三小湯 (Music Video)',
-        cover: 'https://i.ytimg.com/vi/_PmHj0EP6I8/hqdefault.jpg?sqp=-oaymwEYCKgBEF5IVfKriqkDCwgBFQAAiEIYAXAB&rs=AOn4CLDnEUnGLF16aSZnbx2bzSZRxSa6mQ',
-        des: '',
-        like: 0,
-        comments: [],
-    },
-    {
-        url: 'https://www.youtube.com/watch?v=YisGZ_Yl-A8',
-        songName: 'SmashRegz/違法 - 搭便車 ft. Triple T / 三小湯 (Music Video)',
-        cover: 'https://i.ytimg.com/vi/_PmHj0EP6I8/hqdefault.jpg?sqp=-oaymwEYCKgBEF5IVfKriqkDCwgBFQAAiEIYAXAB&rs=AOn4CLDnEUnGLF16aSZnbx2bzSZRxSa6mQ',
-        des: '',
-        like: 0,
-        comments: [],
-    },
-    {
-        url: 'https://www.youtube.com/watch?v=YisGZ_Yl-A8',
-        songName: 'SmashRegz/違法 - 搭便車 ft. Triple T / 三小湯 (Music Video)',
-        cover: 'https://i.ytimg.com/vi/_PmHj0EP6I8/hqdefault.jpg?sqp=-oaymwEYCKgBEF5IVfKriqkDCwgBFQAAiEIYAXAB&rs=AOn4CLDnEUnGLF16aSZnbx2bzSZRxSa6mQ',
-        des: '',
-        like: 0,
-        comments: [],
-    },
-];
