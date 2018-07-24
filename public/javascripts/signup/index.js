@@ -77,23 +77,23 @@ function signUp() {
     let reg = new RegExp('^\\w+$');
     let avatar;
     try {
-        if (!(username_input.value.length >= 1 && username_input.value.length <= 10)) {
-            throw new Error('Username must shorter than 10');
+        if (!(username_input.value.length >= 1 && username_input.value.length <= 20)) {
+            throw new Error('姓名必須大於 1 個字，少於 20 個字');
         }
         if (!(email_input.value.length >= 1)) {
-            throw new Error('You have to input your email address');
+            throw new Error('請輸入有效 Email 地址');
         }
         if (!email_input.value.includes('@')) {
-            throw new Error('You have to input a valid email address');
+            throw new Error('請輸入有效 Email 地址');
         }
         if (!reg.test(password_input.value)) {
-            throw new Error('Password must only contain numbers, words and _');
+            throw new Error('密碼只能包含數字、英文字母以及底線');
         }
         if (password_input.value.length < 6) {
-            throw new Error('Password must longer than 6');
+            throw new Error('密碼長度須大於 6 個字');
         }
         if (password_input.value !== repassword_input.value) {
-            throw new Error('Password confirmed is inconsistent');
+            throw new Error('密碼確認不一致');
         }
     } catch (e) {
         alert(e);
