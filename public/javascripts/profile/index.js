@@ -66,11 +66,11 @@ function renderEditBioBtn() {
     let edit_bio_wrap_node = document.createElement('div');
     edit_bio_wrap_node.innerHTML = `
         <div class="edit_bio_wrap">
-            <div class="edit_bio_btn">edit your bio</div>
+            <div class="edit_bio_btn">編輯自我介紹</div>
             <div class="editing_bio_wrap">
                 <input class="edit_bio_input">
-                <div class="submit_bio_btn">edit</div>
-                <div class="cancel_bio_btn">cancel</div>
+                <div class="submit_bio_btn">確認</div>
+                <div class="cancel_bio_btn">取消</div>
             </div>
         </div>
     `;
@@ -182,7 +182,7 @@ function renderLikeStatus(isLiked) {
 
 function toggleLike() {
     if (userInfoState.token === undefined) {
-        alert('Please log in to express your love');
+        alert('請先登入才能按愛心');
         return;
     }
     let token = userInfoState.token;
@@ -286,7 +286,7 @@ function renderPlaylist(ownerInfo) {
 function renderEditPlaylistBtn() {
     let edit_playlist_btn_node = document.createElement('div');
     edit_playlist_btn_node.className = 'edit_playlist_btn';
-    edit_playlist_btn_node.innerHTML = 'Edit';
+    edit_playlist_btn_node.innerHTML = '編輯歌單';
     document.querySelector('.playlist_info').appendChild(edit_playlist_btn_node);
     edit_playlist_btn_node.addEventListener('click', editPlaylist);
 }
@@ -363,7 +363,7 @@ function onPlayerStateChange(event) {
 
 function addComment() {
     if (!userInfoState.token) {
-        alert('Please log in to add your comment');
+        alert('請先登入才能留言');
         return;
     }
 
