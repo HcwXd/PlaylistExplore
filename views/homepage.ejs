@@ -5,6 +5,10 @@
     <meta charset="UTF-8">
     <title>Playlist Explore - share and discover music</title>
     <link rel="stylesheet" href="/stylesheets/homepage/style.css">
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io();
+    </script>
 </head>
 
 <body>
@@ -61,13 +65,19 @@
             <p>看看我們為你推薦高人氣的音樂清單，在不同的心境嘗試各種不同曲風。</p>
         </div>
         <div class="right_wrap">
+            <a href="/profile?id=@&list=69">
+                <img class="explore_cover" src="https://farm5.staticflickr.com/4244/34084343124_f3a6a04fd6_z.jpg" alt="photo">
+            </a>
         </div>
     </div>
     <div class="section" id="about">
         <div class="about_title">關於 Playlist Explore</div>
-        <p>Playlist Explore 是由兩個熱愛音樂的大學生一二三四五六，七八九十。十一十二十三十四，十五十六十七。
-            <br> 十八十九二十二一二二二三二四二五，二六二七二八二九，三十。一二三四五六，七八九十。十一十二十三十四，十五十六十七。
-            <br> 十八十九二十二一二二二三二四二五，二六二七二八二九，三十。一二三四五六，七八九十。十一十二十三十四，十五十六十七。十八十九二十二一二二二三二四二五，二六二七二八二九，三十。
+        <p>Playlist Explore 是由兩個熱愛音樂的學生，因為想要讓與朋友分享音樂變得更簡單，並且想要接觸更多元的音樂而做的網站。
+            <br>
+            <br> 我們單純想要做一個會讓大家想用，用的舒服的服務，有任何的問題與建議之處都歡迎透過粉絲專頁或任何管道跟我們說。
+            <br>
+            <br> 這整個專案的程式碼開源在
+            <a href="https://github.com/HcwXd/PlaylistExplore" style="color: #FF6700">Github</a> 上，也歡迎在程式碼上給予我們指教，祝使用愉快！
         </p>
     </div>
     <div class="section" id="email">
