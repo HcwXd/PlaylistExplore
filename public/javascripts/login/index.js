@@ -6,10 +6,10 @@ const password_input = document.querySelector('.password_input');
 const signin_btn = document.querySelector('.signup_btn');
 
 socket.on('accountNotExist', () => {
-    alert("Account doesn't exist");
+    alert('帳號不存在');
 });
 socket.on('wrongPassword', () => {
-    alert('Wrong password');
+    alert('密碼錯誤');
 });
 socket.on('signInSuccess', () => {
     window.location = '/explore';
