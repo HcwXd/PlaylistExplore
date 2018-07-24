@@ -30,6 +30,7 @@ async function createPlayList(playlistInfo) {
     /* add song to database */
     playlistInfo['listId'] = ret.insertId;
     await songTable.createMultipleSong(playlistInfo);
+    return ret.insertId;
 }
 
 async function deletePlayList(playlistInfo) {
@@ -48,7 +49,8 @@ async function modifyPlayList(playlistInfo) {
         return;
     }
     await deletePlayList(playlistInfo);
-    await createPlayList(playlistInfo);
+    const ret = await createPlayList(playlistInfo);
+    return ret;
 }
 
 async function getCompleteplaylistInfo(playlistInfo) {
