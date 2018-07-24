@@ -167,8 +167,7 @@ html, body {
   justify-content: space-around;
   align-items: center; }
   #explore .left_wrap {
-    opacity: 0;
-    transform: translateX(-400px);
+    opacity: 1;
     margin-left: 5%;
     height: 80%;
     width: 35%; }
@@ -183,7 +182,12 @@ html, body {
   #explore .right_wrap {
     margin-right: 5%;
     height: 80%;
-    width: 35%; }
+    width: 35%;
+    display: flex;
+    align-items: center; }
+    #explore .right_wrap .explore_cover {
+      width: 600px;
+      margin-left: -50px; }
 
 #about {
   background-color: #282828;

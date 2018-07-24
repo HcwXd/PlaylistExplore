@@ -22,43 +22,45 @@
         <div class="content_wrap">
             <div class="import_area_wrap">
                 <input type="text" class="import_input" placeholder="請匯入可透過連結瀏覽的 Youtube 播放清單">
-                <div class="import_btn">Import</div>
+                <div class="import_btn">匯入</div>
                 <div class="import_cancel">X</div>
             </div>
             <div class="search_area_wrap">
                 <div class="search_area">
                     <input id="search" class="search_input" placeholder="請輸入歌曲名稱或是歌曲的 Youtube 網址">
-                    <div class="search_btn">Search</div>
+                    <div class="search_btn">搜尋</div>
                 </div>
-                <div class="show_import_btn">Import</div>
+                <div class="show_import_btn">匯入</div>
             </div>
             <div class="publishing_wrap">
                 <div class="search_result_wrap">
                     <div class="pick_des">請選擇你要加入的歌曲</div>
                 </div>
                 <div class="add_des_wrap">
-                    <textarea rows="20" cols="20" class="des_input" placeholder="Write something about the song"></textarea>
-                    <div class="add_btn">Add</div>
+                    <textarea rows="20" cols="20" class="des_input" placeholder="請輸入對於歌曲的敘述"></textarea>
+                    <div class="add_btn">加入</div>
                 </div>
                 <div class="playlist_status_wrap">
                     <div class="hidden_block">
                         <div class="pick_des">目前的播放清單</div>
                         <div class="song_list">
                         </div>
-                        <div class="publish_btn">Ready to Publish</div>
+                        <div class="publish_btn">準備發布</div>
                     </div>
                 </div>
             </div>
         </div>
 
         <script src="/javascripts/publish/index.js"></script>
-        <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+            crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+            crossorigin="anonymous"></script>
         <script>
             var suggestCallBack; // global var for autocomplete jsonp
-            $(document).ready(function() {
+            $(document).ready(function () {
                 $("#search").autocomplete({
-                    source: function(request, response) {
+                    source: function (request, response) {
                         $.getJSON("https://suggestqueries.google.com/complete/search?callback=?", {
                             "hl": "en", // Language
                             "ds": "yt", // Restrict lookup to youtube
@@ -66,9 +68,9 @@
                             "q": request.term, // query term
                             "client": "youtube" // force youtube style response, i.e. jsonp
                         });
-                        suggestCallBack = function(data) {
+                        suggestCallBack = function (data) {
                             var suggestions = [];
-                            $.each(data[1], function(key, val) {
+                            $.each(data[1], function (key, val) {
                                 suggestions.push({
                                     "value": val[0]
                                 });
