@@ -11,6 +11,7 @@ function notificationService(socket) {
     });
 
     socket.on('tagRead', (idArray) => {
+        if (idArray.length === 0) return;
         notificationTable.tagRead(idArray);
     });
 }

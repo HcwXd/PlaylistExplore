@@ -5,6 +5,13 @@ const con = mysql.createConnection({
     user: config.user,
     password: config.password,
     database: config.database,
+    typeCast: function castField(field, useDefaultTypeCasting) {
+        if (field.type === 'BIT' && field.length === 1) {
+            var bytes = field.buffer();
+            return bytes[0] === 1;
+        }
+        return useDefaultTypeCasting();
+    },
 });
 
 const db = con;

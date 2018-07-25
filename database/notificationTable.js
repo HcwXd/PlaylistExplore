@@ -144,7 +144,7 @@ async function tagRead(notificationIdArray) {
 
 async function getLatestNotificationMeta(receiverToken, date) {
     const sql = 'SELECT * FROM notification WHERE receiverToken = ? AND date < ? \
-                 ORDER BY date DESC';
+                 ORDER BY date DESC LIMIT 10';
     const insert = [receiverToken, date];
     const query = mysql.format(sql, insert);
     const notificationList = await getData(query);
