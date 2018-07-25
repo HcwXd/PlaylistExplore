@@ -35,7 +35,6 @@ app.use(useSession);
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(function(req, res, next) {
-    console.log(req.session);
     res.locals.token = req.session.token;
     res.locals.userName = req.session.userName;
     res.locals.avatar = req.session.avatar;

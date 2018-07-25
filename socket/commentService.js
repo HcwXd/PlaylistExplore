@@ -36,6 +36,11 @@ function commentService(socket) {
         console.log(notificationInfo);
         const informSocket = socketMap.get(commentInfo.listOwnerToken);
         informSocket.emit('newNotification', notificationInfo);
+
+        if (informSocket.handshake.session.notificationList) {
+            informSocket.handshake.session.notificationList.unshift(notificationInfo);
+            informSocket.handshake.session.save();
+        }
     });
 
     socket.on('deleteComment', async (commentInfo) => {

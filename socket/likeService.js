@@ -11,7 +11,7 @@ function likeService(socket) {
 
         likeInfo['id'] = ret.insertId;
         const notification = notificationTable.createNotificationObject('like', likeInfo);
-        const ret_ = notificationTable.insertNotification(notification);
+        const ret_ = await notificationTable.insertNotification(notification);
 
         if (!socketMap.has(likeInfo.listOwnerToken)) return;
 
@@ -20,6 +20,11 @@ function likeService(socket) {
         console.log(notificationInfo);
         const informSocket = socketMap.get(likeInfo.listOwnerToken);
         informSocket.emit('newNotification', notificationInfo);
+
+        if (informSocket.handshake.session.notificationList) {
+            informSocket.handshake.session.notificationList.unshift(notificationInfo);
+            informSocket.handshake.session.save();
+        }
     });
 
     socket.on('unlike', async (unlikeInfo) => {

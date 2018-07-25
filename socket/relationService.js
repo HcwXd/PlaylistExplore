@@ -17,6 +17,11 @@ function relationService(socket) {
         console.log(notificationInfo);
         const informSocket = socketMap.get(relation.listOwnerToken);
         informSocket.emit('newNotification', notificationInfo);
+
+        if (informSocket.handshake.session.notificationList) {
+            informSocket.handshake.session.notificationList.unshift(notificationInfo);
+            informSocket.handshake.session.save();
+        }
     });
 
     socket.on('unfollowUser', async (relation) => {
