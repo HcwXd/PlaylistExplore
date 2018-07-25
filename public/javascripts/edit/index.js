@@ -2,9 +2,7 @@ const search_result_wrap_node = document.querySelector('.search_result_wrap');
 const add_des_wrap_node = document.querySelector('.add_des_wrap');
 const playlist_status_wrap_node = document.querySelector('.hidden_block');
 
-// search_result_wrap_node.style.display = "none";
 add_des_wrap_node.style.display = 'none';
-// playlist_status_wrap_node.style.display = "none";
 
 const userToken = window.location.href.split('?id=')[1];
 /*
@@ -329,7 +327,6 @@ function uploadImgur() {
 }
 
 function redirectToProfile() {
-    // let date = new Date();
     let editPlaylistInfo = {
         name: document.querySelector('.playlist_input_row').value,
         des: document.querySelector('.playlist_des_input').value,
@@ -341,10 +338,12 @@ function redirectToProfile() {
     console.log(editPlaylistInfo);
 
     socket.emit('publishNewPlaylist', editPlaylistInfo);
-
-    const userToken = window.location.href.split('?id=')[1];
-    window.location = `/profile?id=${userToken}&list=${playlistInfo.listId}`;
 }
+
+socket.on('publishNewPlaylist', (socketOn_listId) => {
+    const userToken = window.location.href.split('?id=')[1];
+    window.location = `/profile?id=${userToken}&list=${socketOn_listId}`;
+});
 
 function returnChangeDragOrderSonglist() {
     let song_name_node_collection = document.querySelectorAll('.song_info > .song_name');
