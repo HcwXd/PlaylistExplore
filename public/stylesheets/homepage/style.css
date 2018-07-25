@@ -233,5 +233,7 @@ html, body {
     transition-timing-function: linear; }
     #email .email_btn:hover {
       border-radius: 30px; }
+  #email .photo_rights {
+    margin-top: 100px; }
 
 /*# sourceMappingURL=style.css.map */

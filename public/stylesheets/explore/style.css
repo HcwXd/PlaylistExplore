@@ -144,7 +144,8 @@ html, body {
             height: 50px;
             border-radius: 100%; }
           .content_wrap .posts_wrap .post .header .owner_info .owner_name {
-            padding-left: 15px; }
+            padding-left: 15px;
+            cursor: pointer; }
         .content_wrap .posts_wrap .post .header .more_info {
           display: flex;
           line-height: 50px;
@@ -163,9 +164,11 @@ html, body {
       .content_wrap .posts_wrap .post .playlist_title {
         font-size: 18px;
         font-weight: 600;
-        margin-bottom: 15px; }
+        margin-bottom: 15px;
+        word-wrap: break-word; }
       .content_wrap .posts_wrap .post .playlist_des {
-        margin-bottom: 15px; }
+        margin-bottom: 15px;
+        word-wrap: break-word; }
 
 @keyframes goUp {
   0% {

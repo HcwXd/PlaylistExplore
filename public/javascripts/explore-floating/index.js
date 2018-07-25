@@ -128,7 +128,9 @@ function createPostContentNode(currentPlaylist) {
             <div class="header">
                 <div class="owner_info">
                     <img class="owner_avatar" src="${currentPlaylist.avatar}">
-                    <div class="owner_name">${currentPlaylist.userName}</div>
+                    <a href="/profile?id=${currentPlaylist.playlistInfo.token}&list=${currentPlaylist.playlistInfo.listId}">
+                        <img class="playlist_cover" src="${coverPhoto}">
+                    </a>
                 </div>
                 <div class="more_info">=</div>
             </div>
