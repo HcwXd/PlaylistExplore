@@ -115,8 +115,7 @@ html, body {
           padding: 15px;
           padding-bottom: 5px;
           border-bottom: 1px solid #bebebe;
-          margin-bottom: 12px;
-          word-wrap: break-word; }
+          margin-bottom: 12px; }
         .content_wrap .posts_wrap .post .song_list .song_info {
           display: flex;
           justify-content: space-between;
@@ -164,9 +163,11 @@ html, body {
       .content_wrap .posts_wrap .post .playlist_title {
         font-size: 18px;
         font-weight: 600;
-        margin-bottom: 15px; }
+        margin-bottom: 15px;
+        word-wrap: break-word; }
       .content_wrap .posts_wrap .post .playlist_des {
-        margin-bottom: 15px; }
+        margin-bottom: 15px;
+        word-wrap: break-word; }
 
 @keyframes goUp {
   0% {

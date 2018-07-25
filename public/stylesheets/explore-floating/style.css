@@ -177,9 +177,11 @@ html, body {
       .content_wrap .posts_wrap .post .playlist_title {
         font-size: 18px;
         font-weight: 600;
-        margin-bottom: 15px; }
+        margin-bottom: 15px;
+        word-wrap: break-word; }
       .content_wrap .posts_wrap .post .playlist_des {
-        margin-bottom: 15px; }
+        margin-bottom: 15px;
+        word-wrap: break-word; }
 
 @keyframes goUp {
   0% {
