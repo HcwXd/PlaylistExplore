@@ -1,4 +1,5 @@
 const { userTable, commentTable, songTable, relationTable, songListTable, likeTable } = require('./database');
+const cache = require('./cache');
 
 /* crypt password
  * const bcrypt = require('bcrypt');
@@ -48,6 +49,15 @@ function userService(socket) {
         socket.handshake.session.avatar = userInfo.avatar;
         socket.handshake.session.save();
         socket.emit('createAccountSuccess');
+        
+        /* update cache of user */
+        if(cache.userList){
+            cache.userList.push({
+                token: userInfo.token,
+                userName: userInfo.userName,
+                avatar: userInfo.avatar,
+            });
+        }
 
         /* For crypt password
          *
@@ -79,8 +89,12 @@ function userService(socket) {
     });
 
     socket.on('getUserList', async (userName) => {
-        const ret = await userTable.getUserList();
-        socket.emit('getUserList', ret);
+        if(cache.userList) socket.emit('getUserList', cache.userList);
+        else{
+            const ret = await userTable.getUserList();
+            cache.userList = ret;
+            socket.emit('getUserList', ret);
+        }
     });
 }
 
