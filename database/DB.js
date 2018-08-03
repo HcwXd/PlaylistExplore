@@ -30,11 +30,6 @@ function getData(query) {
     return new Promise((resolve, reject) => {
         try {
             db.query(query, (error, result, cache) => {
-                /* console.log cache */
-                console.log(cache.hash + ' is the cache key')
-                console.log(cache.sql + ' was the sql generated and run (if not cached)')
-                console.log(cache.isCache + ' boolean if the result was from cache or not')
-                
                 console.log(query);
                 if (error) console.log(error);
                 //console.log(result);
