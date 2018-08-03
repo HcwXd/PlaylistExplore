@@ -2,7 +2,6 @@ const passport = require('passport');
 const Strategy = require('passport-facebook').Strategy;
 const config = require('./passportConfig.js');
 const userTable = require('../database/userTable');
-const cache = require('../socket/cache');
 
 function getAvatarURL(facebookId) {
     let url = "http://graph.facebook.com/" + facebookId + "/picture?type=large";
@@ -25,7 +24,6 @@ passport.use(new Strategy({
             avatar: getAvatarURL(profile._json.id)
         }
         userTable.createAccount(userData);
-        cache.push(userData);
         return cb(null, profile);
     }));
 
