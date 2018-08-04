@@ -77,9 +77,7 @@ function getImportResults() {
     }
     socket.emit('getSearchResults', import_input_node.value);
     socket.on('getSearchListResults', (socketOn_singleSongInfos) => {
-        let singleSongInfos = socketOn_singleSongInfos;
-        console.log(singleSongInfos);
-        appendSearchResults(singleSongInfos, search_result_wrap_node);
+        appendSearchResults(socketOn_singleSongInfos, search_result_wrap_node);
     });
 
     import_input_node.value = '';
@@ -122,14 +120,12 @@ function getSearchResults() {
 
     socket.emit('getSearchResults', searchQuery);
     socket.on('getSearchResults', (socketOn_singleSongInfos) => {
-        let singleSongInfos = socketOn_singleSongInfos;
-        appendSearchResults(singleSongInfos, search_result_wrap_node);
+        appendSearchResults(socketOn_singleSongInfos, search_result_wrap_node);
     });
 }
 
 function appendSearchResults(singleSongInfos, root_node) {
     root_node.style.display = 'block';
-    root_node.innerHTML = '<div class="pick_des">請選擇你要加入的歌曲</div>';
 
     for (let i = 0; i < singleSongInfos.length; i++) {
         let singleSongInfo = singleSongInfos[i];
@@ -145,6 +141,7 @@ function appendSearchResults(singleSongInfos, root_node) {
         let result_song_info_node = document.createElement('div');
         result_song_info_node.className = 'result_song_info';
 
+        // Bind property on the result_song_info_node
         result_song_info_node.songName = singleSongInfo.songName;
         result_song_info_node.cover = singleSongInfo.cover;
         result_song_info_node.url = singleSongInfo.url;
@@ -168,7 +165,6 @@ function showDesAddingWrap() {
             } else {
                 des_input_node.value = '';
             }
-
             return;
         }
     });
@@ -186,9 +182,7 @@ function addDesToSong() {
             return;
         }
     });
-    console.log('Update SongListState');
 
-    console.log(songListState);
     add_des_wrap_node.style.display = 'none';
     des_input_node.value = '';
 }
