@@ -424,7 +424,9 @@ socket.on('changeBio', (newBio) => {
     document.querySelector('.owner_bio').innerHTML = newBio;
 });
 
+onYouTubeIframeAPIReady();
+
 setTimeout(() => {
     onYouTubeIframeAPIReady();
     console.log('Foooool');
-}, 2000);
+}, 1000);
