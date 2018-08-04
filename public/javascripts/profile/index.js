@@ -8,6 +8,7 @@ const [listOwnerToken, listId, songId] = [pageInfo.id, pageInfo.list, pageInfo.s
 nowPlayingIndexState = songId ? songId : 0;
 
 let player;
+let isCalledYoutubeApi = false;
 
 socket.emit('getUserInfo');
 socket.on('getUserInfo', (socketOn_userInfo) => {
@@ -16,6 +17,7 @@ socket.on('getUserInfo', (socketOn_userInfo) => {
 });
 
 function onYouTubeIframeAPIReady() {
+    isCalledYoutubeApi = true;
     socket.emit('getOwnerInfo', {
         listOwnerToken,
         listId,
@@ -424,9 +426,9 @@ socket.on('changeBio', (newBio) => {
     document.querySelector('.owner_bio').innerHTML = newBio;
 });
 
-onYouTubeIframeAPIReady();
-
-setTimeout(() => {
-    onYouTubeIframeAPIReady();
+setInterval(() => {
+    if (!isCalledYoutubeApi) {
+        onYouTubeIframeAPIReady();
+    }
     console.log('Foooool');
 }, 1000);
