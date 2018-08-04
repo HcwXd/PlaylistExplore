@@ -15,6 +15,8 @@ socket.on('getUserInfo', (socketOn_userInfo) => {
     userInfoState = socketOn_userInfo;
 });
 
+console.log(onYouTubePlayerAPIReady);
+
 function onYouTubePlayerAPIReady() {
     socket.emit('getOwnerInfo', {
         listOwnerToken,
