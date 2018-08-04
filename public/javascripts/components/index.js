@@ -3,7 +3,6 @@ let notificationState = [];
 
 socket.emit('getLatestNotification', new Date());
 socket.on('getLatestNotification', (socketOn_notificationList) => {
-    console.log({ socketOn_notificationList });
     let unreadNotiArray = [];
     let formatNoti = socketOn_notificationList.map((rawNotiData) => {
         if (!rawNotiData.isRead) {
@@ -14,7 +13,6 @@ socket.on('getLatestNotification', (socketOn_notificationList) => {
     if (unreadNotiArray.length > 0) {
         updateNotiBtn(unreadNotiArray.length);
     }
-
     notificationState.push(...formatNoti);
 
     document.querySelector('.nav_noti_btn').addEventListener('click', () => {
@@ -22,7 +20,6 @@ socket.on('getLatestNotification', (socketOn_notificationList) => {
         socket.emit('tagRead', unreadNotiArray);
     });
     renderNotiMessage(notificationState);
-    console.log({ notificationState });
 });
 
 function updateNotiBtn(unreadNotiCount) {
@@ -98,6 +95,7 @@ function createSingleNotiNode(notiState) {
     return singleNotiNode;
 }
 
+// TODO
 socket.on('newNotification', (socketOn_notification) => {});
 
 // Nav Search
