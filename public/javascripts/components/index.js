@@ -3,7 +3,6 @@ let notificationState = [];
 
 socket.emit('getLatestNotification', new Date());
 socket.on('getLatestNotification', (socketOn_notificationList) => {
-    console.log(socketOn_notificationList);
     let unreadNotiArray = [];
     let formatNoti = socketOn_notificationList.map((rawNotiData) => {
         if (!rawNotiData.isRead) {
@@ -14,7 +13,6 @@ socket.on('getLatestNotification', (socketOn_notificationList) => {
     if (unreadNotiArray.length > 0) {
         updateNotiBtn(unreadNotiArray.length);
     }
-
     notificationState.push(...formatNoti);
 
     document.querySelector('.nav_noti_btn').addEventListener('click', () => {
@@ -22,7 +20,6 @@ socket.on('getLatestNotification', (socketOn_notificationList) => {
         socket.emit('tagRead', unreadNotiArray);
     });
     renderNotiMessage(notificationState);
-    console.log(notificationState);
 });
 
 function updateNotiBtn(unreadNotiCount) {
@@ -98,6 +95,7 @@ function createSingleNotiNode(notiState) {
     return singleNotiNode;
 }
 
+// TODO
 socket.on('newNotification', (socketOn_notification) => {});
 
 // Nav Search
@@ -107,45 +105,43 @@ socket.emit('getUserList');
 socket.on('getUserList', (socketOn_userList) => {
     userListState = [...socketOn_userList];
 });
-let isShowing = false;
+
 const nav_search_btn_node = document.querySelector('.nav_search_btn');
+const nav_search_svg_node = document.querySelector('svg');
+const nav_search_input_node = document.querySelector('.nav_search_input');
+const nav_search_suggestion_node = document.querySelector('.suggestion_wrap');
 nav_search_btn_node.addEventListener('mouseenter', showNavSearchWrap);
-nav_search_btn_node.addEventListener('mouseout', () => (isShowing = false));
-nav_search_btn_node.addEventListener('transitionend', (e) => isShowing && showNavSearchInput(e));
 
 function showNavSearchWrap() {
-    isShowing = true;
     nav_search_btn_node.classList.add('nav_search_btn-hover');
-    document.querySelector('svg').classList.add('svg-hover');
+    nav_search_svg_node.classList.add('svg-hover');
+    setTimeout(() => nav_search_btn_node.classList.contains('nav_search_btn-hover') && showNavSearchInput(), 300);
 }
 
 function showNavSearchInput(e) {
-    if (e.propertyName.includes('width')) {
-        let nav_search_input_node = document.querySelector('.nav_search_input');
-        nav_search_input_node.classList.add('nav_search_input-hover');
-        nav_search_input_node.placeholder = '請輸入欲搜尋的用戶名';
-        nav_search_input_node.addEventListener('change', displayMatches);
-        nav_search_input_node.addEventListener('keyup', displayMatches);
-        isShowing = false;
-    }
+    nav_search_input_node.classList.add('nav_search_input-hover');
+    nav_search_input_node.placeholder = '請輸入欲搜尋的用戶名';
+    nav_search_input_node.addEventListener('change', displayMatches);
+    nav_search_input_node.addEventListener('keyup', displayMatches);
 }
 
-function hideNavSearchInput() {
-    document.querySelector('svg').classList.remove('svg-hover');
-    document.querySelector('.nav_search_input').classList.remove('nav_search_input-hover');
-    document.querySelector('.nav_search_input').value = '';
-    document.querySelector('.nav_search_input').placeholder = '';
+function hideNavSearchWrap() {
+    nav_search_svg_node.classList.remove('svg-hover');
+
+    nav_search_input_node.classList.remove('nav_search_input-hover');
+    nav_search_input_node.value = '';
+    nav_search_input_node.placeholder = '';
+
     nav_search_btn_node.classList.remove('nav_search_btn-hover');
-    document.querySelector('.suggestion_wrap').innerHTML = '';
+    nav_search_suggestion_node.innerHTML = '';
 }
 
 function displayMatches() {
     if (this.value === '') {
-        document.querySelector('.suggestion_wrap').innerHTML = '';
+        nav_search_suggestion_node.innerHTML = '';
         return;
     }
-    let suggestion_wrap_node = document.querySelector('.suggestion_wrap');
-    suggestion_wrap_node.className = 'suggestion_wrap';
+    nav_search_suggestion_node.className = 'suggestion_wrap';
     const matchArray = findMatches(this.value, userListState);
     const html = matchArray
         .map((user) => {
@@ -161,7 +157,7 @@ function displayMatches() {
             `;
         })
         .join('');
-    suggestion_wrap_node.innerHTML = html;
+    nav_search_suggestion_node.innerHTML = html;
 }
 
 function findMatches(wordToMatch, userList) {
@@ -171,7 +167,7 @@ function findMatches(wordToMatch, userList) {
     });
 }
 
-// Hide Nav Wrap
+// Hide nav wrap when click outside the wrap
 
 document.addEventListener('click', (evt) => {
     let targetElement = evt.target;
@@ -189,7 +185,7 @@ document.addEventListener('click', (evt) => {
         targetElement = targetElement.parentNode;
     } while (targetElement);
     if (document.querySelector('.nav_search_btn-hover')) {
-        hideNavSearchInput();
+        hideNavSearchWrap();
     }
     if (document.querySelector('.noti_wrap-active')) {
         document.querySelector('.noti_wrap').classList.remove('noti_wrap-active');
@@ -201,7 +197,6 @@ document.addEventListener('click', (evt) => {
 let clean = 'ArrowUpArrowUpArrowDownArrowDownArrowLeftArrowRightArrowLeftArrowRightba';
 let press_record = [];
 window.addEventListener('keyup', (e) => {
-    console.log(e.key);
     press_record.push(e.key);
     press_record.splice(-11, press_record.length - 10);
     if (press_record.join('').includes(clean)) {
