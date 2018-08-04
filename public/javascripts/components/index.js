@@ -3,7 +3,7 @@ let notificationState = [];
 
 socket.emit('getLatestNotification', new Date());
 socket.on('getLatestNotification', (socketOn_notificationList) => {
-    console.log(socketOn_notificationList);
+    console.log({ socketOn_notificationList });
     let unreadNotiArray = [];
     let formatNoti = socketOn_notificationList.map((rawNotiData) => {
         if (!rawNotiData.isRead) {
@@ -22,7 +22,7 @@ socket.on('getLatestNotification', (socketOn_notificationList) => {
         socket.emit('tagRead', unreadNotiArray);
     });
     renderNotiMessage(notificationState);
-    console.log(notificationState);
+    console.log({ notificationState });
 });
 
 function updateNotiBtn(unreadNotiCount) {
@@ -201,7 +201,6 @@ document.addEventListener('click', (evt) => {
 let clean = 'ArrowUpArrowUpArrowDownArrowDownArrowLeftArrowRightArrowLeftArrowRightba';
 let press_record = [];
 window.addEventListener('keyup', (e) => {
-    console.log(e.key);
     press_record.push(e.key);
     press_record.splice(-11, press_record.length - 10);
     if (press_record.join('').includes(clean)) {

@@ -11,7 +11,7 @@ let player;
 
 socket.emit('getUserInfo');
 socket.on('getUserInfo', (socketOn_userInfo) => {
-    console.log(socketOn_userInfo);
+    console.log({ socketOn_userInfo });
     userInfoState = socketOn_userInfo;
 });
 
@@ -21,7 +21,7 @@ function onYouTubePlayerAPIReady() {
         listId,
     });
     socket.on('getOwnerInfo', (socketOn_ownerInfo) => {
-        console.log(socketOn_ownerInfo);
+        console.log({ socketOn_ownerInfo });
         document.querySelector('.loader').remove();
 
         ownerInfoState = socketOn_ownerInfo;

@@ -14,7 +14,7 @@ socket.on('getLatestPlaylists', (socketOn_latestPlaylistInfo) => {
     let fiveLatestPlaylistInfo = socketOn_latestPlaylistInfo;
     latestPlaylistInfoState.push(...fiveLatestPlaylistInfo);
 
-    console.log(latestPlaylistInfoState);
+    console.log({ latestPlaylistInfoState });
 
     renderLatestPlaylist(fiveLatestPlaylistInfo);
     lastPlaylistDateState = fiveLatestPlaylistInfo[fiveLatestPlaylistInfo.length - 1].playlistInfo.date;
