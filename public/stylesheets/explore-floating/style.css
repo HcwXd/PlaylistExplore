@@ -54,10 +54,10 @@ html, body {
     border: 1px solid #0f0f0f;
     margin-bottom: 12px; }
     .idle_background .album:hover {
+      opacity: 1;
       animation-play-state: paused;
       z-index: 100;
-      border: 1px dashed #FF6700;
-      opacity: 1; }
+      border: 1px dashed #FF6700; }
       .idle_background .album:hover .album_info {
         opacity: 1; }
     .idle_background .album .album_info {
@@ -69,6 +69,28 @@ html, body {
       top: 100%;
       width: 200px;
       color: #FF6700; }
+
+.album-paused {
+  position: absolute;
+  opacity: 1;
+  width: 200px;
+  height: 200px;
+  border-radius: 5px;
+  background-size: cover;
+  cursor: pointer;
+  border: 1px solid #0f0f0f;
+  margin-bottom: 12px;
+  z-index: 88;
+  border: 1px dashed #FF6700; }
+  .album-paused .album_info-paused {
+    transition-duration: 1s;
+    position: absolute;
+    opacity: 1;
+    text-align: center;
+    padding: 12px 0;
+    top: 100%;
+    width: 200px;
+    color: #FF6700; }
 
 .toggle_background_wrap {
   position: fixed;
@@ -194,6 +216,16 @@ html, body {
   100% {
     transform: translateY(-100%);
     opacity: 0; } }
+@keyframes stopWhenHover {
+  0% {
+    transform: translateY(0%);
+    opacity: 1; }
+  50% {
+    transform: translateY(-50%);
+    opacity: 1; }
+  100% {
+    transform: translateY(-100%);
+    opacity: 1; } }
 @keyframes goLeft {
   0% {
     transform: translateX(0%); }

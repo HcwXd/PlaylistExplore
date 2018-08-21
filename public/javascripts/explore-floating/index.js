@@ -61,6 +61,30 @@ function createRandomBackgroundNode() {
             album_info_node.innerHTML = currentPlaylist.playlistInfo.name;
             album_node.appendChild(album_info_node);
 
+            // Insert new album wrap when hover to increase opacity
+            album_node.addEventListener('mouseover', (e) => {
+                if (document.querySelector('.album-paused')) return;
+                let rect = e.target.getBoundingClientRect();
+
+                let hover_album_node = document.createElement('A');
+                hover_album_node.className = 'album-paused';
+                hover_album_node.style.top = `${rect.top}px`;
+                hover_album_node.style.left = `${rect.left}px`;
+                hover_album_node.href = `/profile?id=${currentPlaylist.playlistInfo.token}&list=${currentPlaylist.playlistInfo.listId}&song=${currentPlaylist.playlistInfo.songList[j].songIndex}`;
+                let bg_url = `https://img.youtube.com/vi/${currentPlaylist.playlistInfo.songList[j].url}/hqdefault.jpg`;
+                hover_album_node.style.backgroundImage = `url(${bg_url})`;
+
+                let hover_album_info_node = document.createElement('div');
+                hover_album_info_node.className = 'album_info-paused';
+                hover_album_info_node.innerHTML = currentPlaylist.playlistInfo.name;
+                hover_album_node.appendChild(hover_album_info_node);
+                idle_background_node.appendChild(hover_album_node);
+            });
+
+            album_node.addEventListener('mouseleave', (e) => {
+                document.querySelectorAll('.album-paused').forEach((node) => node.remove());
+            });
+
             idle_background_node.appendChild(album_node);
         }
     }
@@ -134,8 +158,8 @@ function createPostContentNode(currentPlaylist) {
             <div class="header">
                 <div class="owner_info">
                     <img class="owner_avatar" src="${currentPlaylist.avatar}">
-                    <a href="/profile?id=${currentPlaylist.playlistInfo.token}&list=${currentPlaylist.playlistInfo.listId}">
-                        <img class="playlist_cover" src="${coverPhoto}">
+                    <a href="/profile?id=${currentPlaylist.playlistInfo.token}&list=-1">
+                        <div class="owner_name">${currentPlaylist.userName}</div>
                     </a>
                 </div>
                 <div class="more_info">=</div>
