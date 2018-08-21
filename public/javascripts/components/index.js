@@ -148,7 +148,7 @@ function displayMatches() {
             const regex = new RegExp(this.value, 'gi');
             const userList = user.userName.replace(regex, `<span class="highlight">${this.value}</span>`);
             return `
-                <a href="/profile?id=${user.token}&list=-1">
+                <a class="suggestion_result" href="/profile?id=${user.token}&list=-1">
                     <li>
                         <img class="search_avatar" src="${user.avatar}">
                         <span class="search_name">${userList}</span>
@@ -190,6 +190,10 @@ document.addEventListener('click', (evt) => {
     if (document.querySelector('.noti_wrap-active')) {
         document.querySelector('.noti_wrap').classList.remove('noti_wrap-active');
     }
+});
+
+window.addEventListener('click', (e) => {
+    console.log(e.target);
 });
 
 // Egg

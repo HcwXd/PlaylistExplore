@@ -202,3 +202,160 @@ a
       transform: rotate(0deg)
     100%
       transform: rotate(360deg)
+
+
+@media screen and (max-width: 1000px)
+  .nav_wrap
+    top: 0px
+    width: 100%
+    display: flex
+    position: fixed
+    color: black
+    border-bottom: 1px solid black
+    background-color: $bg_white
+    z-index: 3
+    justify-content: space-between
+    .right_nav
+      display: flex
+    .left_nav
+      display: flex
+      align-items: center
+    .nav_noti_btn
+      position: relative
+      margin: 0 24px 
+      border-radius: 100%
+      padding: 2px
+      width: 30px
+      height: 30px
+      display: flex
+      align-items: center
+      justify-content: space-around
+      cursor: pointer
+      transition: all .3s ease .6s
+      box-shadow: 0 3px 14px -1px rgba(#000, .18)
+      .noti_wrap
+        display: none
+        position: absolute
+        top: 180%
+        background-color: $bg_white
+        color: rgba(117, 117, 117, 0.7)
+        box-shadow: 0 3px 14px -1px rgba(#000, .18)
+        border-radius: 5px
+        width: 260px
+        .noti_square
+          position: absolute
+          width: 14px
+          height: 14px
+          background-color: $bg_white
+          top: -7px
+          left: calc(50% - 7px)
+          transform: rotate(45deg)
+        .noti-unread
+          border-left: 5px solid green
+        .noti
+          padding: 10px
+          list-style: none
+          display: flex
+          align-items: center
+          cursor: pointer
+          border-bottom: 1px solid rgba($txt_black ,0.2)
+          margin-bottom: 1px
+          &:last-child
+            margin-bottom: 0px
+          &:hover
+            opacity: 0.7
+          a
+            display: flex
+            align-items: center
+          .noti_avatar
+            display: inline-block
+            height: 25px
+            width: 25px
+            border-radius: 100%
+            margin-right: 10px
+          .noti_message
+            color: rgba($txt_black,0.7)
+      .noti_wrap-active
+        display: block
+    .nav_noti_btn-active
+      background-color: $noti_green
+      color: $txt_white
+    .nav_search_btn
+      position: relative
+      border-radius: 100%
+      padding: 2px
+      width: 30px
+      height: 30px
+      display: flex
+      align-items: center
+      justify-content: space-around
+      cursor: pointer
+      transition: all .6s ease
+      box-shadow: 0 3px 14px -1px rgba(#000, .18)
+      overflow: hidden
+      .nav_search_input
+        width: 140px
+        height: 30px
+        border: 0
+        position: absolute
+        background-color: rgba(0,0,0,0)
+        color: rgba(0,0,0,0)
+        transition-duration: 0.6s
+        opacity: 0
+        margin-left: 10px
+        &:focus
+          outline-style: none
+          border: 0
+          color: #000
+      .nav_search_input-hover
+        opacity: 1
+      .svg-hover
+        position: absolute
+        left: 3px
+        padding-right: 3px
+        border-right: 1px solid rgba(#000, .18)
+      .suggestion_wrap
+        position: absolute
+        top: 95%
+        left: 28px
+        background-color: $bg_white
+        color: rgba(117, 117, 117, 0.7)
+        box-shadow: 0 3px 14px -1px rgba(#000, .18)
+        border-radius: 0 0 5px 5px
+        width: 156px
+        li
+          padding: 5px 10px
+          list-style: none
+          display: flex
+          align-items: center
+          &:hover
+            background-color: $txt_white
+          .search_name
+            display: inline-block
+            font-size: 16px
+            .highlight
+              color: rgba(100, 100, 100, 1)
+          .search_avatar
+            display: inline-block
+            height: 25px
+            width: 25px
+            border-radius: 100%
+            margin-right: 10px
+    .nav_search_btn-hover
+        width: 180px
+        border-radius: 5px
+        overflow: initial
+    .nav_avatar
+      height: 40px
+      width: 40px
+      border-radius: 100%
+      box-shadow: 0 3px 14px -1px rgba(#000, .18)
+
+    .nav_item
+      padding: 12px
+      margin-left: 12px
+      text-decoration: none
+      color: $txt_black
+      &:hover
+        opacity: 0.7
+        cursor: pointer

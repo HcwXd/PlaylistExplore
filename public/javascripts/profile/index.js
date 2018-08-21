@@ -430,5 +430,4 @@ setInterval(() => {
     if (!isCalledYoutubeApi) {
         onYouTubeIframeAPIReady();
     }
-    console.log('Foooool');
 }, 1000);
