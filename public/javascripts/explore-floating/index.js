@@ -82,6 +82,12 @@ function renderLatestPlaylist(fiveLatestPlaylistInfo) {
         post_node.appendChild(song_list_node);
         post_node.appendChild(post_content_node);
         posts_wrap_node.appendChild(post_node);
+
+        // Trim songlist if songlist is too long
+        if (song_list_node.offsetHeight > post_node.offsetHeight) {
+            song_list_node.style.height = `${Math.max(post_node.offsetHeight, 400)}px`;
+            song_list_node.style.overflowY = 'scroll';
+        }
     }
 
     let more_infos_node = document.querySelectorAll('.more_info');

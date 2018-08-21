@@ -41,7 +41,7 @@ function renderLatestPlaylist(fiveLatestPlaylistInfo) {
 
         // Trim songlist if songlist is too long
         if (song_list_node.offsetHeight > post_node.offsetHeight) {
-            song_list_node.style.height = `${post_node.offsetHeight}px`;
+            song_list_node.style.height = `${Math.max(post_node.offsetHeight, 400)}px`;
             song_list_node.style.overflowY = 'scroll';
         }
     }
