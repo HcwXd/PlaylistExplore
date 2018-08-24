@@ -7,13 +7,9 @@ cd PlaylistExplore
 npm install
 npm start
 ```
-打開[本地端網址](http://localhost:3000/)（localhost:3000/）
-
-### Test account
-請使用者使用這組測試帳號密碼使用臉書登入
+### Demo
 ```
-account: 0979531495
-password: abcd12345
+Link: https://playlist-explore.herokuapp.com/homepage
 ```
 
 
