@@ -11,8 +11,6 @@ playlist_status_wrap_node.style.display = 'none';
 let songListState = [];
 let uploadCover;
 
-// const show_import_btn_node = document.querySelector('.show_import_btn');
-
 function getImportResults() {
     let import_input_node = document.querySelector('.import_input');
     const listReg = new RegExp('^https://www.youtube.com/playlist');
@@ -41,8 +39,6 @@ function showImportWrap() {
         document.querySelector('.import_area_wrap').style.display = 'none';
     });
 }
-
-// show_import_btn_node.addEventListener('click', showImportWrap);
 
 const search_input_node = document.querySelector('.search_input');
 search_input_node.addEventListener('keydown', (e) => {
@@ -142,7 +138,7 @@ function addSongToPlaylist() {
     });
     this.style.boxShadow = '0px 0px 0px 2px yellow inset';
     playlist_status_wrap_node.style.display = 'block';
-    add_des_wrap_node.style.display = 'none';
+    add_des_wrap_node.style.display = 'flex';
 
     appendToPlaylist(this.songName, this.url);
 
