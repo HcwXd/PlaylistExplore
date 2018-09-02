@@ -1,146 +1,90 @@
 const compressionRate = 30;
 
 const search_result_wrap_node = document.querySelector('.search_result_wrap');
-const add_des_wrap_node = document.querySelector('.add_des_wrap');
 const playlist_status_wrap_node = document.querySelector('.hidden_block');
-
-search_result_wrap_node.style.display = 'none';
-add_des_wrap_node.style.display = 'none';
-playlist_status_wrap_node.style.display = 'none';
 
 let songListState = [];
 let uploadCover;
 
-function getImportResults() {
-    let import_input_node = document.querySelector('.import_input');
-    const listReg = new RegExp('^https://www.youtube.com/playlist');
-    if (!listReg.test(import_input_node.value)) {
-        alert('請輸入一個 Youtube 播放清單');
-        return;
-    }
-    socket.emit('getSearchResults', import_input_node.value);
-
-    import_input_node.value = '';
-    document.querySelector('.import_area_wrap').style.display = 'none';
-}
-
+// Get import result
 socket.on('getSearchListResults', (socketOn_singleSongInfos) => {
     appendSearchResults(socketOn_singleSongInfos, search_result_wrap_node);
 });
 
+// Get search result
 socket.on('getSearchResults', (socketOn_singleSongInfos) => {
     appendSearchResults(socketOn_singleSongInfos, search_result_wrap_node);
 });
 
-function showImportWrap() {
-    document.querySelector('.import_btn').addEventListener('click', getImportResults);
-    document.querySelector('.import_area_wrap').style.display = 'flex';
-    document.querySelector('.import_cancel').addEventListener('click', () => {
-        document.querySelector('.import_area_wrap').style.display = 'none';
-    });
-}
-
+// Bind getSearchResult to the btn and input
 const search_input_node = document.querySelector('.search_input');
 search_input_node.addEventListener('keydown', (e) => {
     if (e.keyCode === 13) {
-        getSearchResults();
+        emitSearchQuery();
     }
 });
-
 const search_btn_node = document.querySelector('.search_btn');
-search_btn_node.addEventListener('click', getSearchResults);
+search_btn_node.addEventListener('click', emitSearchQuery);
 
-function getSearchResults() {
-    let searchQuery = search_input_node.value;
-
+// Emit search query
+function emitSearchQuery() {
     try {
-        if (!searchQuery) {
+        if (!search_input_node.value) {
             throw new Error('請輸入歌曲名稱或網址');
         }
     } catch (e) {
         alert(e);
         return;
     }
-
+    socket.emit('getSearchResults', search_input_node.value);
     search_input_node.value = '';
-
-    socket.emit('getSearchResults', searchQuery);
 }
 
+// Append search results to node
 function appendSearchResults(singleSongInfos, root_node) {
     root_node.style.display = 'block';
-    root_node.innerHTML = `<div class="pick_des">請選擇你要加入的歌曲</div>`;
+    root_node.innerHTML = '<div class="wrap_label">請選擇你要加入的歌曲</div>';
 
     for (let i = 0; i < singleSongInfos.length; i++) {
-        let singleSongInfo = singleSongInfos[i];
-
-        let song_cover_node = document.createElement('img');
-        song_cover_node.className = 'song_cover';
-        song_cover_node.src = `https://img.youtube.com/vi/${singleSongInfo.url}/hqdefault.jpg`;
-
-        let song_name_node = document.createElement('div');
-        song_name_node.className = 'song_name';
-        song_name_node.innerHTML = singleSongInfo.songName;
-
-        let result_song_info_node = document.createElement('div');
-        result_song_info_node.className = 'result_song_info';
-
-        // Bind property on the result_song_info_node
-        result_song_info_node.songName = singleSongInfo.songName;
-        result_song_info_node.cover = singleSongInfo.cover;
-        result_song_info_node.url = singleSongInfo.url;
-        result_song_info_node.addEventListener('click', addSongToPlaylist);
-
-        result_song_info_node.appendChild(song_cover_node);
-        result_song_info_node.appendChild(song_name_node);
+        let result_song_info_node = returnResultSongInfoNode(singleSongInfos[i]);
         root_node.appendChild(result_song_info_node);
     }
 }
 
-function showDesAddingWrap() {
-    add_des_wrap_node.style.display = 'flex';
-    let add_btn_node = document.querySelector('.add_btn');
-    let des_input_node = document.querySelector('.des_input');
+// Return a node for search result song
+function returnResultSongInfoNode(singleSongInfo) {
+    let song_cover_node = document.createElement('img');
+    song_cover_node.className = 'song_cover';
+    song_cover_node.src = `https://img.youtube.com/vi/${singleSongInfo.url}/hqdefault.jpg`;
 
-    songListState.some((item) => {
-        if (item.url === this.dataset.url) {
-            if (item.des) {
-                des_input_node.value = item.des;
-            } else {
-                des_input_node.value = '';
-            }
-            return;
-        }
-    });
-    add_btn_node.url = this.dataset.url;
-    add_btn_node.addEventListener('click', addDesToSong);
+    let song_name_node = document.createElement('div');
+    song_name_node.className = 'song_name';
+    song_name_node.innerHTML = singleSongInfo.songName;
+
+    let result_song_info_node = document.createElement('div');
+    result_song_info_node.className = 'result_song_info';
+
+    // Bind property on the result_song_info_node
+    result_song_info_node.songName = singleSongInfo.songName;
+    result_song_info_node.cover = singleSongInfo.cover;
+    result_song_info_node.url = singleSongInfo.url;
+    result_song_info_node.addEventListener('click', addSongToSongListState);
+
+    result_song_info_node.appendChild(song_cover_node);
+    result_song_info_node.appendChild(song_name_node);
+
+    return result_song_info_node;
 }
 
-function addDesToSong() {
-    let songUrl = this.url;
-    let des_input_node = document.querySelector('.des_input');
-
-    songListState.some((item) => {
-        if (item.url === songUrl) {
-            item.des = des_input_node.value;
-            return;
-        }
-    });
-
-    add_des_wrap_node.style.display = 'none';
-    des_input_node.value = '';
-}
-
-function addSongToPlaylist() {
+// When click on the result, add target to the songListState
+function addSongToSongListState() {
     let result_song_info_node_collection = document.querySelectorAll('.result_song_info');
     result_song_info_node_collection.forEach((node) => {
         node.style.boxShadow = '0 0';
     });
     this.style.boxShadow = '0px 0px 0px 2px yellow inset';
-    playlist_status_wrap_node.style.display = 'block';
-    add_des_wrap_node.style.display = 'flex';
 
-    appendToPlaylist(this.songName, this.url);
+    renderSongToPlaylistWrap(this.songName, this.url);
 
     addDragHandler();
 
@@ -152,15 +96,25 @@ function addSongToPlaylist() {
         like: 0,
         comments: [],
     };
+
     songListState.push(singleSongInfo);
+}
+
+// Render click target to playlist wrap
+function renderSongToPlaylistWrap(songName, songUrl) {
+    document.querySelector('.playlist_status_wrap').style.display = 'block';
+
+    let song_info_node = returnSongInfoNode(songName, songUrl);
+    document.querySelector('.song_list').appendChild(song_info_node);
+
     let playlist_status_wrap = document.querySelector('.playlist_status_wrap');
     playlist_status_wrap.scrollTop = playlist_status_wrap.scrollHeight;
 
     let publish_btn_node = document.querySelector('.publish_btn');
-    publish_btn_node.addEventListener('click', readyToPublish);
+    publish_btn_node.addEventListener('click', showPublishFancyBox);
 }
 
-function appendToPlaylist(songName, songUrl) {
+function returnSongInfoNode(songName, songUrl) {
     let song_cover_node = document.createElement('img');
     song_cover_node.className = 'song_cover';
     song_cover_node.src = `https://img.youtube.com/vi/${songUrl}/hqdefault.jpg`;
@@ -169,19 +123,17 @@ function appendToPlaylist(songName, songUrl) {
     song_name_node.className = 'song_name';
     song_name_node.innerHTML = songName;
 
-    let song_edit_node = document.createElement('div');
-    song_edit_node.className = 'song_edit';
-    song_edit_node.innerHTML = 'X';
-    song_edit_node.url = songUrl;
-    song_edit_node.dataset.url = songUrl;
-    song_edit_node.addEventListener('click', deleteSongFromPlaylist);
+    let song_delete_node = document.createElement('div');
+    song_delete_node.className = 'song_delete';
+    song_delete_node.innerHTML = 'X';
+    song_delete_node.url = songUrl;
+    song_delete_node.dataset.url = songUrl;
+    song_delete_node.addEventListener('click', deleteSongFromPlaylist);
 
-    let song_add_des_node = document.createElement('div');
-    song_add_des_node.className = 'song_add_des';
-    song_add_des_node.innerHTML = '+';
-    song_add_des_node.url = songUrl;
-    song_add_des_node.dataset.url = songUrl;
-    song_add_des_node.addEventListener('click', showDesAddingWrap);
+    let song_des_wrap_node = document.createElement('input');
+    song_des_wrap_node.className = 'song_des_wrap';
+    song_des_wrap_node.url = songUrl;
+    song_des_wrap_node.dataset.url = songUrl;
 
     let song_info_node = document.createElement('div');
     song_info_node.className = 'song_info';
@@ -190,13 +142,12 @@ function appendToPlaylist(songName, songUrl) {
     song_info_node.url = songUrl;
     song_info_node.draggable = true;
 
-    song_info_node.appendChild(song_add_des_node);
+    song_info_node.appendChild(song_des_wrap_node);
     song_info_node.appendChild(song_cover_node);
     song_info_node.appendChild(song_name_node);
-    song_info_node.appendChild(song_edit_node);
+    song_info_node.appendChild(song_delete_node);
 
-    let song_list_node = document.querySelector('.song_list');
-    song_list_node.appendChild(song_info_node);
+    return song_info_node;
 }
 
 function deleteSongFromPlaylist() {
@@ -207,7 +158,7 @@ function deleteSongFromPlaylist() {
     this.parentNode.parentNode.removeChild(this.parentNode);
 }
 
-function readyToPublish() {
+function showPublishFancyBox() {
     try {
         if (songListState.length < 1) {
             throw new Error('歌單至少要包含一首歌以上');
@@ -264,55 +215,10 @@ function publish() {
         alert(e);
         return;
     }
-    uploadImgur();
+    uploadImgurBeforePublish();
 }
 
-function redirectToProfile() {
-    let date = new Date();
-    let playlistInfo = {
-        name: document.querySelector('.playlist_input_row').value,
-        des: document.querySelector('.playlist_des_input').value,
-        date: date,
-        songList: returnChangeDragOrderSonglist(),
-        listId: -1,
-        uploadCover: uploadCover,
-    };
-    console.log(playlistInfo);
-
-    socket.emit('publishNewPlaylist', playlistInfo);
-
-    const userToken = window.location.href.split('?id=')[1];
-    window.location = `/profile?id=${userToken}&list=-1`;
-}
-
-function returnChangeDragOrderSonglist() {
-    let song_name_node_collection = document.querySelectorAll('.song_info > .song_name');
-    let readySongNames = [];
-    song_name_node_collection.forEach((node) => {
-        readySongNames.push(node.innerText);
-    });
-
-    let newSongListState = [];
-    let oldSongListState = [...songListState];
-
-    for (let newIndex = 0; newIndex < readySongNames.length; newIndex++) {
-        let popIndex;
-        oldSongListState = oldSongListState.map((item) => {
-            if (item.songName === readySongNames[newIndex]) {
-                newSongListState.push(item);
-                popIndex = oldSongListState.indexOf(item);
-            } else {
-                return item;
-            }
-        });
-        if (popIndex > -1) {
-            oldSongListState.splice(popIndex, 1);
-        }
-    }
-    return newSongListState;
-}
-
-async function uploadImgur() {
+async function uploadImgurBeforePublish() {
     let avatar_input_node = document.querySelector('.avatar_input');
 
     let files = avatar_input_node.files;
@@ -372,6 +278,61 @@ async function uploadImgur() {
     }
 }
 
+function redirectToProfile() {
+    let date = new Date();
+    let playlistInfo = {
+        name: document.querySelector('.playlist_input_row').value,
+        des: document.querySelector('.playlist_des_input').value,
+        date: date,
+        songList: returnSonglistAfterDragAndAddDes(),
+        listId: -1,
+        uploadCover: uploadCover,
+    };
+
+    socket.emit('publishNewPlaylist', playlistInfo);
+
+    const userToken = window.location.href.split('?id=')[1];
+    window.location = `/profile?id=${userToken}&list=-1`;
+}
+
+function returnSonglistAfterDragAndAddDes() {
+    let song_name_node_collection = document.querySelectorAll('.song_info > .song_name');
+    let song_des_node_collection = document.querySelectorAll('.song_info > .song_des_wrap');
+
+    let readySongNames = [];
+    song_name_node_collection.forEach((node) => {
+        readySongNames.push(node.innerText);
+    });
+
+    let readySongDes = [];
+    song_des_node_collection.forEach((node) => {
+        readySongDes.push(node.value);
+    });
+
+    let newSongListState = [];
+    let oldSongListState = [...songListState];
+
+    for (let newIndex = 0; newIndex < readySongNames.length; newIndex++) {
+        let popIndex;
+        oldSongListState = oldSongListState.map((item) => {
+            if (item.songName === readySongNames[newIndex]) {
+                item.des = readySongDes[newIndex];
+                newSongListState.push(item);
+                popIndex = oldSongListState.indexOf(item);
+            } else {
+                return item;
+            }
+        });
+        if (popIndex > -1) {
+            oldSongListState.splice(popIndex, 1);
+        }
+    }
+
+    return newSongListState;
+}
+
+// Handle drag to change the song order of the playlist
+
 function addDragHandler() {
     let song_info_node_collection = document.querySelectorAll('.song_info');
     song_info_node_collection.forEach((item) => {
@@ -381,7 +342,6 @@ function addDragHandler() {
         item.addEventListener('drop', handleDrop);
         item.addEventListener('dragend', handleDragEnd);
         item.lastChild.addEventListener('click', deleteSongFromPlaylist);
-        item.firstChild.addEventListener('click', showDesAddingWrap);
     });
 }
 
@@ -392,6 +352,9 @@ function handleDragStart(e) {
 
     e.dataTransfer.effectAllowed = 'move';
     e.dataTransfer.setData('text/html', this.outerHTML);
+
+    // Handle when drop the element, outerHTML won't carry the input value
+    e.dataTransfer.setData('text/plain', this.querySelector('.song_des_wrap').value);
 }
 
 function handleDragOver(e) {
@@ -413,12 +376,14 @@ function handleDrop(e) {
     if (e.stopPropagation) {
         e.stopPropagation();
     }
-    console.log('handleDrop', this);
 
     if (dragItem != this) {
         this.parentNode.removeChild(dragItem);
         let dropHTML = e.dataTransfer.getData('text/html');
+        let inputValue = e.dataTransfer.getData('text/plain');
         this.insertAdjacentHTML('beforebegin', dropHTML);
+        this.previousSibling.querySelector('.song_des_wrap').value = inputValue;
+
         let dropElem = this.previousSibling;
         addDragHandler(dropElem);
     }
@@ -427,7 +392,19 @@ function handleDrop(e) {
 }
 
 function handleDragEnd(e) {
+    console.log(this.firstChild.value);
     this.style.borderTop = '0px solid yellow';
+    bindValueAfterDragInput(this.firstChild, this.firstChild.value);
+}
+
+function bindValueAfterDragInput(node, value) {
+    console.log('bindValueAfterDragInput');
+    console.log({ node, value });
+    node.value = value;
+    setTimeout(() => {
+        console.log({ node, value });
+        node.value = value;
+    }, 1000);
 }
 
 // Compression of image

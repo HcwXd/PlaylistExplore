@@ -30,7 +30,8 @@ html, body
   display: block
   position: relative
   justify-content: space-between
-  min-height: 100%  
+  min-height: 100%
+  // Publish pop wrap
   .publish_wrap
     z-index: 10
     width: 450px
@@ -152,16 +153,21 @@ html, body
         cursor: pointer
         &:hover
           opacity: 0.9
-      
+
+
+
+          
+  // Main area
   .publishing_wrap
     display: flex
     justify-content: space-between
     width: 100%        
     .search_result_wrap
+      display: none
       width: 30%
       margin-left: 15px
       transition-duration: 2s
-      .pick_des
+      .wrap_label
         border: 1px solid $txt_white
         padding: 15px
       .result_song_info
@@ -184,49 +190,9 @@ html, body
           height: 70px
           display: inline-block
           padding-left: 15px
-    .add_des_wrap
-      width: 30%
-      display: flex
-      flex-direction: column
-      align-items: center
-      .des_input
-        align-items: center
-        text-decoration: none
-        border: 2px solid $txt_white
-        border-right: 1px solid $txt_white
-        background-color: $bg_grey
-        color: $txt_white
-        width: 85%
-        font-size: 18px
-        line-height: 18px
-        border-radius: 5px
-        padding: 15px 15px
-        &:focus
-          word-wrap: break-all
-          outline-color: rgb(44, 45, 48)
-          outline-width: 0px
-          box-shadow: none
-          color: $txt_white
-      .add_btn
-        margin-top: 15px
-        align-items: center
-        text-align: center
-        height: 45px
-        border: 2px solid $txt_white
-        border-left: 1px solid $txt_white
-        line-height: 45px
-        width: 90%
-        font-size: 12px
-        background-color: $bg_grey
-        color: $txt_white
-        font-size: 12px
-        font-weight: 500
-        border-radius: 5px
-        cursor: pointer
-        &:hover
-          opacity: 0.9
 
     .playlist_status_wrap
+      display: none
       margin-right: 15px
       width: 30%
       max-height: 500px
@@ -234,7 +200,7 @@ html, body
       margin-left: -23px
       overflow-y: scroll
       margin-bottom: 30px
-      .pick_des
+      .wrap_label
         border: 1px solid $txt_white
         padding: 15px
       .song_info
@@ -245,15 +211,7 @@ html, body
         padding: 5px 0px
         align-items: center
         cursor: move
-        position: relative
-        .song_add_des
-          position: absolute
-          left: 0%
-          top: 50%
-          transform: translate(-100%, -50%)
-          border: 1px solid $txt_white    
-          cursor: pointer
-          padding: 5px      
+        position: relative 
         .song_name
           display: inline-block
           width: 85%
@@ -272,6 +230,18 @@ html, body
           width: 10%
           white-space: nowrap
           cursor: pointer
+        .song_des_wrap
+          position: absolute
+          right: 15%
+          top: 50%
+          border: 1px solid $txt_white
+          padding: 5px      
+
+
+
+
+
+
 
       .publish_btn
         margin-top: 15px
