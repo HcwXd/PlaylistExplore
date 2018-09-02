@@ -193,7 +193,8 @@ html, body {
         position: relative; }
         .content_wrap .publishing_wrap .playlist_status_wrap .song_list .song_info .des_connect_line {
           position: absolute;
-          width: 8%;
+          opacity: 0.5;
+          width: 7.5%;
           height: 0px;
           border: 1px dashed #bebebe;
           right: 0%;
