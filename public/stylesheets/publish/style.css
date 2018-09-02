@@ -145,12 +145,11 @@ html, body {
           opacity: 0.9; }
   .content_wrap .publishing_wrap {
     display: flex;
-    justify-content: space-between;
     width: 100%; }
     .content_wrap .publishing_wrap .search_result_wrap {
       display: none;
       width: 30%;
-      margin-left: 15px;
+      margin-left: 2.5%;
       transition-duration: 2s; }
       .content_wrap .publishing_wrap .search_result_wrap .wrap_label {
         border: 1px solid #bebebe;
@@ -177,17 +176,13 @@ html, body {
           padding-left: 15px; }
     .content_wrap .publishing_wrap .playlist_status_wrap {
       display: none;
-      margin-right: 15px;
       width: 30%;
-      max-height: 500px;
-      padding-left: 23px;
-      margin-left: -23px;
-      overflow-y: scroll;
+      margin-left: 2.5%;
       margin-bottom: 30px; }
       .content_wrap .publishing_wrap .playlist_status_wrap .wrap_label {
         border: 1px solid #bebebe;
         padding: 15px; }
-      .content_wrap .publishing_wrap .playlist_status_wrap .song_info {
+      .content_wrap .publishing_wrap .playlist_status_wrap .song_list .song_info {
         display: flex;
         justify-content: space-between;
         border: 1px solid #bebebe;
@@ -196,30 +191,46 @@ html, body {
         align-items: center;
         cursor: move;
         position: relative; }
-        .content_wrap .publishing_wrap .playlist_status_wrap .song_info .song_name {
+        .content_wrap .publishing_wrap .playlist_status_wrap .song_list .song_info .des_connect_line {
+          position: absolute;
+          width: 8%;
+          height: 0px;
+          border: 1px dashed #bebebe;
+          right: 0%;
+          top: 50%;
+          transform: translate(100%, -50%); }
+        .content_wrap .publishing_wrap .playlist_status_wrap .song_list .song_info .song_des_wrap {
+          position: absolute;
+          width: 100%;
+          height: 80%;
+          right: -8%;
+          top: 50%;
+          transform: translate(100%, -50%);
+          border: 1px solid #bebebe;
+          color: #bebebe;
+          padding: 5px;
+          background: transparent;
+          font-size: 16px; }
+          .content_wrap .publishing_wrap .playlist_status_wrap .song_list .song_info .song_des_wrap:focus {
+            outline: none; }
+        .content_wrap .publishing_wrap .playlist_status_wrap .song_list .song_info .song_name {
           display: inline-block;
           width: 85%;
           overflow: hidden;
           padding-left: 15px;
           padding-right: 15px;
           height: 48px; }
-        .content_wrap .publishing_wrap .playlist_status_wrap .song_info .song_cover {
+        .content_wrap .publishing_wrap .playlist_status_wrap .song_list .song_info .song_cover {
           width: 70px;
           height: 70px;
           display: inline-block;
           padding-left: 15px;
           white-space: nowrap; }
-        .content_wrap .publishing_wrap .playlist_status_wrap .song_info .song_edit {
+        .content_wrap .publishing_wrap .playlist_status_wrap .song_list .song_info .song_delete {
           display: inline-block;
           width: 10%;
           white-space: nowrap;
           cursor: pointer; }
-        .content_wrap .publishing_wrap .playlist_status_wrap .song_info .song_des_wrap {
-          position: absolute;
-          right: 15%;
-          top: 50%;
-          border: 1px solid #bebebe;
-          padding: 5px; }
       .content_wrap .publishing_wrap .playlist_status_wrap .publish_btn {
         margin-top: 15px;
         align-items: center;

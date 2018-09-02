@@ -160,12 +160,12 @@ html, body
   // Main area
   .publishing_wrap
     display: flex
-    justify-content: space-between
+    // justify-content: space-between
     width: 100%        
     .search_result_wrap
       display: none
       width: 30%
-      margin-left: 15px
+      margin-left: 2.5%
       transition-duration: 2s
       .wrap_label
         border: 1px solid $txt_white
@@ -193,49 +193,64 @@ html, body
 
     .playlist_status_wrap
       display: none
-      margin-right: 15px
       width: 30%
-      max-height: 500px
-      padding-left: 23px
-      margin-left: -23px
-      overflow-y: scroll
+      margin-left: 2.5%
       margin-bottom: 30px
       .wrap_label
         border: 1px solid $txt_white
         padding: 15px
-      .song_info
-        display: flex
-        justify-content: space-between
-        border: 1px solid $txt_white
-        border-top: 0px solid $txt_white
-        padding: 5px 0px
-        align-items: center
-        cursor: move
-        position: relative 
-        .song_name
-          display: inline-block
-          width: 85%
-          overflow: hidden
-          padding-left: 15px
-          padding-right: 15px
-          height: 48px
-        .song_cover
-          width: 70px
-          height: 70px
-          display: inline-block
-          padding-left: 15px
-          white-space: nowrap
-        .song_edit
-          display: inline-block
-          width: 10%
-          white-space: nowrap
-          cursor: pointer
-        .song_des_wrap
-          position: absolute
-          right: 15%
-          top: 50%
+      .song_list
+        // max-height: 450px
+        .song_info
+          display: flex
+          justify-content: space-between
           border: 1px solid $txt_white
-          padding: 5px      
+          border-top: 0px solid $txt_white
+          padding: 5px 0px
+          align-items: center
+          cursor: move
+          position: relative
+          .des_connect_line
+            position: absolute
+            width: 8%
+            height: 0px
+            border: 1px dashed $txt_white
+            right: 0%
+            top: 50%
+            transform: translate(100%, -50%)
+          .song_des_wrap
+            position: absolute
+            width: 100%
+            height: 80%
+            right: -8%
+            top: 50%
+            transform: translate(100%, -50%)
+            border: 1px solid $txt_white
+            color: $txt_white
+            padding: 5px
+            background: transparent
+            font-size: 16px
+            &:focus
+              outline: none
+          .song_name
+            display: inline-block
+            width: 85%
+            overflow: hidden
+            padding-left: 15px
+            padding-right: 15px
+            height: 48px
+          .song_cover
+            width: 70px
+            height: 70px
+            display: inline-block
+            padding-left: 15px
+            white-space: nowrap
+          .song_delete
+            display: inline-block
+            width: 10%
+            white-space: nowrap
+            cursor: pointer
+             
 
 
 
