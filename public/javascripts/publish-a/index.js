@@ -8,7 +8,9 @@ let uploadCover;
 
 // Get import result
 socket.on('getSearchListResults', (socketOn_singleSongInfos) => {
-    appendSearchResults(socketOn_singleSongInfos, search_result_wrap_node);
+    socketOn_singleSongInfos.forEach(({ songName, cover, url }) => {
+        addSongToSongListState(songName, cover, url);
+    });
 });
 
 // Get search result
@@ -63,12 +65,14 @@ function returnResultSongInfoNode(singleSongInfo) {
 
     let result_song_info_node = document.createElement('div');
     result_song_info_node.className = 'result_song_info';
-
-    // Bind property on the result_song_info_node
-    result_song_info_node.songName = singleSongInfo.songName;
-    result_song_info_node.cover = singleSongInfo.cover;
-    result_song_info_node.url = singleSongInfo.url;
-    result_song_info_node.addEventListener('click', addSongToSongListState);
+    result_song_info_node.addEventListener(
+        'click',
+        (function({ songName, cover, url }) {
+            return function() {
+                addSongToSongListState(songName, cover, url);
+            };
+        })(singleSongInfo)
+    );
 
     result_song_info_node.appendChild(song_cover_node);
     result_song_info_node.appendChild(song_name_node);
@@ -77,25 +81,19 @@ function returnResultSongInfoNode(singleSongInfo) {
 }
 
 // When click on the result, add target to the songListState
-function addSongToSongListState() {
-    let result_song_info_node_collection = document.querySelectorAll('.result_song_info');
-    result_song_info_node_collection.forEach((node) => {
-        node.style.boxShadow = '0 0';
-    });
-    this.style.boxShadow = '0px 0px 0px 2px yellow inset';
-
-    renderSongToPlaylistWrap(this.songName, this.url);
-
+function addSongToSongListState(songName, cover, url) {
+    renderSongToPlaylistWrap(songName, url);
     addDragHandler();
 
     let singleSongInfo = {
-        url: this.url,
-        songName: this.songName,
-        cover: this.cover,
-        des: this.des,
+        url,
+        songName,
+        cover,
+        des: '',
         like: 0,
         comments: [],
     };
+    console.log(singleSongInfo);
 
     songListState.push(singleSongInfo);
 }
