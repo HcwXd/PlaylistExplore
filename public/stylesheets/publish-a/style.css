@@ -1,0 +1,254 @@
+* {
+  letter-spacing: 2px; }
+
+html, body {
+  background-color: #0f0f0f;
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  color: #3c3c3c; }
+
+.content_wrap {
+  width: 95%;
+  background-color: #1a1a1a;
+  color: #bebebe;
+  margin-top: 5%;
+  margin-left: 50%;
+  transform: translateX(-50%);
+  display: block;
+  position: relative;
+  justify-content: space-between;
+  min-height: 100%; }
+  .content_wrap .publish_wrap {
+    z-index: 10;
+    width: 450px;
+    position: absolute;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #0f0f0f;
+    color: #bebebe; }
+    .content_wrap .publish_wrap .container {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      border-radius: 5px; }
+      .content_wrap .publish_wrap .container .cancel {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        cursor: pointer; }
+      .content_wrap .publish_wrap .container .field {
+        padding: 15px;
+        width: 95%; }
+        .content_wrap .publish_wrap .container .field .playlist_input_row {
+          margin-top: 10px;
+          align-items: center;
+          text-decoration: none;
+          border: 2px solid #bebebe;
+          background-color: #282828;
+          color: #bebebe;
+          width: 90%;
+          height: 35px;
+          line-height: 35px;
+          font-size: 12px;
+          border-radius: 5px;
+          padding: 0px 15px; }
+          .content_wrap .publish_wrap .container .field .playlist_input_row:focus {
+            outline-color: #2c2d30;
+            outline-width: 0px;
+            box-shadow: none;
+            color: #bebebe; }
+        .content_wrap .publish_wrap .container .field .playlist_des_input, .content_wrap .publish_wrap .container .field .avatar_input {
+          margin-top: 15px;
+          align-items: center;
+          text-decoration: none;
+          border: 2px solid #bebebe;
+          background-color: #282828;
+          color: #bebebe;
+          width: 85%;
+          font-size: 18px;
+          line-height: 18px;
+          border-radius: 5px;
+          padding: 15px 15px; }
+          .content_wrap .publish_wrap .container .field .playlist_des_input:focus, .content_wrap .publish_wrap .container .field .avatar_input:focus {
+            word-wrap: break-all;
+            outline-color: #2c2d30;
+            outline-width: 0px;
+            box-shadow: none;
+            color: #bebebe; }
+      .content_wrap .publish_wrap .container .real_publish_btn {
+        margin-top: 15px;
+        align-items: center;
+        text-align: center;
+        height: 45px;
+        border: 2px solid #bebebe;
+        line-height: 45px;
+        background-color: #282828;
+        color: #bebebe;
+        font-size: 12px;
+        font-weight: 500;
+        border-radius: 5px;
+        cursor: pointer;
+        padding: 0px 15px; }
+        .content_wrap .publish_wrap .container .real_publish_btn:hover {
+          opacity: 0.9; }
+  .content_wrap .search_area_wrap {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    position: relative; }
+    .content_wrap .search_area_wrap .search_area {
+      margin-top: 35px;
+      margin-bottom: 35px;
+      display: flex;
+      width: 70%; }
+      .content_wrap .search_area_wrap .search_area .search_input {
+        align-items: center;
+        text-decoration: none;
+        border: 2px solid #bebebe;
+        border-right: 1px solid #bebebe;
+        background-color: #282828;
+        color: #bebebe;
+        width: 85%;
+        height: 45px;
+        line-height: 45px;
+        font-size: 12px;
+        border-radius: 5px 0 0 5px;
+        padding: 0px 15px; }
+        .content_wrap .search_area_wrap .search_area .search_input:focus {
+          outline-color: #2c2d30;
+          outline-width: 0px;
+          box-shadow: none;
+          color: #bebebe; }
+      .content_wrap .search_area_wrap .search_area .search_btn {
+        align-items: center;
+        text-align: center;
+        height: 45px;
+        border: 2px solid #bebebe;
+        border-left: 1px solid #bebebe;
+        line-height: 45px;
+        width: 15%;
+        font-size: 12px;
+        background-color: #282828;
+        color: #bebebe;
+        font-size: 12px;
+        font-weight: 500;
+        border-radius: 0 5px 5px 0;
+        cursor: pointer; }
+        .content_wrap .search_area_wrap .search_area .search_btn:hover {
+          opacity: 0.9; }
+  .content_wrap .publishing_wrap {
+    display: flex;
+    width: 100%; }
+    .content_wrap .publishing_wrap .search_result_wrap {
+      display: none;
+      width: 30%;
+      margin-left: 2.5%;
+      transition-duration: 2s; }
+      .content_wrap .publishing_wrap .search_result_wrap .wrap_label {
+        border: 1px solid #bebebe;
+        padding: 15px; }
+      .content_wrap .publishing_wrap .search_result_wrap .result_song_info {
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        border: 1px solid #bebebe;
+        border-top: 0px solid #bebebe;
+        padding: 5px 0px;
+        align-items: center; }
+        .content_wrap .publishing_wrap .search_result_wrap .result_song_info .song_name {
+          display: inline-block;
+          width: 85%;
+          overflow: hidden;
+          padding-left: 15px;
+          padding-right: 15px;
+          height: 48px; }
+        .content_wrap .publishing_wrap .search_result_wrap .result_song_info .song_cover {
+          width: 70px;
+          height: 70px;
+          display: inline-block;
+          padding-left: 15px; }
+    .content_wrap .publishing_wrap .playlist_status_wrap {
+      display: none;
+      width: 30%;
+      margin-left: 2.5%;
+      margin-bottom: 30px; }
+      .content_wrap .publishing_wrap .playlist_status_wrap .wrap_label {
+        border: 1px solid #bebebe;
+        padding: 15px; }
+      .content_wrap .publishing_wrap .playlist_status_wrap .song_list .song_info {
+        display: flex;
+        justify-content: space-between;
+        border: 1px solid #bebebe;
+        border-top: 0px solid #bebebe;
+        padding: 5px 0px;
+        align-items: center;
+        cursor: move;
+        position: relative; }
+        .content_wrap .publishing_wrap .playlist_status_wrap .song_list .song_info .des_connect_line {
+          position: absolute;
+          opacity: 0.5;
+          width: 7.5%;
+          height: 0px;
+          border: 1px dashed #bebebe;
+          right: 0%;
+          top: 50%;
+          transform: translate(100%, -50%); }
+        .content_wrap .publishing_wrap .playlist_status_wrap .song_list .song_info .song_des_wrap {
+          position: absolute;
+          width: 100%;
+          height: 80%;
+          right: -8%;
+          top: 50%;
+          transform: translate(100%, -50%);
+          border: 1px solid #bebebe;
+          color: #bebebe;
+          padding: 5px;
+          background: transparent;
+          font-size: 16px; }
+          .content_wrap .publishing_wrap .playlist_status_wrap .song_list .song_info .song_des_wrap:focus {
+            outline: none; }
+        .content_wrap .publishing_wrap .playlist_status_wrap .song_list .song_info .song_name {
+          display: inline-block;
+          width: 85%;
+          overflow: hidden;
+          padding-left: 15px;
+          padding-right: 15px;
+          height: 48px; }
+        .content_wrap .publishing_wrap .playlist_status_wrap .song_list .song_info .song_cover {
+          width: 70px;
+          height: 70px;
+          display: inline-block;
+          padding-left: 15px;
+          white-space: nowrap; }
+        .content_wrap .publishing_wrap .playlist_status_wrap .song_list .song_info .song_delete {
+          display: inline-block;
+          width: 10%;
+          white-space: nowrap;
+          cursor: pointer; }
+      .content_wrap .publishing_wrap .playlist_status_wrap .publish_btn {
+        margin-top: 15px;
+        align-items: center;
+        text-align: center;
+        height: 45px;
+        border: 2px solid #bebebe;
+        border-left: 1px solid #bebebe;
+        line-height: 45px;
+        width: calc(100% - 2px);
+        font-size: 12px;
+        background-color: #282828;
+        color: #bebebe;
+        font-size: 12px;
+        font-weight: 500;
+        border-radius: 5px;
+        cursor: pointer; }
+        .content_wrap .publishing_wrap .playlist_status_wrap .publish_btn:hover {
+          opacity: 0.9; }
+
+/*# sourceMappingURL=style.css.map */

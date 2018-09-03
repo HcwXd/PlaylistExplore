@@ -34,8 +34,12 @@ router.get('/signup', function(req, res, next) {
     res.render('signup');
 });
 
-router.get('/publish', checkLogin, function(req, res, next) {
+router.get('/publish', function(req, res, next) {
     res.render('publish');
+});
+
+router.get('/publishA', function(req, res, next) {
+    res.render('publish-a');
 });
 
 router.get('/friend', checkLogin, function(req, res, next) {
