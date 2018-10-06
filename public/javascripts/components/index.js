@@ -205,3 +205,14 @@ window.addEventListener('keyup', (e) => {
         document.body.innerHTML = '';
     }
 });
+
+// Services
+
+function bindFunctionToInputAndBtn(input_node, btn_node, func) {
+    input_node.addEventListener('keydown', (e) => {
+        if (e.keyCode === 13) {
+            func();
+        }
+    });
+    btn_node.addEventListener('click', func);
+}
