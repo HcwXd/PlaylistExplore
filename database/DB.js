@@ -30,10 +30,10 @@ function getData(query) {
     return new Promise((resolve, reject) => {
         try {
             db.query(query, (error, result, cache) => {
-                console.log('cache: ' + cache.isCache);
+                if (error) {
+                    console.log(error);
+                }
                 console.log(query);
-                if (error) console.log(error);
-                //console.log(result);
                 console.log('success');
                 resolve(result);
             });
