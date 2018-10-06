@@ -282,7 +282,7 @@ async function uploadImgurBeforePublish() {
 }
 
 function redirectToProfile() {
-    let date = new Date();
+    let date = new Date().toUTCString();
     let playlistInfo = {
         name: document.querySelector('.playlist_input_row').value,
         des: document.querySelector('.playlist_des_input').value,
