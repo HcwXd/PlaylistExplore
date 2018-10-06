@@ -15,7 +15,7 @@ socket.on('getSearchListResults', (socketOn_singleSongInfos) => {
 
 // Get search result
 socket.on('getSearchResults', (socketOn_singleSongInfos) => {
-    appendSearchResults(socketOn_singleSongInfos, search_result_wrap_node);
+    appendSearchResults(socketOn_singleSongInfos);
 });
 
 // Bind getSearchResult to the btn and input
@@ -43,13 +43,14 @@ function emitSearchQuery() {
 }
 
 // Append search results to node
-function appendSearchResults(singleSongInfos, root_node) {
-    root_node.style.display = 'block';
-    root_node.innerHTML = '<div class="wrap_label">請選擇你要加入的歌曲</div>';
+function appendSearchResults(singleSongInfos) {
+    let fancy_search_result_wrap_node = document.querySelector('.fancy_search_result_wrap');
+    search_result_wrap_node.style.display = 'flex';
+    fancy_search_result_wrap_node.innerHTML = '<div class="wrap_label">請點選你要加入的歌曲</div>';
 
     for (let i = 0; i < singleSongInfos.length; i++) {
         let result_song_info_node = returnResultSongInfoNode(singleSongInfos[i]);
-        root_node.appendChild(result_song_info_node);
+        fancy_search_result_wrap_node.appendChild(result_song_info_node);
     }
 }
 
@@ -82,6 +83,7 @@ function returnResultSongInfoNode(singleSongInfo) {
 
 // When click on the result, add target to the songListState
 function addSongToSongListState(songName, cover, url) {
+    search_result_wrap_node.style.display = 'none';
     renderSongToPlaylistWrap(songName, url);
     addDragHandler();
 
@@ -144,16 +146,17 @@ function returnSongInfoNode(songName, songUrl) {
     song_info_node.url = songUrl;
     song_info_node.draggable = true;
 
-    song_info_node.appendChild(song_des_wrap_node);
-    song_info_node.appendChild(des_connect_line_node);
+    song_info_node.appendChild(song_delete_node);
     song_info_node.appendChild(song_cover_node);
     song_info_node.appendChild(song_name_node);
-    song_info_node.appendChild(song_delete_node);
+    song_info_node.appendChild(song_des_wrap_node);
 
     return song_info_node;
 }
 
 function deleteSongFromPlaylist() {
+    console.log('deleteSongFromPlaylist');
+
     let deleteUrlIndex = songListState.filter(function(el) {
         return el.url == this.url;
     });
@@ -182,7 +185,7 @@ function showPublishFancyBox() {
         </div>
         <div class="field">
             <label>歌單描述*</label>
-            <textarea rows="15" cols="20" class="playlist_des_input"></textarea>
+            <textarea cols=32 rows=30 class="playlist_des_input"></textarea>
         </div>
         <div class="field">
             <label>歌單封面</label>
@@ -194,8 +197,8 @@ function showPublishFancyBox() {
     </div>
   `;
 
-    let content_wrap_node = document.querySelector('.content_wrap');
-    content_wrap_node.appendChild(publish_wrap_node);
+    // let content_wrap_node = document.querySelector('.content_wrap');
+    document.body.appendChild(publish_wrap_node);
 
     let cancel_node = document.querySelector('.cancel');
     cancel_node.addEventListener('click', () => {
@@ -344,7 +347,7 @@ function addDragHandler() {
         item.addEventListener('dragleave', handleDragLeave);
         item.addEventListener('drop', handleDrop);
         item.addEventListener('dragend', handleDragEnd);
-        item.lastChild.addEventListener('click', deleteSongFromPlaylist);
+        item.querySelector('.song_delete').addEventListener('click', deleteSongFromPlaylist);
     });
 }
 

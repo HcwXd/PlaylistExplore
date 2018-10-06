@@ -183,7 +183,7 @@ a {
   z-index: 100; }
 
 .loader_hide {
-  z-index: -100; }
+  display: none; }
 
 @keyframes spin {
   0% {

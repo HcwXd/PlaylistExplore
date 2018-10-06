@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Publish Playlist - Playlist Explore</title>
-    <link rel="stylesheet" href="/stylesheets/publish/style.css">
-    <link rel="stylesheet" href="/stylesheets/publish/eggplant.css">
+    <link rel="stylesheet" href="/stylesheets/publish-a/style.css">
+    <link rel="stylesheet" href="/stylesheets/publish-a/eggplant.css">
 
     <link rel="stylesheet" href="/stylesheets/components/style.css">
     <script src="/socket.io/socket.io.js"></script>
@@ -17,19 +17,21 @@
 <body>
     <div class="loader loader_hide"></div>
     <%- include('components/nav') %>
-
-
+        <div class="search_result_wrap">
+            <div class="fancy_search_result_wrap">
+                <div class="wrap_label">請選擇你要加入的歌曲</div>
+            </div>
+        </div>
         <div class="content_wrap">
             <div class="search_area_wrap">
                 <div class="search_area">
                     <input id="search" class="search_input" placeholder="請輸入歌曲名稱 / 歌曲的 Youtube 網址 / 歌單的 Youtube 網址">
                     <div class="search_btn">搜尋 / 匯入</div>
+
                 </div>
             </div>
+
             <div class="publishing_wrap">
-                <div class="search_result_wrap">
-                    <div class="wrap_label">請選擇你要加入的歌曲</div>
-                </div>
                 <div class="playlist_status_wrap">
                     <div class="hidden_block">
                         <div class="wrap_label">目前的播放清單</div>
@@ -41,7 +43,7 @@
             </div>
         </div>
 
-        <script src="/javascripts/publish/index.js"></script>
+        <script src="/javascripts/publish-a/index.js"></script>
         <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
             crossorigin="anonymous"></script>
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="

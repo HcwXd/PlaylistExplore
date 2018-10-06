@@ -31,7 +31,7 @@ html, body
   position: relative
   justify-content: space-between
   min-height: 100%
-  
+  // Publish pop wrap
   .publish_wrap
     z-index: 10
     width: 450px
@@ -108,55 +108,6 @@ html, body
         padding: 0px 15px
         &:hover
           opacity: 0.9
-  .import_area_wrap
-    display: none
-    position: absolute
-    top: 200px
-    left: 50%
-    transform: translateX(-50%)
-    border: 1px solid $txt_white
-    width: 75%
-    padding: 35px
-    .import_input
-      width: 75%
-      align-items: center
-      text-decoration: none
-      border: 2px solid $txt_white
-      border-right: 1px solid $txt_white
-      background-color: $bg_grey
-      color: $txt_white
-      width: 85%
-      height: 45px
-      line-height: 45px
-      font-size: 12px
-      border-radius: 5px 0 0 5px
-      padding: 0px 15px
-      &:focus
-        outline-color: rgb(44, 45, 48)
-        outline-width: 0px
-        box-shadow: none
-        color: $txt_white
-    .import_cancel
-      position: absolute
-      right: 10px
-      top: 10px
-      cursor: pointer
-    .import_btn  
-      align-items: center
-      text-align: center
-      height: 45px
-      border: 2px solid $txt_white
-      border-left: 1px solid $txt_white
-      line-height: 45px
-      background-color: $bg_grey
-      color: $txt_white
-      font-size: 12px
-      font-weight: 500
-      border-radius: 0 5px 5px 0
-      cursor: pointer
-      padding: 0 15px
-      &:hover
-        opacity: 0.9
   .search_area_wrap
     width: 100%
     display: flex
@@ -202,38 +153,21 @@ html, body
         cursor: pointer
         &:hover
           opacity: 0.9
-    .show_import_btn
-      position: absolute
-      top: 50%
-      right: 5%
-      transform: translate(0, -50%)
-      // align-items: center
-      text-align: center
-      height: 45px
-      border: 2px solid $txt_white
-      line-height: 45px
-      background-color: $bg_grey
-      color: $txt_white
-      font-size: 12px
-      font-weight: 500
-      border-radius: 5px
-      cursor: pointer
-      padding: 0 15px
-      transition-duration: 0.5s
-      &:hover
-        opacity: 0.9
-        border-radius: 20px
-      
+
+
+
+          
+  // Main area
   .publishing_wrap
     display: flex
-    justify-content: space-between
+    // justify-content: space-between
     width: 100%        
     .search_result_wrap
+      display: none
       width: 30%
-      margin-left: 15px
-      // border: 1px solid $txt_white
+      margin-left: 2.5%
       transition-duration: 2s
-      .pick_des
+      .wrap_label
         border: 1px solid $txt_white
         padding: 15px
       .result_song_info
@@ -256,94 +190,74 @@ html, body
           height: 70px
           display: inline-block
           padding-left: 15px
-    .add_des_wrap
-      width: 30%
-      display: flex
-      flex-direction: column
-      align-items: center
-      .des_input
-        align-items: center
-        text-decoration: none
-        border: 2px solid $txt_white
-        border-right: 1px solid $txt_white
-        background-color: $bg_grey
-        color: $txt_white
-        width: 85%
-        font-size: 18px
-        line-height: 18px
-        border-radius: 5px
-        padding: 15px 15px
-        &:focus
-          word-wrap: break-all
-          outline-color: rgb(44, 45, 48)
-          outline-width: 0px
-          box-shadow: none
-          color: $txt_white
-      .add_btn
-        margin-top: 15px
-        align-items: center
-        text-align: center
-        height: 45px
-        border: 2px solid $txt_white
-        border-left: 1px solid $txt_white
-        line-height: 45px
-        width: 90%
-        font-size: 12px
-        background-color: $bg_grey
-        color: $txt_white
-        font-size: 12px
-        font-weight: 500
-        border-radius: 5px
-        cursor: pointer
-        &:hover
-          opacity: 0.9
 
     .playlist_status_wrap
-      margin-right: 15px
+      display: none
       width: 30%
-      max-height: 500px
-      padding-left: 23px
-      margin-left: -23px
-      overflow-y: scroll
+      margin-left: 2.5%
       margin-bottom: 30px
-      .pick_des
+      .wrap_label
         border: 1px solid $txt_white
         padding: 15px
-      .song_info
-        display: flex
-        justify-content: space-between
-        border: 1px solid $txt_white
-        border-top: 0px solid $txt_white
-        padding: 5px 0px
-        align-items: center
-        cursor: move
-        position: relative
-        .song_add_des
-          position: absolute
-          left: 0%
-          top: 50%
-          transform: translate(-100%, -50%)
-          border: 1px solid $txt_white    
-          cursor: pointer
-          padding: 5px      
-        .song_name
-          display: inline-block
-          width: 85%
-          overflow: hidden
-          padding-left: 15px
-          padding-right: 15px
-          height: 48px
-        .song_cover
-          width: 70px
-          height: 70px
-          display: inline-block
-          padding-left: 15px
-          white-space: nowrap
-        .song_edit
-          display: inline-block
-          width: 10%
-          white-space: nowrap
-          cursor: pointer
+      .song_list
+        // max-height: 450px
+        .song_info
+          display: flex
+          justify-content: space-between
+          border: 1px solid $txt_white
+          border-top: 0px solid $txt_white
+          padding: 5px 0px
+          align-items: center
+          cursor: move
+          position: relative
+          .des_connect_line
+            position: absolute
+            opacity: 0.5
+            width: 7.5%
+            height: 0px
+            border: 1px dashed $txt_white
+            right: 0%
+            top: 50%
+            transform: translate(100%, -50%)
+          .song_des_wrap
+            position: absolute
+            width: 100%
+            height: 80%
+            right: -8%
+            top: 50%
+            transform: translate(100%, -50%)
+            border: 1px solid $txt_white
+            color: $txt_white
+            padding: 5px
+            background: transparent
+            font-size: 16px
+            &:focus
+              outline: none
+          .song_name
+            display: inline-block
+            width: 85%
+            overflow: hidden
+            padding-left: 15px
+            padding-right: 15px
+            height: 48px
+          .song_cover
+            width: 70px
+            height: 70px
+            display: inline-block
+            padding-left: 15px
+            white-space: nowrap
+          .song_delete
+            display: inline-block
+            width: 10%
+            white-space: nowrap
+            cursor: pointer
+             
+
+
+
+
+
+
 
       .publish_btn
         margin-top: 15px

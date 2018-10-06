@@ -38,6 +38,10 @@ router.get('/publish', checkLogin, function(req, res, next) {
     res.render('publish');
 });
 
+router.get('/publishA', checkLogin, function(req, res, next) {
+    res.render('publish-a');
+});
+
 router.get('/friend', checkLogin, function(req, res, next) {
     res.render('friend');
 });

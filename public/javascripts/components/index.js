@@ -192,10 +192,6 @@ document.addEventListener('click', (evt) => {
     }
 });
 
-window.addEventListener('click', (e) => {
-    console.log(e.target);
-});
-
 // Egg
 
 let clean = 'ArrowUpArrowUpArrowDownArrowDownArrowLeftArrowRightArrowLeftArrowRightba';
