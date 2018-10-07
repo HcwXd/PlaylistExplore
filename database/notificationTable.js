@@ -1,7 +1,7 @@
 const { db, getData, applyQuery, multipleGetData } = require('./DB');
 const mysql = require('mysql');
-const fecha = require('fecha');
 const emptyPromise = require('empty-promise');
+const formatTime = require('./formatTime');
 
 async function getCommentNotification(refferenceIndex) {
     const sql =
@@ -31,7 +31,7 @@ async function getFollowNotificaiton(triggerToken) {
 }
 
 function createNotificationObject(type, info) {
-    const date = fecha.format(new Date(), 'YYYY-MM-DD HH:mm:ss');
+    const date = formatTime.getUTCString(new Date());
     switch (type) {
         case 'like': {
             return {
@@ -171,7 +171,7 @@ function mergeData(notificationList, likeData, commentData, relationData) {
         relationIndex = 0;
 
     notificationList.forEach((element, index) => {
-        const date = fecha.format(new Date(element.date), 'YYYY-MM-DD HH:mm:ss');
+        const date = formatTime.getUTCString(new Date(element.date));
         if (element.type === 'like') {
             const likeInfo = likeData[likeIndex++];
             notificationInfo.push({

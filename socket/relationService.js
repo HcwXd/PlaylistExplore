@@ -1,5 +1,4 @@
-const { userTable, commentTable, songTable, relationTable, songListTable, likeTable, notificationTable } = require('./database');
-const fecha = require('fecha');
+const { userTable, commentTable, songTable, relationTable, songListTable, likeTable, notificationTable, formatTime } = require('./database');
 const socketMap = require('./socketMap');
 
 function relationService(socket) {
@@ -37,7 +36,7 @@ function relationService(socket) {
     });
 
     socket.on('getFriendsLatest', async (date) => {
-        date = fecha.format(new Date(date), 'YYYY-MM-DD HH:mm:ss');
+        date = formatTime.getUTCString(new Date(date));
         const latestFriendPlaylistArray = await songListTable.getLatestPlaylists(5, date, socket.handshake.session.token, true);
         socket.emit('getFriendsLatest', latestFriendPlaylistArray);
     });
@@ -51,5 +50,4 @@ function relationService(socket) {
     });
 }
 
-console.log(fecha.format(new Date(), 'YYYY-MM-DD HH:mm:ss'));
 module.exports = relationService;

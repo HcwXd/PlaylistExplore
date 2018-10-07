@@ -5,6 +5,7 @@ var relationTable = require('../database/relationTable');
 var songListTable = require('../database/songListTable');
 var likeTable = require('../database/likeTable');
 var notificationTable = require('../database/notificationTable');
+var formatTime = require('../database/formatTime');
 
 module.exports = {
     userTable,
@@ -14,4 +15,5 @@ module.exports = {
     songListTable,
     likeTable,
     notificationTable,
+    formatTime,
 };
