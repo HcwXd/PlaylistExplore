@@ -10,9 +10,7 @@ function songlistService(socket) {
     });
 
     socket.on('getLatestPlaylists', async (date) => {
-        //console.log(date.toISOString);
-        date = formatTime.getUTCString(new Date(date));
-        console.log(date);
+        if (typeof date != 'string') date = formatTime.getUTCString(new Date(date));
         let latestplaylistInfo = await songListTable.getLatestPlaylists(5, date, socket.handshake.session.token, false);
         socket.emit('getLatestPlaylists', latestplaylistInfo);
     });
