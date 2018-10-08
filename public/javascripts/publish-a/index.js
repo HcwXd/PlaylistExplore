@@ -22,7 +22,7 @@ socket.on('getEditInfo', (socketOn_ownerInfo) => {
 
 function renderEditedPlaylist(songListState) {
     songListState.forEach((singleSongInfo) => {
-        renderSongToPlaylistWrap(singleSongInfo.songName, singleSongInfo.url);
+        renderSongToPlaylistWrap(singleSongInfo.songName, singleSongInfo.url, singleSongInfo.des);
     });
 
     addDragHandler();
@@ -98,11 +98,11 @@ function addSongToSongListState(songName, cover, url) {
 }
 
 // Render click target to playlist wrap
-function renderSongToPlaylistWrap(songName, songUrl) {
+function renderSongToPlaylistWrap(songName, songUrl, des = '') {
     let playlist_status_wrap = document.querySelector('.playlist_status_wrap');
     playlist_status_wrap.style.display = 'block';
 
-    let song_info_node = returnSongInfoNode(songName, songUrl);
+    let song_info_node = returnSongInfoNode(songName, songUrl, des);
     document.querySelector('.song_list').appendChild(song_info_node);
 
     playlist_status_wrap.scrollTop = playlist_status_wrap.scrollHeight;
@@ -144,6 +144,11 @@ function showPublishFancyBox() {
   `;
 
     document.body.appendChild(publish_wrap_node);
+
+    if (editInfo) {
+        document.querySelector('.playlist_input_row').value = editInfo.name;
+        document.querySelector('.playlist_des_input').value = editInfo.des;
+    }
 
     let cancel_node = document.querySelector('.cancel');
     cancel_node.addEventListener('click', () => {
@@ -264,19 +269,13 @@ function returnSonglistAfterDragAndAddDes() {
     let oldSongListState = [...songListState];
 
     for (let newIndex = 0; newIndex < readySongNames.length; newIndex++) {
-        let popIndex;
-        oldSongListState = oldSongListState.map((item) => {
-            if (item.songName === readySongNames[newIndex]) {
-                item.des = readySongDes[newIndex];
-                newSongListState.push(item);
-                popIndex = oldSongListState.indexOf(item);
-            } else {
-                return item;
+        console.log(readySongNames[newIndex]);
+        oldSongListState.forEach((singleSongInfo) => {
+            if (singleSongInfo.songName === readySongNames[newIndex]) {
+                singleSongInfo.des = readySongDes[newIndex];
+                newSongListState.push(singleSongInfo);
             }
         });
-        if (popIndex > -1) {
-            oldSongListState.splice(popIndex, 1);
-        }
     }
 
     return newSongListState;

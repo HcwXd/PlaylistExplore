@@ -26,7 +26,7 @@ function returnResultSongInfoNode(singleSongInfo) {
     return result_song_info_node;
 }
 
-function returnSongInfoNode(songName, songUrl) {
+function returnSongInfoNode(songName, songUrl, des) {
     let song_cover_node = document.createElement('img');
     song_cover_node.className = 'song_cover';
     song_cover_node.src = `https://img.youtube.com/vi/${songUrl}/hqdefault.jpg`;
@@ -45,6 +45,7 @@ function returnSongInfoNode(songName, songUrl) {
     let song_des_wrap_node = document.createElement('textarea');
     song_des_wrap_node.className = 'song_des_wrap';
     song_des_wrap_node.placeholder = '請輸入歌曲描述';
+    song_des_wrap_node.innerHTML = des;
     song_des_wrap_node.url = songUrl;
     song_des_wrap_node.dataset.url = songUrl;
 
