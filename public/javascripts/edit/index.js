@@ -21,6 +21,7 @@ let uploadCover;
 socket.emit('getEditInfo', userToken);
 socket.on('getEditInfo', (socketOn_ownerInfo) => {
     playlistInfo = socketOn_ownerInfo.playlistInfo;
+    console.log(socketOn_ownerInfo);
     console.log(playlistInfo);
     renderOldPlaylist(playlistInfo);
 });
