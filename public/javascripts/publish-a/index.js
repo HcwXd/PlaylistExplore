@@ -5,6 +5,28 @@ const playlist_status_wrap_node = document.querySelector('.hidden_block');
 
 let songListState = [];
 let uploadCover;
+let editInfo;
+
+// Get edit Info
+if (window.location.pathname === '/edit') {
+    const pageInfo = getQueryStringObject();
+
+    socket.emit('getEditInfo', pageInfo.id);
+}
+socket.on('getEditInfo', (socketOn_ownerInfo) => {
+    editInfo = socketOn_ownerInfo.playlistInfo;
+    console.log(editInfo);
+    songListState = editInfo.songList;
+    renderEditedPlaylist(songListState);
+});
+
+function renderEditedPlaylist(songListState) {
+    songListState.forEach((singleSongInfo) => {
+        renderSongToPlaylistWrap(singleSongInfo.songName, singleSongInfo.url);
+    });
+
+    addDragHandler();
+}
 
 // Get import result
 socket.on('getSearchListResults', (socketOn_singleSongInfos) => {

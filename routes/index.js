@@ -47,7 +47,7 @@ router.get('/friend', checkLogin, function(req, res, next) {
 });
 
 router.get('/edit', checkLogin, function(req, res, next) {
-    res.render('edit');
+    res.render('publish-a');
 });
 
 router.get('/signout', checkLogin, function(req, res, next) {
