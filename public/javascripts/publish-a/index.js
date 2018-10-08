@@ -132,7 +132,7 @@ function showPublishFancyBox() {
             <label>歌單描述*</label>
             <textarea cols=32 rows=30 class="playlist_des_input"></textarea>
         </div>
-        <div class="field">
+        <div class="field cover">
             <label>歌單封面</label>
             <input class="avatar_input" type="file" name="avatar" data-maxSize="5000">
         </div>
@@ -147,6 +147,7 @@ function showPublishFancyBox() {
     if (editInfo) {
         document.querySelector('.playlist_input_row').value = editInfo.name;
         document.querySelector('.playlist_des_input').value = editInfo.des;
+        document.querySelector('.cover').innerHTML = '歌單封面（若不更改則不需上傳）';
     }
 
     let cancel_node = document.querySelector('.cancel');
@@ -242,6 +243,7 @@ function redirectToProfile() {
         songList: returnSonglistAfterDragAndAddDes(),
         listId: -1,
         uploadCover: uploadCover,
+        isEdit: editInfo ? true : false,
     };
     if (!uploadCover && editInfo) {
         playlistInfo.uploadCover = editInfo.uploadCover;
