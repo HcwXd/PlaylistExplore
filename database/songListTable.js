@@ -170,7 +170,6 @@ async function getPageSongData(limitNum, songListData) {
 async function getLatestPlaylists(limitNum, date, token, friends) {
     const songListData = await getPageSongList(limitNum, date, token, friends);
     if (songListData.length == 0) return [];
-
     const songData = await getPageSongData(limitNum, songListData);
     return makeLatestPlayLists(songListData, songData);
 }
