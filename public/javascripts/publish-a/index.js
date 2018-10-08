@@ -147,7 +147,7 @@ function showPublishFancyBox() {
     if (editInfo) {
         document.querySelector('.playlist_input_row').value = editInfo.name;
         document.querySelector('.playlist_des_input').value = editInfo.des;
-        document.querySelector('.cover').innerHTML = '歌單封面（若不更改則不需上傳）';
+        document.querySelector('.cover > .label').innerHTML = '歌單封面（若不更改則不需上傳）';
     }
 
     let cancel_node = document.querySelector('.cancel');
