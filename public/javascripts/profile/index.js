@@ -389,23 +389,6 @@ function addComment() {
     socket.emit('newComment', commentInfo);
 }
 
-function getQueryStringObject() {
-    let queryString = window.location.search;
-    let getPara;
-    let ParaVal;
-    let queryStringArray = [];
-
-    if (queryString.indexOf('?') != -1) {
-        let getSearch = queryString.split('?');
-        getPara = getSearch[1].split('&');
-        for (i = 0; i < getPara.length; i++) {
-            ParaVal = getPara[i].split('=');
-            queryStringArray[ParaVal[0]] = ParaVal[1];
-        }
-    }
-    return queryStringArray;
-}
-
 document.querySelector('.submit_btn').addEventListener('click', addComment);
 document.querySelector('.comment_text').addEventListener('keydown', (e) => {
     if (e.keyCode === 13) {

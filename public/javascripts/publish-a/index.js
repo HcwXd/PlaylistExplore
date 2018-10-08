@@ -6,11 +6,11 @@ const playlist_status_wrap_node = document.querySelector('.hidden_block');
 let songListState = [];
 let uploadCover;
 let editInfo;
-const pageInfo = getQueryStringObject();
+const queryString = getQueryStringObject();
 
 // Get edit Info
 if (window.location.pathname === '/edit') {
-    socket.emit('getEditInfo', pageInfo.id);
+    socket.emit('getEditInfo', queryString.id);
 }
 socket.on('getEditInfo', (socketOn_ownerInfo) => {
     editInfo = socketOn_ownerInfo.playlistInfo;
@@ -23,7 +23,6 @@ function renderEditedPlaylist(songListState) {
     songListState.forEach((singleSongInfo) => {
         renderSongToPlaylistWrap(singleSongInfo.songName, singleSongInfo.url, singleSongInfo.des);
     });
-
     addDragHandler();
 }
 
@@ -249,7 +248,7 @@ function redirectToProfile() {
     }
     socket.emit('publishNewPlaylist', playlistInfo);
 
-    window.location = `/profile?id=${pageInfo.id}&list=-1`;
+    window.location = `/profile?id=${queryString.id}&list=-1`;
 }
 
 function returnSonglistAfterDragAndAddDes() {
