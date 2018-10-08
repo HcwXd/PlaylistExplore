@@ -6,11 +6,10 @@ const playlist_status_wrap_node = document.querySelector('.hidden_block');
 let songListState = [];
 let uploadCover;
 let editInfo;
+const pageInfo = getQueryStringObject();
 
 // Get edit Info
 if (window.location.pathname === '/edit') {
-    const pageInfo = getQueryStringObject();
-
     socket.emit('getEditInfo', pageInfo.id);
 }
 socket.on('getEditInfo', (socketOn_ownerInfo) => {
@@ -244,11 +243,12 @@ function redirectToProfile() {
         listId: -1,
         uploadCover: uploadCover,
     };
-
+    if (!uploadCover && editInfo) {
+        playlistInfo.uploadCover = editInfo.uploadCover;
+    }
     socket.emit('publishNewPlaylist', playlistInfo);
 
-    const userToken = window.location.href.split('?id=')[1];
-    window.location = `/profile?id=${userToken}&list=-1`;
+    window.location = `/profile?id=${pageInfo.id}&list=-1`;
 }
 
 function returnSonglistAfterDragAndAddDes() {
