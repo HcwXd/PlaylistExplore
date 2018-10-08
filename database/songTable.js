@@ -33,17 +33,17 @@ async function createMultipleSong(playlistInfo) {
     await applyQuery(query);
 }
 
-function deleteSongInList(songListInfo) {
+async function deleteSongInList(songListInfo) {
     let sql = 'DELETE FROM song WHERE ?? = ? AND ?? = ?';
     let insert = ['token', songListInfo.token, 'listId', songListInfo.listId];
     let query = mysql.format(sql, insert);
-    applyQuery(query);
+    await applyQuery(query);
 
     /* delete comment when song list delete */
     sql = 'DELETE FROM comment WHERE ?? = ? and ?? = ?';
     insert = ['listOwnerToken', songListInfo.token, 'listId', songListInfo.listId];
     query = mysql.format(sql, insert);
-    applyQuery(query);
+    await applyQuery(query);
 }
 
 async function addLike(likeInfo) {

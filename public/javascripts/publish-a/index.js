@@ -38,6 +38,10 @@ socket.on('getSearchResults', (socketOn_singleSongInfos) => {
     appendSearchResults(socketOn_singleSongInfos);
 });
 
+socket.on('publishNewPlaylist', (id) => {
+    window.location = `/profile?id=${pageInfo.id}&list=${id}`;
+});
+
 // Bind getSearchResult to the btn and input
 const search_input_node = document.querySelector('.search_input');
 const search_btn_node = document.querySelector('.search_btn');
@@ -247,8 +251,11 @@ function redirectToProfile() {
         playlistInfo.uploadCover = editInfo.uploadCover;
     }
     socket.emit('publishNewPlaylist', playlistInfo);
+<<<<<<< HEAD
 
     window.location = `/profile?id=${queryString.id}&list=-1`;
+=======
+>>>>>>> 0176c071a890a9998481dcc2328198d561b21c59
 }
 
 function returnSonglistAfterDragAndAddDes() {

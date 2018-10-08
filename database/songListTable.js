@@ -37,14 +37,14 @@ async function deletePlayList(playlistInfo) {
     const sql = 'DELETE FROM songList WHERE ?? = ? AND ?? = ?';
     const insert = ['token', playlistInfo.token, 'listId', playlistInfo.listId];
     const query = mysql.format(sql, insert);
-    applyQuery(query);
+    await applyQuery(query);
 
     /* delete song in database */
-    songTable.deleteSongInList(playlistInfo);
+    await songTable.deleteSongInList(playlistInfo);
 }
 
-async function modifyPlayList(playlistInfo) {
-    if (playlistInfo.listId == -1) {
+async function modifyPlayList(playlistInfo, isEdit) {
+    if (playlistInfo.listId == -1 && !playlistInfo.isEdit) {
         await createPlayList(playlistInfo);
         return;
     }
