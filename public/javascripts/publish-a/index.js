@@ -171,67 +171,66 @@ function publish() {
         alert(e);
         return;
     }
-    uploadImgurBeforePublish();
-}
 
-async function uploadImgurBeforePublish() {
     let avatar_input_node = document.querySelector('.avatar_input');
-
     let files = avatar_input_node.files;
-
     if (!files.length) {
         redirectToProfile();
     } else {
-        if (files[0].size > avatar_input_node.dataset.maxSize * 1024) {
-            alert('請選擇一個較小的檔案');
-            return false;
-        }
-
-        console.log('Uploading file to Imgur..');
-        console.log(files[0]);
-
-        let apiUrl = 'https://api.imgur.com/3/image';
-        let apiKey = '50db29122a23727';
-
-        async function getData3() {
-            var defer = $.Deferred();
-
-            let formData = new FormData();
-            const file = await imageCompression(files[0]);
-            console.log(file);
-            formData.append('image', file);
-
-            $.ajax({
-                // async: false,
-                crossDomain: true,
-                processData: false,
-                contentType: false,
-                type: 'POST',
-                url: apiUrl,
-                headers: {
-                    Authorization: 'Client-ID ' + apiKey,
-                    Accept: 'application/json',
-                },
-                mimeType: 'multipart/form-data',
-                data: formData,
-                success: function(response) {
-                    defer.resolve(response);
-                },
-            });
-
-            return defer.promise();
-        }
-        document.querySelector('.loader').classList.remove('loader_hide');
-
-        $.when(getData3()).done(function(response) {
-            responseData = JSON.parse(response);
-            uploadCover = responseData.data.link;
-            console.log(uploadCover);
-            console.log('Remove');
-            document.querySelector('.loader').classList.add('loader_hide');
-            redirectToProfile();
-        });
+        uploadImgurBeforePublish(files);
     }
+}
+
+async function uploadImgurBeforePublish(files) {
+    if (files[0].size > avatar_input_node.dataset.maxSize * 1024) {
+        alert('請選擇一個較小的檔案');
+        return false;
+    }
+
+    console.log('Uploading file to Imgur..');
+    console.log(files[0]);
+
+    let apiUrl = 'https://api.imgur.com/3/image';
+    let apiKey = '50db29122a23727';
+
+    async function getData3() {
+        var defer = $.Deferred();
+
+        let formData = new FormData();
+        const file = await imageCompression(files[0]);
+        console.log(file);
+        formData.append('image', file);
+
+        $.ajax({
+            // async: false,
+            crossDomain: true,
+            processData: false,
+            contentType: false,
+            type: 'POST',
+            url: apiUrl,
+            headers: {
+                Authorization: 'Client-ID ' + apiKey,
+                Accept: 'application/json',
+            },
+            mimeType: 'multipart/form-data',
+            data: formData,
+            success: function(response) {
+                defer.resolve(response);
+            },
+        });
+
+        return defer.promise();
+    }
+    document.querySelector('.loader').classList.remove('loader_hide');
+
+    $.when(getData3()).done(function(response) {
+        responseData = JSON.parse(response);
+        uploadCover = responseData.data.link;
+        console.log(uploadCover);
+        console.log('Remove');
+        document.querySelector('.loader').classList.add('loader_hide');
+        redirectToProfile();
+    });
 }
 
 function redirectToProfile() {
@@ -241,7 +240,7 @@ function redirectToProfile() {
         des: document.querySelector('.playlist_des_input').value,
         date: date,
         songList: returnSonglistAfterDragAndAddDes(),
-        listId: -1,
+        listId: editInfo ? editInfo.listId : -1,
         uploadCover: uploadCover,
         isEdit: editInfo ? true : false,
     };
