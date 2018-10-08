@@ -39,17 +39,25 @@ function emitSearchQuery() {
 
 // Append search results to node
 function appendSearchResults(singleSongInfos) {
-    let fancy_search_result_wrap_node = document.querySelector('.fancy_search_result_wrap');
     search_result_wrap_node.style.display = 'flex';
-    search_result_wrap_node.innerHTML = '<div class="wrap_label">請選擇你要加入的歌曲</div>';
+    let fancy_search_result_wrap_node = document.querySelector('.fancy_search_result_wrap');
+    fancy_search_result_wrap_node.innerHTML = '<div class="wrap_label">請選擇你要加入的歌曲</div>';
 
     singleSongInfos.forEach((singleSongInfo) => {
+        console.log(singleSongInfo);
         fancy_search_result_wrap_node.appendChild(returnResultSongInfoNode(singleSongInfo));
     });
 }
 
 // When click on the result, add target to the songListState
 function addSongToSongListState(songName, cover, url) {
+    for (let i = 0; i < songListState.length; i++) {
+        if (songListState[i].url === url) {
+            alert('You have choosen this song!');
+            return;
+        }
+    }
+
     search_result_wrap_node.style.display = 'none';
     renderSongToPlaylistWrap(songName, url);
     addDragHandler();

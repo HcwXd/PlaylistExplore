@@ -21,6 +21,7 @@ function returnResultSongInfoNode(singleSongInfo) {
 
     result_song_info_node.appendChild(song_cover_node);
     result_song_info_node.appendChild(song_name_node);
+    console.log(result_song_info_node);
 
     return result_song_info_node;
 }
