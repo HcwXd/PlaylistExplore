@@ -77,7 +77,7 @@ function appendSearchResults(singleSongInfos) {
 function addSongToSongListState(songName, cover, url) {
     for (let i = 0; i < songListState.length; i++) {
         if (songListState[i].url === url) {
-            alert('You have choosen this song!');
+            alert('同首歌只能加入歌單一次哦！');
             return;
         }
     }
