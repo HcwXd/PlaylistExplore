@@ -6,6 +6,7 @@ function songlistService(socket) {
     socket.on('publishNewPlaylist', async (playlistInfo) => {
         playlistInfo['token'] = socket.handshake.session.token;
         const insertId = await songListTable.modifyPlayList(playlistInfo);
+        console.log(insertId);
         socket.emit('publishNewPlaylist', insertId);
     });
 

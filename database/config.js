@@ -1,6 +1,6 @@
 module.exports = {
-    host: 'sql7.freemysqlhosting.net',
-    user: 'sql7260032',
-    password: 'vsypEgiF9j',
-    database: 'sql7260032',
+    host: 'sql12.freemysqlhosting.net',
+    user: 'sql12267228',
+    password: 'kakR7yq25M',
+    database: 'sql12267228',
 };

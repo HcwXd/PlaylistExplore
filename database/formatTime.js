@@ -3,6 +3,7 @@ function formatDigit(num) {
     return '0' + num;
 }
 function getUTCString(time) {
+    if (typeof time == 'string') return time;
     const year = time.getUTCFullYear();
     const month = formatDigit(time.getUTCMonth() + 1);
     const date = formatDigit(time.getUTCDate());
