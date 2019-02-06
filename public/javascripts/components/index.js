@@ -3,96 +3,100 @@ let notificationState = [];
 
 socket.emit('getLatestNotification', new Date());
 socket.on('getLatestNotification', (socketOn_notificationList) => {
-    let unreadNotiArray = [];
-    let formatNoti = socketOn_notificationList.map((rawNotiData) => {
-        if (!rawNotiData.isRead) {
-            unreadNotiArray.push(rawNotiData.id);
-        }
-        return transformRawNotiToRenderFormat(rawNotiData);
-    });
-    if (unreadNotiArray.length > 0) {
-        updateNotiBtn(unreadNotiArray.length);
+  let unreadNotiArray = [];
+  let formatNoti = socketOn_notificationList.map((rawNotiData) => {
+    if (!rawNotiData.isRead) {
+      unreadNotiArray.push(rawNotiData.id);
     }
-    notificationState.push(...formatNoti);
+    return transformRawNotiToRenderFormat(rawNotiData);
+  });
+  if (unreadNotiArray.length > 0) {
+    updateNotiBtn(unreadNotiArray.length);
+  }
+  notificationState.push(...formatNoti);
 
-    document.querySelector('.nav_noti_btn').addEventListener('click', () => {
-        document.querySelector('.noti_wrap').classList.add('noti_wrap-active');
-        socket.emit('tagRead', unreadNotiArray);
-    });
-    renderNotiMessage(notificationState);
+  document.querySelector('.nav_noti_btn').addEventListener('click', () => {
+    document.querySelector('.noti_wrap').classList.add('noti_wrap-active');
+    socket.emit('tagRead', unreadNotiArray);
+  });
+  renderNotiMessage(notificationState);
 });
 
 function updateNotiBtn(unreadNotiCount) {
-    document.querySelector('.nav_noti_btn').classList.add('nav_noti_btn-active');
-    let unread_noti_count_node = document.createElement('div');
-    unread_noti_count_node.innerHTML = unreadNotiCount;
-    unread_noti_count_node.className = 'unread_noti_count';
-    document.querySelector('.nav_noti_btn').appendChild(unread_noti_count_node);
-    document.querySelector('.nav_noti_btn > svg').style.display = 'none';
+  document.querySelector('.nav_noti_btn').classList.add('nav_noti_btn-active');
+  let unread_noti_count_node = document.createElement('div');
+  unread_noti_count_node.innerHTML = unreadNotiCount;
+  unread_noti_count_node.className = 'unread_noti_count';
+  document.querySelector('.nav_noti_btn').appendChild(unread_noti_count_node);
+  document.querySelector('.nav_noti_btn > svg').style.display = 'none';
 }
 
 function transformRawNotiToRenderFormat(rawNotiData) {
-    switch (rawNotiData.type) {
-        case 'like':
-            return createLikeNoti(rawNotiData);
-        case 'follow':
-            return createFollowNoti(rawNotiData);
-        case 'comment':
-            return createCommentNoti(rawNotiData);
-        default:
-            break;
-    }
+  switch (rawNotiData.type) {
+    case 'like':
+      return createLikeNoti(rawNotiData);
+    case 'follow':
+      return createFollowNoti(rawNotiData);
+    case 'comment':
+      return createCommentNoti(rawNotiData);
+    default:
+      break;
+  }
 
-    function createLikeNoti(rawNotiData) {
-        let url = `/profile?id=${rawNotiData.listOwnerToken}&list=${rawNotiData.listId}&song=${rawNotiData.songIndex}`;
-        let message = `${rawNotiData.triggerName} 對你的貼文按心`;
-        return {
-            avatar: rawNotiData.triggerAvatar,
-            url,
-            message,
-            isRead: rawNotiData.isRead,
-        };
-    }
-    function createFollowNoti(rawNotiData) {
-        let url = `/profile?id=${rawNotiData.triggerToken}&list=-1`;
-        let message = `${rawNotiData.triggerName} 已經開始追蹤你`;
-        return {
-            avatar: rawNotiData.triggerAvatar,
-            url,
-            message,
-            isRead: rawNotiData.isRead,
-        };
-    }
-    function createCommentNoti(rawNotiData) {
-        let url = `/profile?id=${rawNotiData.listOwnerToken}&list=${rawNotiData.listId}&song=${rawNotiData.songIndex}`;
-        let message = `${rawNotiData.triggerName} 對你的貼文留言`;
-        return {
-            avatar: rawNotiData.triggerAvatar,
-            url,
-            message,
-            isRead: rawNotiData.isRead,
-        };
-    }
+  function createLikeNoti(rawNotiData) {
+    let url = `/profile?id=${rawNotiData.listOwnerToken}&list=${rawNotiData.listId}&song=${
+      rawNotiData.songIndex
+    }`;
+    let message = `${rawNotiData.triggerName} 對你的貼文按心`;
+    return {
+      avatar: rawNotiData.triggerAvatar,
+      url,
+      message,
+      isRead: rawNotiData.isRead,
+    };
+  }
+  function createFollowNoti(rawNotiData) {
+    let url = `/profile?id=${rawNotiData.triggerToken}&list=-1`;
+    let message = `${rawNotiData.triggerName} 已經開始追蹤你`;
+    return {
+      avatar: rawNotiData.triggerAvatar,
+      url,
+      message,
+      isRead: rawNotiData.isRead,
+    };
+  }
+  function createCommentNoti(rawNotiData) {
+    let url = `/profile?id=${rawNotiData.listOwnerToken}&list=${rawNotiData.listId}&song=${
+      rawNotiData.songIndex
+    }`;
+    let message = `${rawNotiData.triggerName} 對你的貼文留言`;
+    return {
+      avatar: rawNotiData.triggerAvatar,
+      url,
+      message,
+      isRead: rawNotiData.isRead,
+    };
+  }
 }
 
 function renderNotiMessage(notificationState) {
-    let noti_wrap_node = document.querySelector('.noti_wrap');
-    notificationState.map((notiState) => {
-        noti_wrap_node.appendChild(createSingleNotiNode(notiState));
-    });
+  let noti_wrap_node = document.querySelector('.noti_wrap');
+  notificationState.map((notiState) => {
+    noti_wrap_node.appendChild(createSingleNotiNode(notiState));
+  });
 }
 
 function createSingleNotiNode(notiState) {
-    let singleNotiNode = document.createElement('li');
-    singleNotiNode.className = notiState.isRead ? 'noti' : 'noti noti-unread';
+  let singleNotiNode = document.createElement('li');
+  singleNotiNode.className = notiState.isRead ? 'noti' : 'noti noti-unread';
 
-    singleNotiNode.innerHTML = `
+  singleNotiNode.innerHTML = `
                         <a href="${notiState.url}">
                             <img class="noti_avatar" src="${notiState.avatar}">
                             <span class="noti_message">${notiState.message}</span>
                         </a>
                     `;
-    return singleNotiNode;
+  return singleNotiNode;
 }
 
 // TODO
@@ -103,7 +107,7 @@ socket.on('newNotification', (socketOn_notification) => {});
 let userListState;
 socket.emit('getUserList');
 socket.on('getUserList', (socketOn_userList) => {
-    userListState = [...socketOn_userList];
+  userListState = [...socketOn_userList];
 });
 
 const nav_search_btn_node = document.querySelector('.nav_search_btn');
@@ -113,41 +117,44 @@ const nav_search_suggestion_node = document.querySelector('.suggestion_wrap');
 nav_search_btn_node.addEventListener('mouseenter', showNavSearchWrap);
 
 function showNavSearchWrap() {
-    nav_search_btn_node.classList.add('nav_search_btn-hover');
-    nav_search_svg_node.classList.add('svg-hover');
-    setTimeout(() => nav_search_btn_node.classList.contains('nav_search_btn-hover') && showNavSearchInput(), 300);
+  nav_search_btn_node.classList.add('nav_search_btn-hover');
+  nav_search_svg_node.classList.add('svg-hover');
+  setTimeout(
+    () => nav_search_btn_node.classList.contains('nav_search_btn-hover') && showNavSearchInput(),
+    300
+  );
 }
 
 function showNavSearchInput(e) {
-    nav_search_input_node.classList.add('nav_search_input-hover');
-    nav_search_input_node.placeholder = '請輸入欲搜尋的用戶名';
-    nav_search_input_node.addEventListener('change', displayMatches);
-    nav_search_input_node.addEventListener('keyup', displayMatches);
+  nav_search_input_node.classList.add('nav_search_input-hover');
+  nav_search_input_node.placeholder = '請輸入欲搜尋的用戶名';
+  // nav_search_input_node.addEventListener('change', displayMatches);
+  // nav_search_input_node.addEventListener('keyup', displayMatches);
 }
 
 function hideNavSearchWrap() {
-    nav_search_svg_node.classList.remove('svg-hover');
+  nav_search_svg_node.classList.remove('svg-hover');
 
-    nav_search_input_node.classList.remove('nav_search_input-hover');
-    nav_search_input_node.value = '';
-    nav_search_input_node.placeholder = '';
+  nav_search_input_node.classList.remove('nav_search_input-hover');
+  nav_search_input_node.value = '';
+  nav_search_input_node.placeholder = '';
 
-    nav_search_btn_node.classList.remove('nav_search_btn-hover');
-    nav_search_suggestion_node.innerHTML = '';
+  nav_search_btn_node.classList.remove('nav_search_btn-hover');
+  nav_search_suggestion_node.innerHTML = '';
 }
 
 function displayMatches() {
-    if (this.value === '') {
-        nav_search_suggestion_node.innerHTML = '';
-        return;
-    }
-    nav_search_suggestion_node.className = 'suggestion_wrap';
-    const matchArray = findMatches(this.value, userListState);
-    const html = matchArray
-        .map((user) => {
-            const regex = new RegExp(this.value, 'gi');
-            const userList = user.userName.replace(regex, `<span class="highlight">${this.value}</span>`);
-            return `
+  if (this.value === '') {
+    nav_search_suggestion_node.innerHTML = '';
+    return;
+  }
+  nav_search_suggestion_node.className = 'suggestion_wrap';
+  const matchArray = findMatches(this.value, userListState);
+  const html = matchArray
+    .map((user) => {
+      const regex = new RegExp(this.value, 'gi');
+      const userList = user.userName.replace(regex, `<span class="highlight">${this.value}</span>`);
+      return `
                 <a class="suggestion_result" href="/profile?id=${user.token}&list=-1">
                     <li>
                         <img class="search_avatar" src="${user.avatar}">
@@ -155,41 +162,44 @@ function displayMatches() {
                     </li>
                 </a>
             `;
-        })
-        .join('');
-    nav_search_suggestion_node.innerHTML = html;
+    })
+    .join('');
+  nav_search_suggestion_node.innerHTML = html;
 }
 
 function findMatches(wordToMatch, userList) {
-    return userList.filter((user) => {
-        const regex = new RegExp(wordToMatch, 'gi');
-        return user.userName.match(regex);
-    });
+  return userList.filter((user) => {
+    const regex = new RegExp(wordToMatch, 'gi');
+    return user.userName.match(regex);
+  });
 }
 
 // Hide nav wrap when click outside the wrap
 
 document.addEventListener('click', (evt) => {
-    let targetElement = evt.target;
-    do {
-        if (targetElement === nav_search_btn_node) {
-            if (document.querySelector('.nav_search_btn-hover')) {
-                return;
-            }
-        }
-        if (targetElement === document.querySelector('.noti_wrap') || targetElement === document.querySelector('.nav_noti_btn')) {
-            if (document.querySelector('.noti_wrap-active')) {
-                return;
-            }
-        }
-        targetElement = targetElement.parentNode;
-    } while (targetElement);
-    if (document.querySelector('.nav_search_btn-hover')) {
-        hideNavSearchWrap();
+  let targetElement = evt.target;
+  do {
+    if (targetElement === nav_search_btn_node) {
+      if (document.querySelector('.nav_search_btn-hover')) {
+        return;
+      }
     }
-    if (document.querySelector('.noti_wrap-active')) {
-        document.querySelector('.noti_wrap').classList.remove('noti_wrap-active');
+    if (
+      targetElement === document.querySelector('.noti_wrap') ||
+      targetElement === document.querySelector('.nav_noti_btn')
+    ) {
+      if (document.querySelector('.noti_wrap-active')) {
+        return;
+      }
     }
+    targetElement = targetElement.parentNode;
+  } while (targetElement);
+  if (document.querySelector('.nav_search_btn-hover')) {
+    hideNavSearchWrap();
+  }
+  if (document.querySelector('.noti_wrap-active')) {
+    document.querySelector('.noti_wrap').classList.remove('noti_wrap-active');
+  }
 });
 
 // Egg
@@ -197,39 +207,39 @@ document.addEventListener('click', (evt) => {
 let clean = 'ArrowUpArrowUpArrowDownArrowDownArrowLeftArrowRightArrowLeftArrowRightba';
 let press_record = [];
 window.addEventListener('keyup', (e) => {
-    press_record.push(e.key);
-    press_record.splice(-11, press_record.length - 10);
-    if (press_record.join('').includes(clean)) {
-        alert('Konami');
-        alert('Bye Bye!');
-        document.body.innerHTML = '';
-    }
+  press_record.push(e.key);
+  press_record.splice(-11, press_record.length - 10);
+  if (press_record.join('').includes(clean)) {
+    alert('Konami');
+    alert('Bye Bye!');
+    document.body.innerHTML = '';
+  }
 });
 
 // Services
 
 function bindFunctionToInputAndBtn(input_node, btn_node, func) {
-    input_node.addEventListener('keydown', (e) => {
-        if (e.keyCode === 13) {
-            func();
-        }
-    });
-    btn_node.addEventListener('click', func);
+  input_node.addEventListener('keydown', (e) => {
+    if (e.keyCode === 13) {
+      func();
+    }
+  });
+  btn_node.addEventListener('click', func);
 }
 
 function getQueryStringObject() {
-    let queryString = window.location.search;
-    let getPara;
-    let ParaVal;
-    let queryStringArray = [];
+  let queryString = window.location.search;
+  let getPara;
+  let ParaVal;
+  let queryStringArray = [];
 
-    if (queryString.indexOf('?') != -1) {
-        let getSearch = queryString.split('?');
-        getPara = getSearch[1].split('&');
-        for (i = 0; i < getPara.length; i++) {
-            ParaVal = getPara[i].split('=');
-            queryStringArray[ParaVal[0]] = ParaVal[1];
-        }
+  if (queryString.indexOf('?') != -1) {
+    let getSearch = queryString.split('?');
+    getPara = getSearch[1].split('&');
+    for (i = 0; i < getPara.length; i++) {
+      ParaVal = getPara[i].split('=');
+      queryStringArray[ParaVal[0]] = ParaVal[1];
     }
-    return queryStringArray;
+  }
+  return queryStringArray;
 }
