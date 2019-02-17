@@ -1,97 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Playlist Explore - share and discover music</title>
-    <link rel="stylesheet" href="/stylesheets/homepage/style.css">
+    <link rel="stylesheet" href="/homepage/css/style.css" />
     <script src="/socket.io/socket.io.js"></script>
     <script>
-        var socket = io();
+      var socket = io();
     </script>
-</head>
+  </head>
 
-<body>
+  <body>
     <div class="nav_wrap">
-        <div class="right_nav">
-            <a class="nav_item" href="#home">Playlist Explore</a>
-            <a class="nav_item" href="#explore">探索</a>
-            <a class="nav_item" href="#about">關於</a>
-            <a class="nav_item" href="#email">訂閱</a>
-
-        </div>
-        <div class="left_nav">
-            <a class="nav_item" href="/signup">註冊</a>
-            <a class="nav_item" href="/login">登入</a>
-        </div>
+      <div class="right_nav">
+        <a class="nav_item" href="#home">Playlist Explore</a>
+        <a class="nav_item" href="#explore">探索</a>
+        <a class="nav_item" href="#about">關於</a>
+        <a class="nav_item" href="#email">訂閱</a>
+      </div>
+      <div class="left_nav">
+        <a class="nav_item" href="/signup">註冊</a>
+        <a class="nav_item" href="/login">登入</a>
+      </div>
     </div>
 
     <div class="header" id="home">
-        <div class="background_wrap">
-            <div class="title_wrap">
-                <div class="rotate_wrap">
-                    <div class="circle"></div>
-                    <div class="dot"></div>
-                </div>
-                <div class="title_row">
-                    <a href="/exploreA">
-                        <h1 class="playlist">Playlist</h1>
-                    </a>
-                    <a href="/exploreA">
-                        <h1 class="explore">Explore</h1>
-                    </a>
-                </div>
-            </div>
-            <h2>分享與探索音樂清單</h2>
-            <div class="btn_wrap">
-                <a href="/explore">
-                    <div class="trial_btn">看看別人都在聽什麼音樂</div>
-                </a>
-                <a href="/signup">
-                    <div class="signup_btn">現在就註冊成為會員使用</div>
-                </a>
-
-            </div>
+      <div class="background_wrap">
+        <div class="title_wrap">
+          <div class="rotate_wrap">
+            <div class="circle"></div>
+            <div class="dot"></div>
+          </div>
+          <div class="title_row">
+            <a href="/exploreA">
+              <h1 class="playlist">Playlist</h1>
+            </a>
+            <a href="/exploreA">
+              <h1 class="explore">Explore</h1>
+            </a>
+          </div>
         </div>
+        <h2>分享與探索音樂清單</h2>
+        <div class="btn_wrap">
+          <a href="/explore">
+            <div class="trial_btn">看看別人都在聽什麼音樂</div>
+          </a>
+          <a href="/signup">
+            <div class="signup_btn">現在就註冊成為會員使用</div>
+          </a>
+        </div>
+      </div>
     </div>
     <div class="section" id="explore">
-        <div class="left_wrap">
-            <div class="explore_title">Playlist Explore 上有什麼？</div>
-            <div class="subtitle">朋友分享</div>
-            <p>發掘朋友們最近都在聽什麼音樂，不知道要聽什麼的時候就空下一個下午，享受別人準備好的旋律收藏。</p>
-            <div class="subtitle">個人紀錄</div>
-            <p>你可以紀錄自己每段時間內聽過的歌曲，並留下自己當下聽歌的想法，打造自己聽音樂的歷程紀錄。</p>
-            <div class="subtitle">精選排行</div>
-            <p>看看我們為你推薦高人氣的音樂清單，在不同的心境嘗試各種不同曲風。</p>
-        </div>
-        <div class="right_wrap">
-            <a href="/profile?id=@&list=69">
-                <img class="explore_cover" src="https://farm5.staticflickr.com/4244/34084343124_f3a6a04fd6_z.jpg" alt="photo">
-            </a>
-        </div>
+      <div class="left_wrap">
+        <div class="explore_title">Playlist Explore 上有什麼？</div>
+        <div class="subtitle">朋友分享</div>
+        <p>
+          發掘朋友們最近都在聽什麼音樂，不知道要聽什麼的時候就空下一個下午，享受別人準備好的旋律收藏。
+        </p>
+        <div class="subtitle">個人紀錄</div>
+        <p>
+          你可以紀錄自己每段時間內聽過的歌曲，並留下自己當下聽歌的想法，打造自己聽音樂的歷程紀錄。
+        </p>
+        <div class="subtitle">精選排行</div>
+        <p>看看我們為你推薦高人氣的音樂清單，在不同的心境嘗試各種不同曲風。</p>
+      </div>
+      <div class="right_wrap">
+        <a href="/profile?id=@&list=69">
+          <img
+            class="explore_cover"
+            src="https://farm5.staticflickr.com/4244/34084343124_f3a6a04fd6_z.jpg"
+            alt="photo"
+          />
+        </a>
+      </div>
     </div>
     <div class="section" id="about">
-        <div class="about_title">關於 Playlist Explore</div>
-        <p>Playlist Explore 是由兩個熱愛音樂的學生，因為想要讓與朋友分享音樂變得更簡單，並且想要接觸更多元的音樂而做的網站。
-            <br>
-            <br> 我們單純想要做一個會讓大家想用，用的舒服的服務，有任何的問題與建議之處都歡迎透過粉絲專頁或任何管道跟我們說。
-            <br>
-            <br> 這整個專案的程式碼開源在
-            <a href="https://github.com/HcwXd/PlaylistExplore" style="color: #FF6700">Github</a> 上，也歡迎在程式碼上給予我們指教，祝使用愉快！
-        </p>
+      <div class="about_title">關於 Playlist Explore</div>
+      <p>
+        Playlist Explore
+        是由兩個熱愛音樂的學生，因為想要讓與朋友分享音樂變得更簡單，並且想要接觸更多元的音樂而做的網站。
+        <br />
+        <br />
+        我們單純想要做一個會讓大家想用，用的舒服的服務，有任何的問題與建議之處都歡迎透過粉絲專頁或任何管道跟我們說。
+        <br />
+        <br />
+        這整個專案的程式碼開源在
+        <a href="https://github.com/HcwXd/PlaylistExplore" style="color: #FF6700">Github</a>
+        上，也歡迎在程式碼上給予我們指教，祝使用愉快！
+      </p>
     </div>
     <div class="section" id="email">
-        <div class="email_title">想要定時收到 Playlist Explore 的音樂推薦嗎?</div>
-        <input type="text" class="email_input" placeholder="Email">
-        <div class="email_btn">訂閱我們</div>
-        <div class="photo_rights">
-            本網站之照片由
-            <a href="http://instagram.com/jacker42001" style="color: #FF6700">Jacker She</a> 提供，更多攝影作品請見
-            <a href="https://www.flickr.com/photos/jacker42001/" style="color: #FF6700">Flickr</a>
-        </div>
+      <div class="email_title">想要定時收到 Playlist Explore 的音樂推薦嗎?</div>
+      <input type="text" class="email_input" placeholder="Email" />
+      <div class="email_btn">訂閱我們</div>
+      <div class="photo_rights">
+        本網站之照片由
+        <a href="http://instagram.com/jacker42001" style="color: #FF6700">Jacker She</a>
+        提供，更多攝影作品請見
+        <a href="https://www.flickr.com/photos/jacker42001/" style="color: #FF6700">Flickr</a>
+      </div>
     </div>
 
-    <script src="/javascripts/homepage/index.js"></script>
-</body>
-
+    <script src="/homepage/index.js"></script>
+  </body>
 </html>

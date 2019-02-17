@@ -1,26 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Sign in to Playlist Explore - Playlist Explore</title>
 
-<head>
-  <meta charset="UTF-8">
-  <title>Sign in to Playlist Explore - Playlist Explore</title>
+    <link rel="stylesheet" href="/login/css/style.css" />
+    <link rel="stylesheet" href="/components/css/style.css" />
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      var socket = io();
+    </script>
+  </head>
 
-
-
-  <link rel="stylesheet" href="/stylesheets/login/style.css">
-  <link rel="stylesheet" href="/stylesheets/components/style.css">
-  <script src="/socket.io/socket.io.js"></script>
-  <script>
-    var socket = io();
-  </script>
-
-
-
-</head>
-
-<body>
-  <%- include('components/nav') %>
-
+  <body>
+    <%- include('components/nav') %>
 
     <div class="content_wrap">
       <div class="field">
@@ -29,30 +22,27 @@
         </a>
       </div>
       <div class="field">
-        <hr>
+        <hr />
       </div>
       <div class="field">
         <label>Email</label>
-        <input class="input_row email_input" placeholder="Email" type="text" name="name">
+        <input class="input_row email_input" placeholder="Email" type="text" name="name" />
       </div>
       <div class="field">
         <label>密碼</label>
-        <input class="input_row password_input" placeholder="Password" type="password" name="password">
+        <input
+          class="input_row password_input"
+          placeholder="Password"
+          type="password"
+          name="password"
+        />
       </div>
       <div class="field">
         <div class="signup_btn">登入</div>
       </div>
     </div>
 
-
-
-    <script src="/javascripts/sha1.js"></script>
-    <script src="/javascripts/login/index.js"></script>
-
-
-
-
-
-</body>
-
+    <script src="/utils/sha1.js"></script>
+    <script src="/login/index.js"></script>
+  </body>
 </html>

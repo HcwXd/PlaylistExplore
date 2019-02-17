@@ -1,56 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Playlist Explore - share and discover music</title>
+    <link rel="stylesheet" href="//profile/css/style.css" />
+    <link rel="stylesheet" href="//components/css/style.css" />
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script>
+      var socket = io();
+    </script>
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <title>Playlist Explore - share and discover music</title>
-  <link rel="stylesheet" href="/stylesheets/profile/style.css">
-  <link rel="stylesheet" href="/stylesheets/components/style.css">
-  <script src="/socket.io/socket.io.js"></script>
-  <script src="https://www.youtube.com/iframe_api"></script>
-  <script>
-    var socket = io();
-  </script>
-</head>
+  <body>
+    <div class="loader"></div>
 
-<body>
-  <div class="loader"></div>
-
-  <%- include('components/nav') %>
+    <%- include('components/nav') %>
     <div class="content_wrap">
-      <div class="owner_info_wrap">
-
-      </div>
+      <div class="owner_info_wrap"></div>
       <div class="player_wrap">
-
         <div class="youtube_player">
           <div id="video_placeholder"></div>
         </div>
-        <div class="song_stats">
-        </div>
-        <div class="song_des">
-        </div>
-        <div class="comment_content_wrap">
-        </div>
+        <div class="song_stats"></div>
+        <div class="song_des"></div>
+        <div class="comment_content_wrap"></div>
         <div class="comment_submit">
           <textarea class="comment_text" placeholder="加個留言..."></textarea>
           <div class="submit_btn">留言</div>
         </div>
       </div>
       <div class="playlist_wrap">
-        <div class="playlist_info">
-        </div>
-        <div class="song_list">
-        </div>
+        <div class="playlist_info"></div>
+        <div class="song_list"></div>
       </div>
     </div>
-    <div class="history_wrap">
-    </div>
-    <script src="/javascripts/profile/index.js"></script>
-
-
-
-
-</body>
-
+    <div class="history_wrap"></div>
+    <script src="/profile/index.js"></script>
+  </body>
 </html>
