@@ -243,3 +243,13 @@ function getQueryStringObject() {
   }
   return queryStringArray;
 }
+
+// Detect User device
+
+let isMobile = navigator.userAgent.match(
+  /(iPhone|iPod|iPad|Android|webOS|BlackBerry|IEMobile|Opera Mini)/i
+);
+
+if (isMobile) {
+  alert('Hi, We now only support desktop for better user experience!');
+}
