@@ -8,9 +8,8 @@
     <% } %>
   </div>
   <div class="right_nav">
-    <% if (token) { %>
     <div class="nav_search_btn">
-      <svg x="0px" y="0px" viewBox="0 0 24 24" width="20px" height="20px">
+      <svg class="search_svg" x="0px" y="0px" viewBox="0 0 24 24" width="20px" height="20px">
         <g stroke-linecap="square" stroke-linejoin="miter" stroke="currentColor">
           <line fill="none" x1="22" y1="22" x2="16.4" y2="16.4" />
           <circle fill="none" cx="10" cy="10" r="9" />
@@ -19,6 +18,7 @@
       <input type="text" class="nav_search_input" />
       <div class="suggestion_wrap"></div>
     </div>
+    <% if (token) { %>
     <div class="nav_noti_btn">
       <svg x="0px" y="0px" viewBox="0 0 20 20" width="20px" height="20px">
         <g stroke-linecap="square" stroke-linejoin="miter" stroke="currentColor">
@@ -37,16 +37,6 @@
     <a class="nav_item" href="/publishA?id=<%= token %>">發布歌單</a>
     <a class="nav_item" href="/signout">登出</a>
     <% } else { %>
-    <div class="nav_search_btn">
-      <svg x="0px" y="0px" viewBox="0 0 24 24" width="20px" height="20px">
-        <g stroke-linecap="square" stroke-linejoin="miter" stroke="currentColor">
-          <line fill="none" x1="22" y1="22" x2="16.4" y2="16.4" />
-          <circle fill="none" cx="10" cy="10" r="9" />
-        </g>
-      </svg>
-      <input type="text" class="nav_search_input" />
-      <div class="suggestion_wrap"></div>
-    </div>
     <a class="nav_item" href="/login">個人首頁</a>
     <a class="nav_item" href="/publish">發布歌單</a>
     <a class="nav_item" href="/signup">註冊</a>

@@ -111,7 +111,7 @@ socket.on('getUserList', (socketOn_userList) => {
 });
 
 const nav_search_btn_node = document.querySelector('.nav_search_btn');
-const nav_search_svg_node = document.querySelector('svg');
+const nav_search_svg_node = document.querySelector('.search_svg');
 const nav_search_input_node = document.querySelector('.nav_search_input');
 const nav_search_suggestion_node = document.querySelector('.suggestion_wrap');
 nav_search_btn_node.addEventListener('mouseenter', showNavSearchWrap);
