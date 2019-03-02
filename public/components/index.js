@@ -108,6 +108,7 @@ let userListState;
 socket.emit('getUserList');
 socket.on('getUserList', (socketOn_userList) => {
   userListState = [...socketOn_userList];
+  console.log(userListState);
 });
 
 const nav_search_btn_node = document.querySelector('.nav_search_btn');
@@ -128,17 +129,14 @@ function showNavSearchWrap() {
 function showNavSearchInput(e) {
   nav_search_input_node.classList.add('nav_search_input-hover');
   nav_search_input_node.placeholder = '請輸入欲搜尋的用戶名';
-  // nav_search_input_node.addEventListener('change', displayMatches);
-  // nav_search_input_node.addEventListener('keyup', displayMatches);
+  nav_search_input_node.addEventListener('input', displayMatches);
 }
 
 function hideNavSearchWrap() {
   nav_search_svg_node.classList.remove('svg-hover');
-
   nav_search_input_node.classList.remove('nav_search_input-hover');
   nav_search_input_node.value = '';
   nav_search_input_node.placeholder = '';
-
   nav_search_btn_node.classList.remove('nav_search_btn-hover');
   nav_search_suggestion_node.innerHTML = '';
 }

@@ -116,7 +116,7 @@ a
     box-shadow: 0 3px 14px -1px rgba(#000, .18)
     overflow: hidden
     .nav_search_input
-      width: 140px
+      width: 200px
       height: 30px
       border: 0
       position: absolute
@@ -141,10 +141,9 @@ a
       top: 95%
       left: 28px
       background-color: $bg_white
-      color: rgba(117, 117, 117, 0.7)
       box-shadow: 0 3px 14px -1px rgba(#000, .18)
       border-radius: 0 0 5px 5px
-      width: 156px
+      width: 220px
       li
         padding: 5px 10px
         list-style: none
@@ -152,11 +151,14 @@ a
         align-items: center
         &:hover
           background-color: $txt_white
+          color: $txt_white
         .search_name
           display: inline-block
           font-size: 16px
+          color: $txt_black
           .highlight
-            color: rgba(100, 100, 100, 1)
+            font-weight: 900
+            color: txt_black
         .search_avatar
           display: inline-block
           height: 25px
@@ -164,7 +166,7 @@ a
           border-radius: 100%
           margin-right: 10px
   .nav_search_btn-hover
-      width: 180px
+      width: 250px
       border-radius: 5px
       overflow: initial
   .nav_avatar
