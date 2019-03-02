@@ -29,6 +29,7 @@ a {
   .nav_wrap .left_nav {
     display: flex; }
   .nav_wrap .right_nav {
+    display: flex;
     align-items: center; }
   .nav_wrap .nav_noti_btn {
     position: relative;
