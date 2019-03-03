@@ -44,11 +44,10 @@ async function deletePlayList(playlistInfo) {
 }
 
 async function modifyPlayList(playlistInfo, isEdit) {
-    if (playlistInfo.listId == -1 && !playlistInfo.isEdit) {
-        await createPlayList(playlistInfo);
-        return;
+    if (playlistInfo.listId != -1 || playlistInfo.isEdit) {
+        await deletePlayList(playlistInfo);
     }
-    await deletePlayList(playlistInfo);
+
     const ret = await createPlayList(playlistInfo);
     return ret;
 }

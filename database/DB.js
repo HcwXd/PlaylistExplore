@@ -34,6 +34,7 @@ function getData(query) {
                     console.log(error);
                 }
                 console.log(query);
+                if (cache && cache.isCache) console.log('cache');
                 console.log('success');
                 resolve(result);
             });

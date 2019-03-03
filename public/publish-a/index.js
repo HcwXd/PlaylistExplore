@@ -180,11 +180,11 @@ function publish() {
     if (!files.length) {
         redirectToProfile();
     } else {
-        uploadImgurBeforePublish(files);
+        uploadImgurBeforePublish(files, avatar_input_node);
     }
 }
 
-async function uploadImgurBeforePublish(files) {
+async function uploadImgurBeforePublish(files, avatar_input_node) {
     if (files[0].size > avatar_input_node.dataset.maxSize * 1024) {
         alert('請選擇一個較小的檔案');
         return false;
