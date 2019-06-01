@@ -1,39 +1,61 @@
 * {
-  letter-spacing: 2px; }
+  letter-spacing: 2px;
+}
 
 html, body {
   background-color: #0f0f0f;
   margin: 0px;
   padding: 0px;
-  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
   width: 100%;
   height: 100%;
   position: relative;
-  color: #3c3c3c; }
+  color: #3c3c3c;
+}
 
 .nav_wrap {
   top: 0px;
   width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
   position: fixed;
   color: black;
   border-bottom: 1px solid black;
   background-color: #f2f2f2;
   z-index: 3;
-  justify-content: space-between; }
-  .nav_wrap .right_nav {
-    display: flex; }
-  .nav_wrap .left_nav {
-    display: flex; }
-  .nav_wrap .nav_item {
-    padding: 12px;
-    margin-left: 12px; }
-    .nav_wrap .nav_item:hover {
-      opacity: 0.7;
-      cursor: pointer; }
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.nav_wrap .right_nav {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.nav_wrap .left_nav {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.nav_wrap .nav_item {
+  padding: 12px;
+  margin-left: 12px;
+}
+
+.nav_wrap .nav_item:hover {
+  opacity: 0.7;
+  cursor: pointer;
+}
 
 .follow_btn {
-  align-items: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   text-align: center;
   height: 45px;
   border: 2px solid #bebebe;
@@ -45,7 +67,8 @@ html, body {
   padding: 0px 10px;
   border-radius: 5px;
   margin-top: 30px;
-  cursor: pointer; }
+  cursor: pointer;
+}
 
 .content_wrap {
   width: 95%;
@@ -53,215 +76,343 @@ html, body {
   color: #bebebe;
   margin-top: 5%;
   margin-left: 50%;
-  transform: translateX(-50%);
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
   position: relative;
-  justify-content: space-between;
-  min-height: 100%; }
-  .content_wrap .owner_info_wrap {
-    width: 25%;
-    display: flex;
-    flex-direction: column;
-    align-items: center; }
-    .content_wrap .owner_info_wrap .owner_avatar {
-      border-radius: 100%;
-      width: 100px;
-      height: 100px;
-      margin-top: 15px; }
-    .content_wrap .owner_info_wrap .owner_name {
-      font-size: 24px;
-      margin-top: 15px; }
-    .content_wrap .owner_info_wrap .owner_bio {
-      margin-top: 15px;
-      padding: 0px 25px; }
-    .content_wrap .owner_info_wrap .edit_bio_wrap .edit_bio_btn, .content_wrap .owner_info_wrap .edit_bio_wrap .cancel_bio_btn, .content_wrap .owner_info_wrap .edit_bio_wrap .submit_bio_btn {
-      align-items: center;
-      text-align: center;
-      height: 45px;
-      border: 2px solid #bebebe;
-      line-height: 45px;
-      font-size: 12px;
-      background-color: #282828;
-      color: #bebebe;
-      font-weight: 500;
-      padding: 0px 10px;
-      border-radius: 5px;
-      margin-top: 30px;
-      cursor: pointer; }
-    .content_wrap .owner_info_wrap .edit_bio_wrap .editing_bio_wrap {
-      display: none; }
-      .content_wrap .owner_info_wrap .edit_bio_wrap .editing_bio_wrap .cancel_bio_btn, .content_wrap .owner_info_wrap .edit_bio_wrap .editing_bio_wrap .submit_bio_btn {
-        margin-top: 15px; }
-      .content_wrap .owner_info_wrap .edit_bio_wrap .editing_bio_wrap .edit_bio_input {
-        margin-top: 30px;
-        align-items: center;
-        text-decoration: none;
-        border: 2px solid #bebebe;
-        background-color: #282828;
-        color: #bebebe;
-        width: 90%;
-        height: 35px;
-        line-height: 35px;
-        font-size: 12px;
-        border-radius: 5px;
-        padding: 0px 10px; }
-        .content_wrap .owner_info_wrap .edit_bio_wrap .editing_bio_wrap .edit_bio_input:focus {
-          outline-color: #2c2d30;
-          outline-width: 0px;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  min-height: 100%;
+}
+
+.content_wrap .owner_info_wrap {
+  width: 25%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.content_wrap .owner_info_wrap .owner_avatar {
+  border-radius: 100%;
+  width: 100px;
+  height: 100px;
+  margin-top: 15px;
+}
+
+.content_wrap .owner_info_wrap .owner_name {
+  font-size: 24px;
+  margin-top: 15px;
+}
+
+.content_wrap .owner_info_wrap .owner_bio {
+  margin-top: 15px;
+  padding: 0px 25px;
+}
+
+.content_wrap .owner_info_wrap .edit_bio_wrap .edit_bio_btn, .content_wrap .owner_info_wrap .edit_bio_wrap .cancel_bio_btn, .content_wrap .owner_info_wrap .edit_bio_wrap .submit_bio_btn {
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  text-align: center;
+  height: 45px;
+  border: 2px solid #bebebe;
+  line-height: 45px;
+  font-size: 12px;
+  background-color: #282828;
+  color: #bebebe;
+  font-weight: 500;
+  padding: 0px 10px;
+  border-radius: 5px;
+  margin-top: 30px;
+  cursor: pointer;
+}
+
+.content_wrap .owner_info_wrap .edit_bio_wrap .editing_bio_wrap {
+  display: none;
+}
+
+.content_wrap .owner_info_wrap .edit_bio_wrap .editing_bio_wrap .cancel_bio_btn, .content_wrap .owner_info_wrap .edit_bio_wrap .editing_bio_wrap .submit_bio_btn {
+  margin-top: 15px;
+}
+
+.content_wrap .owner_info_wrap .edit_bio_wrap .editing_bio_wrap .edit_bio_input {
+  margin-top: 30px;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  text-decoration: none;
+  border: 2px solid #bebebe;
+  background-color: #282828;
+  color: #bebebe;
+  width: 90%;
+  height: 35px;
+  line-height: 35px;
+  font-size: 12px;
+  border-radius: 5px;
+  padding: 0px 10px;
+}
+
+.content_wrap .owner_info_wrap .edit_bio_wrap .editing_bio_wrap .edit_bio_input:focus {
+  outline-color: #2c2d30;
+  outline-width: 0px;
+  -webkit-box-shadow: none;
           box-shadow: none;
-          color: #bebebe; }
-  .content_wrap .player_wrap {
-    background-color: #282828;
-    padding: 15px;
-    width: 45%; }
-    .content_wrap .player_wrap .youtube_player {
-      display: flex;
-      justify-content: space-around; }
-    .content_wrap .player_wrap .song_stats {
-      display: flex;
-      padding: 5px 15px;
-      align-items: center; }
-      .content_wrap .player_wrap .song_stats .like_btn {
-        border-radius: 4px;
-        font-size: 14px;
-        background: transparent;
-        border: 0px solid #000;
-        color: #bebebe;
-        font-size: 24px;
-        cursor: pointer; }
-        .content_wrap .player_wrap .song_stats .like_btn:hover {
-          opacity: 0.5; }
-      .content_wrap .player_wrap .song_stats .like_btn-active {
-        color: #FF6700; }
-      .content_wrap .player_wrap .song_stats .like_number {
-        margin-left: 5px;
-        line-height: 24px; }
-    .content_wrap .player_wrap .song_des {
-      border-bottom: 1px solid #bebebe; }
-      .content_wrap .player_wrap .song_des .song_date {
-        padding: 5px 15px 5px 15px; }
-      .content_wrap .player_wrap .song_des .song_text {
-        padding: 5px 15px 15px 15px; }
-    .content_wrap .player_wrap .comment_content_wrap {
-      padding: 5px 15px; }
-      .content_wrap .player_wrap .comment_content_wrap .comment_info {
-        display: flex;
-        align-items: center;
-        padding: 5px 5px;
-        border-bottom: 1px solid #bebebe;
-        position: relative;
-        width: 100%; }
-        .content_wrap .player_wrap .comment_content_wrap .comment_info .comment_avatar {
-          width: 40px;
-          height: 40px;
-          border-radius: 100%; }
-        .content_wrap .player_wrap .comment_content_wrap .comment_info .comment_name {
-          margin-left: 15px; }
-        .content_wrap .player_wrap .comment_content_wrap .comment_info .comment_content {
-          margin-left: 15px; }
-        .content_wrap .player_wrap .comment_content_wrap .comment_info .delete_comment_btn {
-          position: absolute;
-          right: 5px;
-          cursor: pointer; }
-          .content_wrap .player_wrap .comment_content_wrap .comment_info .delete_comment_btn:hover {
-            opacity: 0.5; }
-    .content_wrap .player_wrap .comment_submit {
-      padding: 5px 15px;
-      display: flex; }
-      .content_wrap .player_wrap .comment_submit .comment_text {
-        align-items: center;
-        text-decoration: none;
-        border: 2px solid #bebebe;
-        border-right: 1px solid #bebebe;
-        background-color: #282828;
-        color: #bebebe;
-        width: 85%;
-        height: 45px;
-        line-height: 45px;
-        font-size: 12px;
-        border-radius: 5px 0 0 5px;
-        padding: 0px 15px; }
-        .content_wrap .player_wrap .comment_submit .comment_text:focus {
-          outline-color: #2c2d30;
-          outline-width: 0px;
+  color: #bebebe;
+}
+
+.content_wrap .player_wrap {
+  background-color: #282828;
+  padding: 15px;
+  width: 45%;
+}
+
+.content_wrap .player_wrap .youtube_player {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+}
+
+.content_wrap .player_wrap .song_stats {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 5px 15px;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.content_wrap .player_wrap .song_stats .like_btn {
+  border-radius: 4px;
+  font-size: 14px;
+  background: transparent;
+  border: 0px solid #000;
+  color: #bebebe;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.content_wrap .player_wrap .song_stats .like_btn:hover {
+  opacity: 0.5;
+}
+
+.content_wrap .player_wrap .song_stats .like_btn-active {
+  color: #FF6700;
+}
+
+.content_wrap .player_wrap .song_stats .like_number {
+  margin-left: 5px;
+  line-height: 24px;
+}
+
+.content_wrap .player_wrap .song_des {
+  border-bottom: 1px solid #bebebe;
+}
+
+.content_wrap .player_wrap .song_des .song_date {
+  padding: 5px 15px 5px 15px;
+}
+
+.content_wrap .player_wrap .song_des .song_text {
+  padding: 5px 15px 15px 15px;
+}
+
+.content_wrap .player_wrap .comment_content_wrap {
+  padding: 5px 15px;
+}
+
+.content_wrap .player_wrap .comment_content_wrap .comment_info {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 5px 5px;
+  border-bottom: 1px solid #bebebe;
+  position: relative;
+  width: 100%;
+}
+
+.content_wrap .player_wrap .comment_content_wrap .comment_info .comment_avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+}
+
+.content_wrap .player_wrap .comment_content_wrap .comment_info .comment_name {
+  margin-left: 15px;
+}
+
+.content_wrap .player_wrap .comment_content_wrap .comment_info .comment_content {
+  margin-left: 15px;
+}
+
+.content_wrap .player_wrap .comment_content_wrap .comment_info .delete_comment_btn {
+  position: absolute;
+  right: 5px;
+  cursor: pointer;
+}
+
+.content_wrap .player_wrap .comment_content_wrap .comment_info .delete_comment_btn:hover {
+  opacity: 0.5;
+}
+
+.content_wrap .player_wrap .comment_submit {
+  padding: 5px 15px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.content_wrap .player_wrap .comment_submit .comment_text {
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  text-decoration: none;
+  border: 2px solid #bebebe;
+  border-right: 1px solid #bebebe;
+  background-color: #282828;
+  color: #bebebe;
+  width: 85%;
+  height: 45px;
+  line-height: 45px;
+  font-size: 12px;
+  border-radius: 5px 0 0 5px;
+  padding: 0px 15px;
+}
+
+.content_wrap .player_wrap .comment_submit .comment_text:focus {
+  outline-color: #2c2d30;
+  outline-width: 0px;
+  -webkit-box-shadow: none;
           box-shadow: none;
-          color: #bebebe; }
-      .content_wrap .player_wrap .comment_submit .submit_btn {
-        align-items: center;
-        text-align: center;
-        height: 45px;
-        border: 2px solid #bebebe;
-        border-left: 1px solid #bebebe;
-        line-height: 45px;
-        width: 15%;
-        font-size: 12px;
-        background-color: #282828;
-        color: #bebebe;
-        font-size: 12px;
-        font-weight: 500;
-        border-radius: 0 5px 5px 0;
-        cursor: pointer; }
-  .content_wrap .playlist_wrap {
-    width: 30%; }
-    .content_wrap .playlist_wrap .playlist_info {
-      border-bottom: 1px solid #bebebe;
-      margin-bottom: 12px; }
-      .content_wrap .playlist_wrap .playlist_info .edit_playlist_btn {
-        position: absolute;
-        top: 15px;
-        right: 10px;
-        border: 1px solid #bebebe;
-        border-radius: 4px;
-        padding: 5px;
-        cursor: pointer; }
-      .content_wrap .playlist_wrap .playlist_info .playlist_name {
-        font-size: 24px;
-        padding: 15px; }
-      .content_wrap .playlist_wrap .playlist_info .playlist_des {
-        padding: 15px; }
-    .content_wrap .playlist_wrap .song_list .song_info {
-      display: flex;
-      justify-content: space-between;
-      border-bottom: 1px solid #bebebe;
-      margin-bottom: 12px; }
-      .content_wrap .playlist_wrap .song_list .song_info .song_name {
-        display: inline-block;
-        width: 85%;
-        overflow: hidden;
-        padding-left: 15px;
-        padding-right: 15px;
-        height: 48px;
-        cursor: pointer; }
-      .content_wrap .playlist_wrap .song_list .song_info .song_like {
-        display: inline-block;
-        width: 15%;
-        white-space: nowrap; }
+  color: #bebebe;
+}
+
+.content_wrap .player_wrap .comment_submit .submit_btn {
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  text-align: center;
+  height: 45px;
+  border: 2px solid #bebebe;
+  border-left: 1px solid #bebebe;
+  line-height: 45px;
+  width: 15%;
+  font-size: 12px;
+  background-color: #282828;
+  color: #bebebe;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 0 5px 5px 0;
+  cursor: pointer;
+}
+
+.content_wrap .playlist_wrap {
+  width: 30%;
+}
+
+.content_wrap .playlist_wrap .playlist_info {
+  border-bottom: 1px solid #bebebe;
+  margin-bottom: 12px;
+}
+
+.content_wrap .playlist_wrap .playlist_info .edit_playlist_btn {
+  position: absolute;
+  top: 15px;
+  right: 10px;
+  border: 1px solid #bebebe;
+  border-radius: 4px;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.content_wrap .playlist_wrap .playlist_info .playlist_name {
+  font-size: 24px;
+  padding: 15px;
+}
+
+.content_wrap .playlist_wrap .playlist_info .playlist_des {
+  padding: 15px;
+}
+
+.content_wrap .playlist_wrap .song_list .song_info {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  border-bottom: 1px solid #bebebe;
+  margin-bottom: 12px;
+}
+
+.content_wrap .playlist_wrap .song_list .song_info .song_name {
+  display: inline-block;
+  width: 85%;
+  overflow: hidden;
+  padding-left: 15px;
+  padding-right: 15px;
+  height: 48px;
+  cursor: pointer;
+}
+
+.content_wrap .playlist_wrap .song_list .song_info .song_like {
+  display: inline-block;
+  width: 15%;
+  white-space: nowrap;
+}
 
 .history_wrap {
   margin-top: 15px;
   width: 100%;
   margin-left: 50%;
-  transform: translateX(-50%);
-  font-size: 0px; }
-  .history_wrap .record_wrap {
-    width: 28%;
-    margin: 2.5%;
-    margin-bottom: 0;
-    text-align: center;
-    display: inline-block;
-    cursor: pointer;
-    transition: 0.24s ease;
-    border-radius: 5px;
-    overflow: hidden; }
-    .history_wrap .record_wrap:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 16px 16px 0 rgba(0, 0, 0, 0.24); }
-    .history_wrap .record_wrap .record_cover {
-      width: 100%; }
-    .history_wrap .record_wrap .record_name {
-      background-color: #282828;
-      color: #bebebe;
-      padding: 5px;
-      font-size: 24px; }
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+  font-size: 0px;
+}
 
+.history_wrap .record_wrap {
+  width: 28%;
+  margin: 2.5%;
+  margin-bottom: 0;
+  text-align: center;
+  display: inline-block;
+  cursor: pointer;
+  -webkit-transition: 0.24s ease;
+  transition: 0.24s ease;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.history_wrap .record_wrap:hover {
+  -webkit-transform: translateY(-8px);
+          transform: translateY(-8px);
+  -webkit-box-shadow: 0 16px 16px 0 rgba(0, 0, 0, 0.24);
+          box-shadow: 0 16px 16px 0 rgba(0, 0, 0, 0.24);
+}
+
+.history_wrap .record_wrap .record_cover {
+  width: 100%;
+}
+
+.history_wrap .record_wrap .record_name {
+  background-color: #282828;
+  color: #bebebe;
+  padding: 5px;
+  font-size: 24px;
+}
 /*# sourceMappingURL=style.css.map */
