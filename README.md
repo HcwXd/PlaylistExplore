@@ -1,5 +1,11 @@
 # PlaylistExplore
 
+> 我們用全新的技術與設計重寫了整個網站囉！
+>
+> 網站網址為：https://playlisten.app
+>
+> Repo 連結：https://github.com/HcwXd/Playlisten-frontend
+
 ## Usage
 ```
 git clone https://github.com/HcwXd/PlaylistExplore.git
