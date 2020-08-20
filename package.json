@@ -8,7 +8,7 @@
     },
     "dependencies": {
         "axios": "^0.18.0",
-        "bcrypt": "^3.0.0",
+        "bcrypt": "^5.0.0",
         "cheerio": "^1.0.0-rc.2",
         "condense-keys": "^2.0.0",
         "config-lite": "^2.1.0",
