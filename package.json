@@ -24,7 +24,7 @@
         "fecha": "^2.3.3",
         "fs": "0.0.1-security",
         "get-stream": "^3.0.0",
-        "googleapis": "^32.0.0",
+        "googleapis": "^59.0.0",
         "got": "^8.3.2",
         "http-errors": "~1.6.2",
         "imgur-node-api": "^0.1.0",
